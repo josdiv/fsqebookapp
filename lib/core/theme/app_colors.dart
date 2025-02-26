@@ -6,6 +6,7 @@ class AppColors {
   static const Color redColor = Color(0xFFFF6666);
   static const Color purpleColor = Color(0xFFCC3399);
   static const Color background = Color(0xFFFFFFFF);
+  static const Color errorColor = Color(0xFFFF4B4B);
 }
 
 /*Blue color - 3366cc

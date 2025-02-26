@@ -44,6 +44,7 @@ dependencies:
   firebase_auth: ^5.5.0
   flutter_svg: ^2.0.17
   google_sign_in: ^6.2.2
+  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Milliard
+      fonts:
+        - asset: assets/fonts/Rene-Bieder-Milliard-Book.otf
+        - asset: assets/fonts/Rene-Bieder-Milliard-Medium.otf
+        - asset: assets/fonts/Rene-Bieder-Milliard-SemiBold.otf
   # fonts:
   #   - family: Schyler
   #     fonts:
