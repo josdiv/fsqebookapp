@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "983165916935",
+    "project_id": "foursquare-ebook-store",
+    "storage_bucket": "foursquare-ebook-store.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983165916935:android:2d0bf6773ea03e90d117a2",
+        "android_client_info": {
+          "package_name": "com.foursquareng.ebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983165916935-7hnq6fs88dcts8lu9u71njrimj4dhjul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.foursquareng.ebook",
+            "certificate_hash": "69aae8ee646df612e63ea93034028a54332b9ae7"
+          }
+        },
+        {
+          "client_id": "983165916935-vc00eshp9lh8cgqnnkhfbbnjaj7laqb0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.foursquareng.ebook",
+            "certificate_hash": "9bb509ddae0dbd1d0094533e3d0a73458968c6e8"
+          }
+        },
+        {
+          "client_id": "983165916935-rfhps4fhfk5g6g714qfo96i4arb61373.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-PXd6aNI9GAxbxcrf73B8JDYH3QuMp1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983165916935-rfhps4fhfk5g6g714qfo96i4arb61373.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "983165916935-boerb57flo7l98hkvu48jfb8rshpiebo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.foursquareng.ebook"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
