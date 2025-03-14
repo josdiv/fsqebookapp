@@ -1,47 +1,43 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
     super.key,
-    this.text,
-    this.backgroundColor,
+    required this.text,
+    this.backgroundColor = AppColors.orangeColor,
     this.textColor,
-    this.onPressed,
+    this.onTap,
     this.padding,
   });
 
-  final String? text;
+  final String text;
   final Color? backgroundColor;
   final Color? textColor;
-  final VoidCallback? onPressed;
+  final VoidCallback? onTap;
   final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
-          backgroundColor: WidgetStateProperty.resolveWith(
-            (state) {
-              if (state.contains(WidgetState.disabled)) {
-                return backgroundColor?.withOpacity(0.5);
-              } else {
-                return backgroundColor;
-              }
-            },
-          ),
-          foregroundColor: WidgetStateProperty.resolveWith((state) {
-            if(state.contains(WidgetState.disabled)) {
-              return textColor?.withOpacity(0.5);
-            } else {
-              return textColor;
-            }
-          }),
-          padding: WidgetStatePropertyAll(padding)
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(16),
         ),
-        child: Text(text ?? ''),
+        alignment: Alignment.center,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w600
+          ),
+        ),
       ),
     );
   }
