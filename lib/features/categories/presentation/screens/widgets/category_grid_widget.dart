@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foursquare_ebbok_app/features/bible_study/presentation/screens/bible_study_screen/bible_study_screen.dart';
 
 import 'category_card.dart';
 
@@ -12,37 +13,37 @@ class CategoryGridWidget extends StatelessWidget {
         "categoryId": "1",
         "categoryName": "Biographies",
         "categoryImage":
-        "https://fsqebookapp.com.ng/ebook_app/upload/images/category/Biographies.jpg"
+            "https://fsqebookapp.com.ng/ebook_app/upload/images/category/Biographies.jpg"
       },
       {
         "categoryId": "20",
         "categoryName": "Bible Study",
         "categoryImage":
-        "https://fsqebookapp.com.ng/ebook_app/upload/images/category/bible  study.jpg"
+            "https://fsqebookapp.com.ng/ebook_app/upload/images/category/bible  study.jpg"
       },
       {
         "categoryId": "21",
         "categoryName": "Lifestyle",
         "categoryImage":
-        "https://fsqebookapp.com.ng/ebook_app/upload/images/category/life.jpg"
+            "https://fsqebookapp.com.ng/ebook_app/upload/images/category/life.jpg"
       },
       {
         "categoryId": "22",
         "categoryName": "Biography",
         "categoryImage":
-        "https://fsqebookapp.com.ng/ebook_app/upload/images/category/biographies.jpg"
+            "https://fsqebookapp.com.ng/ebook_app/upload/images/category/biographies.jpg"
       },
       {
         "categoryId": "23",
         "categoryName": "Stories",
         "categoryImage":
-        "https://fsqebookapp.com.ng/ebook_app/upload/images/category/stories.jpg"
+            "https://fsqebookapp.com.ng/ebook_app/upload/images/category/stories.jpg"
       },
       {
         "categoryId": "24",
         "categoryName": "Family",
         "categoryImage":
-        "https://fsqebookapp.com.ng/ebook_app/upload/images/category/family.jpg"
+            "https://fsqebookapp.com.ng/ebook_app/upload/images/category/family.jpg"
       }
     ];
     return GridView.builder(
@@ -54,9 +55,19 @@ class CategoryGridWidget extends StatelessWidget {
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {
-        return CategoryCard(
-          url: items[index]['categoryImage'] as String,
-          name: items[index]['categoryName'] as String,
+        return GestureDetector(
+          onTap: items[index]['categoryId'] == "20"
+              ? () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BibleStudyScreen(),
+                    ),
+                  )
+              : null,
+          child: CategoryCard(
+            url: items[index]['categoryImage'] as String,
+            name: items[index]['categoryName'] as String,
+          ),
         );
       },
     );

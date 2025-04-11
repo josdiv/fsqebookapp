@@ -10,6 +10,9 @@ class DefaultButton extends StatelessWidget {
     this.textColor,
     this.onTap,
     this.padding,
+    this.height,
+    this.borderRadius = 16.0,
+    this.fontSize = 16,
   });
 
   final String text;
@@ -17,6 +20,9 @@ class DefaultButton extends StatelessWidget {
   final Color? textColor;
   final VoidCallback? onTap;
   final EdgeInsets? padding;
+  final double? height;
+  final double borderRadius;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +30,18 @@ class DefaultButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width,
+        height: height,
         padding: EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         alignment: Alignment.center,
         child: Text(
           text,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: fontSize,
             fontWeight: FontWeight.w600
           ),
         ),

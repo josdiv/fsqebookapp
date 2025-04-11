@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
+import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/login_screen.dart';
 
 import '../../../../core/misc/spacer.dart';
 
@@ -36,17 +37,25 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               VSpace(20),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 13, horizontal: 25),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
                 ),
-                child: Text(
-                  'LOG IN',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.orangeColor,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 25),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'LOG IN',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.orangeColor,
+                    ),
                   ),
                 ),
               ),

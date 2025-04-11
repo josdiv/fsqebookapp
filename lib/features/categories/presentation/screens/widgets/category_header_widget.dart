@@ -11,7 +11,7 @@ class CategoryHeaderWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "Category",
+          "Categories",
           style: TextStyle(
             fontSize: 21,
             fontWeight: FontWeight.bold,

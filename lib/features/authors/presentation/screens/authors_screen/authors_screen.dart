@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foursquare_ebbok_app/features/authors/presentation/screens/author_details_screen/author_details_screen.dart';
 
-import '../../../../core/misc/spacer.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../../core/misc/spacer.dart';
+import '../../../../../core/theme/app_colors.dart';
 
 class AuthorsScreen extends StatelessWidget {
   const AuthorsScreen({super.key});
@@ -133,9 +134,17 @@ class AuthorsGridWidget extends StatelessWidget {
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {
-        return AuthorsCard(
-          url: items[index]['authorImage'] as String,
-          name: items[index]['authorName'] as String,
+        return GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AuthorDetailsScreen(),
+            ),
+          ),
+          child: AuthorsCard(
+            url: items[index]['authorImage'] as String,
+            name: items[index]['authorName'] as String,
+          ),
         );
       },
     );

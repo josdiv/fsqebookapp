@@ -23,7 +23,7 @@ class CategoryCard extends StatelessWidget {
           height: 121,
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
               image: NetworkImage(url),
               fit: BoxFit.cover,
@@ -32,8 +32,8 @@ class CategoryCard extends StatelessWidget {
               BoxShadow(
                 color: Colors.black.withOpacity(0.3), // Shadow color
                 spreadRadius: 0, // No spread
-                blurRadius: 10, // How soft the shadow should be
-                offset: Offset(0, 10), // Moves shadow 10px downward
+                blurRadius: 15, // How soft the shadow should be
+                offset: Offset(0, 2), // Moves shadow 10px downward
               ),
             ],
           ),

@@ -1,3 +1,8 @@
+import 'package:foursquare_ebbok_app/features/home/data/datasource/home_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/home/data/repository/home_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/repository/home_repository.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_dashboard_data.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/latest/data/datasource/latest_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/latest/data/repository/latest_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/latest/domain/repository/latest_repository.dart';
@@ -14,6 +19,7 @@ Future<void> init() async {
       .registerLazySingleton(() => http.Client());
 
   await _latestBookInit();
+  await _homeInit();
 }
 
 Future<void> _latestBookInit() async {
@@ -27,5 +33,19 @@ Future<void> _latestBookInit() async {
     ..registerLazySingleton<LatestRepository>(() => LatestRepositoryImpl(sl()))
     ..registerLazySingleton<LatestRemoteDatasource>(
       () => LatestRemoteDatasourceImpl(sl()),
+    );
+}
+
+Future<void> _homeInit() async {
+  sl
+    ..registerFactory(
+      () => HomeCubit(
+        getDashboardData: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetDashboardData(sl()))
+    ..registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl()))
+    ..registerLazySingleton<HomeRemoteDatasource>(
+      () => HomeRemoteDatasourceImpl(sl()),
     );
 }

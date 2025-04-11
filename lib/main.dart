@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
 import 'package:foursquare_ebbok_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'core/services/injection_container.dart';
@@ -49,9 +50,10 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LatestCubit>(create: (context) => sl<LatestCubit>()),
+        BlocProvider<HomeCubit>(create: (context) => sl<HomeCubit>()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'FourSquare Ebbok App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
