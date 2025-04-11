@@ -1,3 +1,8 @@
+import 'package:foursquare_ebbok_app/features/book_details/data/datasource/book_details_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/book_details/data/repository/book_details_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/repository/book_details_repository.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/get_book_details.dart';
+import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/home/data/datasource/home_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/home/data/repository/home_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/repository/home_repository.dart';
@@ -20,6 +25,7 @@ Future<void> init() async {
 
   await _latestBookInit();
   await _homeInit();
+  await _bookDetailsInit();
 }
 
 Future<void> _latestBookInit() async {
@@ -47,5 +53,20 @@ Future<void> _homeInit() async {
     ..registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl()))
     ..registerLazySingleton<HomeRemoteDatasource>(
       () => HomeRemoteDatasourceImpl(sl()),
+    );
+}
+
+Future<void> _bookDetailsInit() async {
+  sl
+    ..registerFactory(
+      () => BookDetailsCubit(
+        getBookDetails: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetBookDetails(sl()))
+    ..registerLazySingleton<BookDetailsRepository>(
+        () => BookDetailsRepositoryImpl(sl()))
+    ..registerLazySingleton<BookDetailsRemoteDatasource>(
+      () => BookDetailsRemoteDatasourceImpl(sl()),
     );
 }

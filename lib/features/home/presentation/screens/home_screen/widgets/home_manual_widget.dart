@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -17,7 +18,6 @@ class HomeManualWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Row(
@@ -43,12 +43,18 @@ class HomeManualWidget extends StatelessWidget {
           child: Row(
             children: manualBookList
                 .map(
-                  (item) => homeCardWidget(
-                    title: item.manualTitle,
-                    url: item.manualImage,
-                    bookPrice: item.manualBookPrice,
-                    rating: item.manualRating,
-                    context: context,
+                  (item) => GestureDetector(
+                    onTap: () => toBookDetails(
+                      id: item.manualId,
+                      context: context,
+                    ),
+                    child: homeCardWidget(
+                      title: item.manualTitle,
+                      url: item.manualImage,
+                      bookPrice: item.manualBookPrice,
+                      rating: item.manualRating,
+                      context: context,
+                    ),
                   ),
                 )
                 .toList(),

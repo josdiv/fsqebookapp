@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/helper/navigate_to_book_details.dart';
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../categories/presentation/screens/widgets/category_card.dart';
@@ -45,10 +46,16 @@ class HomeCategoryWidget extends StatelessWidget {
                 .map(
                   (item) => Padding(
                     padding: const EdgeInsets.only(right: 15.0),
-                    child: CategoryCard(
-                      url: item.subCategoryImage,
-                      name: item.subCategoryTitle,
-                      width: 185,
+                    child: GestureDetector(
+                      onTap: () => toBookDetails(
+                        id: item.subCategoryId,
+                        context: context,
+                      ),
+                      child: CategoryCard(
+                        url: item.subCategoryImage,
+                        name: item.subCategoryTitle,
+                        width: 185,
+                      ),
                     ),
                   ),
                 )

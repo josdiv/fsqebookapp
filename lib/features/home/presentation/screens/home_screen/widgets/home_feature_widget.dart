@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -17,7 +18,6 @@ class HomeFeaturedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -37,10 +37,16 @@ class HomeFeaturedWidget extends StatelessWidget {
             child: Row(
               children: featuredBookList
                   .map(
-                    (item) => featuredCard(
-                      title: item.featuredTitle,
-                      imageUrl: item.featuredImage,
-                      context: context,
+                    (item) => GestureDetector(
+                      onTap: () => toBookDetails(
+                        id: item.featuredId,
+                        context: context,
+                      ),
+                      child: featuredCard(
+                        title: item.featuredTitle,
+                        imageUrl: item.featuredImage,
+                        context: context,
+                      ),
                     ),
                   )
                   .toList(),

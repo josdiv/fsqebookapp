@@ -81,12 +81,12 @@ class _LatestGridWidgetState extends State<LatestGridWidget> {
                 itemCount: state.latestBooks.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const BookDetailsScreen(),
-                      ),
-                    ),
+                    // onTap: () => Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const BookDetailsScreen(),
+                    //   ),
+                    // ),
                     child: LatestCardWidget(
                       title: state.latestBooks[index].bookTitle,
                       url: state.latestBooks[index].bookImage,
