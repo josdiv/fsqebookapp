@@ -1,3 +1,9 @@
+import 'package:foursquare_ebbok_app/features/authors/data/datasource/authors_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/authors/data/repository/authors_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/authors/domain/repository/authors_repository.dart';
+import 'package:foursquare_ebbok_app/features/authors/domain/usecases/get_authors.dart';
+import 'package:foursquare_ebbok_app/features/authors/domain/usecases/get_single_author.dart';
+import 'package:foursquare_ebbok_app/features/authors/presentation/cubits/authors_cubit.dart';
 import 'package:foursquare_ebbok_app/features/book_details/data/datasource/book_details_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/book_details/data/repository/book_details_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/repository/book_details_repository.dart';
@@ -42,6 +48,7 @@ Future<void> init() async {
   await _bookDetailsInit();
   await _settingsInit();
   await _categoriesInit();
+  await _authorsInit();
 }
 
 Future<void> _latestBookInit() async {
@@ -106,7 +113,6 @@ Future<void> _settingsInit() async {
     );
 }
 
-
 Future<void> _categoriesInit() async {
   sl
     ..registerFactory(
@@ -123,5 +129,22 @@ Future<void> _categoriesInit() async {
         () => CategoriesRepositoryImpl(sl()))
     ..registerLazySingleton<CategoriesRemoteDatasource>(
       () => CategoriesRemoteDatasourceImpl(sl()),
+    );
+}
+
+Future<void> _authorsInit() async {
+  sl
+    ..registerFactory(
+      () => AuthorsCubit(
+        getSingleAuthor: sl(),
+        getAuthors: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetSingleAuthor(sl()))
+    ..registerLazySingleton(() => GetAuthors(sl()))
+    ..registerLazySingleton<AuthorsRepository>(
+        () => AuthorsRepositoryImpl(sl()))
+    ..registerLazySingleton<AuthorsRemoteDatasource>(
+      () => AuthorsRemoteDatasourceImpl(sl()),
     );
 }

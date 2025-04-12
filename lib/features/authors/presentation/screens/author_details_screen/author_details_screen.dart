@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
+import 'package:foursquare_ebbok_app/features/authors/presentation/cubits/authors_cubit.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 
@@ -62,95 +64,97 @@ class AuthorBooksWidget extends StatelessWidget {
   }
 }
 
-
 class AuthorInfoWidget extends StatelessWidget {
   const AuthorInfoWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Color(0xFFFFEEEB),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Row(
+    return BlocBuilder<AuthorsCubit, AuthorsState>(
+      builder: (context, state) {
+        final author = state.model.getSingleAuthorNetworkModel.author;
+
+        return Container(
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Color(0xFFFFEEEB),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
             children: [
-              Container(
-                height: 70,
-                width: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "https://fsqebookapp.com.ng/ebook_app/upload/meyer.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              HSpace(10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    "Joyce Meyer",
-                    style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF4E4B66),
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(author.authorImage),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  VSpace(5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/Youtube.svg",
-                        height: 20,
-                        width: 20,
-                      ),
-                      HSpace(10),
-                      SvgPicture.asset(
-                        "assets/icons/Fb.svg",
-                        height: 20,
-                        width: 20,
-                      ),
-                      HSpace(10),
-                      SvgPicture.asset(
-                        "assets/icons/Insta.svg",
-                        height: 20,
-                        width: 20,
-                      ),
-                      HSpace(10),
-                      SvgPicture.asset(
-                        "assets/icons/Web.svg",
-                        height: 20,
-                        width: 20,
-                      ),
-                    ],
+                  HSpace(10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          author.authorName,
+                          // overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF4E4B66),
+                          ),
+                        ),
+                        VSpace(5),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/Youtube.svg",
+                              height: 20,
+                              width: 20,
+                            ),
+                            HSpace(10),
+                            SvgPicture.asset(
+                              "assets/icons/Fb.svg",
+                              height: 20,
+                              width: 20,
+                            ),
+                            HSpace(10),
+                            SvgPicture.asset(
+                              "assets/icons/Insta.svg",
+                              height: 20,
+                              width: 20,
+                            ),
+                            HSpace(10),
+                            SvgPicture.asset(
+                              "assets/icons/Web.svg",
+                              height: 20,
+                              width: 20,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 ],
+              ),
+              VSpace(10),
+              Text(
+                author.authorInfo,
+                style: TextStyle(
+                  height: 1.65,
+                  fontSize: 15,
+                  color: Color(0xFF424242),
+                ),
               )
             ],
           ),
-          VSpace(10),
-          Text(
-            "Watchman Nee was a Chinese Christian author and church leader "
-            "born on November 4, 1903, in Foochow, China. A prominent figure "
-            "in the Christian house church movement in China, Nee authored "
-            "many influential books, including \"The Normal Christian Life\" "
-            "and \"Sit, Walk, Stand.\" Despite facing persecution and "
-            "imprisonment during the Chinese communist regime, his writings "
-            "continue to inspire Christians globally. Watchman Nee's emphasis "
-            "on the deeper aspects of the Christian life and his commitment "
-            "to following Christ in all circumstances have left a lasting legacy",
-            style:
-                TextStyle(height: 1.65, fontSize: 15, color: Color(0xFF424242)),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }
