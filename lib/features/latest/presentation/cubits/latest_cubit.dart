@@ -15,7 +15,7 @@ class LatestCubit extends Cubit<LatestState> {
   final GetLatestBooks _getLatestBooks;
 
   Future<void> getLatestBooksEvent() async {
-    emit(LatestBooksLoading());
+    emit(LatestBooksLoading(state.isLoaded));
 
     final result = await _getLatestBooks();
 

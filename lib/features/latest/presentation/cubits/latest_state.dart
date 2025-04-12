@@ -12,7 +12,7 @@ sealed class LatestState extends Equatable {
 final class LatestInitial extends LatestState {}
 
 final class LatestBooksLoading extends LatestState {
-  const LatestBooksLoading();
+  const LatestBooksLoading(super.isLoaded);
 }
 
 final class LatestBooksError extends LatestState {

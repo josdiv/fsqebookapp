@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
+import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/book_details_screen.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
@@ -19,7 +21,6 @@ class _LatestGridWidgetState extends State<LatestGridWidget> {
   @override
   void initState() {
     super.initState();
-    print("called");
     context.read<LatestCubit>().getLatestBooksEvent();
   }
 
@@ -35,40 +36,20 @@ class _LatestGridWidgetState extends State<LatestGridWidget> {
       listener: (context, state) {
         if (state is LatestBooksError) {
           Loader.hide();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error),
-            ),
-          );
-          print(state.error);
-          print(state.isLoaded);
-        }
-
-        if (state is LatestBooksLoading) {
-          print("loading");
-          Loader.show(
-            context,
-            progressIndicator: LoadingAnimationWidget.threeRotatingDots(
-              color: AppColors.purpleColor,
-              size: 40,
-            ),
-          );
+          showSnackBar(context, state.error);
         }
 
         if (state is LatestBooksLoaded) {
           Loader.hide();
+          print("Loaded ${state.isLoaded}");
+        }
+
+        if (state is LatestBooksLoading && !state.isLoaded) {
+          print("loading ${state.isLoaded}");
+          commonLoader(context);
         }
       },
       builder: (context, state) {
-        // if (state is LatestBooksLoading && !state.isLoaded) {
-        //   Loader.show(
-        //     context,
-        //     progressIndicator: LoadingAnimationWidget.threeRotatingDots(
-        //       color: AppColors.purpleColor,
-        //       size: 40,
-        //     ),
-        //   );
-        // }
         return state is LatestBooksLoaded
             ? GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -87,6 +68,14 @@ class _LatestGridWidgetState extends State<LatestGridWidget> {
                     //     builder: (context) => const BookDetailsScreen(),
                     //   ),
                     // ),
+
+                    onTap: () {
+                      print(state.latestBooks[index].bookId);
+                      toBookDetails(
+                        id: state.latestBooks[index].bookId,
+                        context: context,
+                      );
+                    },
                     child: LatestCardWidget(
                       title: state.latestBooks[index].bookTitle,
                       url: state.latestBooks[index].bookImage,

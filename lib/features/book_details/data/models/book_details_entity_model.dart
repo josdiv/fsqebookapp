@@ -42,7 +42,9 @@ class BookDetailsEntityModel extends BookDetailsEntity {
       bookPrice: bookDetail['bookPrice'] as String,
       bookDescription: bookDescription,
       bookReviewCount: (bookDetail['bookReviewCount'] as num).toInt(),
-      bookAverageRating: (bookDetail['bookAverageRating'] as num).toInt(),
+      bookAverageRating: bookDetail['bookAverageRating'] == ""
+          ? 0
+          : (bookDetail['bookAverageRating'] as num).toInt(),
       postViewCount: bookDetail['postViewCount'] as String,
       relatedBookList: relatedBookList,
     );
