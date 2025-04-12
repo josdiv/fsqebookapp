@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/features/authors/presentation/screens/authors_screen/authors_screen.dart';
-import 'package:foursquare_ebbok_app/features/categories/presentation/screens/categories_screen.dart';
+import 'package:foursquare_ebbok_app/features/categories/presentation/screens/categories_screen/categories_screen.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/home_screen.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/screens/latest_screen.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/screens/profile_screen/profile_screen.dart';

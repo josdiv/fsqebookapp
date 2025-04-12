@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/helper/navigate_to_book_details.dart';
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
-import '../../../../../categories/presentation/screens/widgets/category_card.dart';
+import '../../../../../categories/presentation/screens/categories_screen/widgets/category_card.dart';
+
 import '../../../../domain/entity/home_entity.dart';
 
 class HomeCategoryWidget extends StatelessWidget {
@@ -18,7 +19,6 @@ class HomeCategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Row(

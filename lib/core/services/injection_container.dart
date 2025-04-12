@@ -3,6 +3,13 @@ import 'package:foursquare_ebbok_app/features/book_details/data/repository/book_
 import 'package:foursquare_ebbok_app/features/book_details/domain/repository/book_details_repository.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/get_book_details.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
+import 'package:foursquare_ebbok_app/features/categories/data/datasource/categories_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/categories/data/repository/categories_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/categories/domain/repository/categories_repository.dart';
+import 'package:foursquare_ebbok_app/features/categories/domain/usecases/get_categories.dart';
+import 'package:foursquare_ebbok_app/features/categories/domain/usecases/get_sub_categories.dart';
+import 'package:foursquare_ebbok_app/features/categories/domain/usecases/get_sub_categories_details.dart';
+import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/categories_cubit.dart';
 import 'package:foursquare_ebbok_app/features/home/data/datasource/home_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/home/data/repository/home_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/repository/home_repository.dart';
@@ -34,6 +41,7 @@ Future<void> init() async {
   await _homeInit();
   await _bookDetailsInit();
   await _settingsInit();
+  await _categoriesInit();
 }
 
 Future<void> _latestBookInit() async {
@@ -95,5 +103,25 @@ Future<void> _settingsInit() async {
         () => SettingsRepositoryImpl(sl()))
     ..registerLazySingleton<SettingsRemoteDatasource>(
       () => SettingsRemoteDatasourceImpl(sl()),
+    );
+}
+
+
+Future<void> _categoriesInit() async {
+  sl
+    ..registerFactory(
+      () => CategoriesCubit(
+        getCategories: sl(),
+        getSubCategories: sl(),
+        getSubCategoriesDetails: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetCategories(sl()))
+    ..registerLazySingleton(() => GetSubCategories(sl()))
+    ..registerLazySingleton(() => GetSubCategoriesDetails(sl()))
+    ..registerLazySingleton<CategoriesRepository>(
+        () => CategoriesRepositoryImpl(sl()))
+    ..registerLazySingleton<CategoriesRemoteDatasource>(
+      () => CategoriesRemoteDatasourceImpl(sl()),
     );
 }

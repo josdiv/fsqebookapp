@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../categories/presentation/screens/widgets/category_card.dart';
+import '../../../../../categories/presentation/screens/categories_screen/widgets/category_card.dart';
+
 
 class BibleStudyGridWidget extends StatelessWidget {
   const BibleStudyGridWidget({super.key});

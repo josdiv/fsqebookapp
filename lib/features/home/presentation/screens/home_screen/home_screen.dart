@@ -25,11 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<HomeCubit>().getDashboardDataEvent();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    Loader.hide();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   Loader.hide();
+  // }
 
   @override
   Widget build(BuildContext context) {

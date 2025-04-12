@@ -5,6 +5,6 @@ import 'package:foursquare_ebbok_app/features/categories/domain/entity/sub_categ
 
 abstract interface class CategoriesRepository {
   ResultFuture<List<CategoryEntity>> getCategories();
-  // ResultFuture<List<SubCategoryEntity>> getSubCategories();
-  // ResultFuture<List<SubCategoryDetailsEntity>> getSubCategoriesDetails();
+  ResultFuture<List<SubCategoryEntity>> getSubCategories(String id);
+  ResultFuture<List<SubCategoryDetailsEntity>> getSubCategoriesDetails(String id);
 }

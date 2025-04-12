@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
+import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/categories_cubit.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
 import 'package:foursquare_ebbok_app/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -35,7 +36,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initialization();
   }
@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<HomeCubit>(create: (context) => sl<HomeCubit>()),
         BlocProvider<SettingsCubit>(create: (context) => sl<SettingsCubit>()),
         BlocProvider<BookDetailsCubit>(create: (context) => sl<BookDetailsCubit>()),
+        BlocProvider<CategoriesCubit>(create: (context) => sl<CategoriesCubit>()),
       ],
       child: MaterialApp(
         title: 'FourSquare Ebbok App',
