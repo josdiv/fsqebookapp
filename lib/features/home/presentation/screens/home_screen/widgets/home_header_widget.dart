@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foursquare_ebbok_app/features/settings/presentation/screens/settings_screen/settings_screen.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -29,9 +30,18 @@ class HomeHeaderWidget extends StatelessWidget {
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.purpleColor.withOpacity(.2)),
-              child: Icon(Icons.settings),
+                shape: BoxShape.circle,
+                color: AppColors.purpleColor.withOpacity(.2),
+              ),
+              child: GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsScreen(),
+                  ),
+                ),
+                child: Icon(Icons.settings),
+              ),
             )
           ],
         ),

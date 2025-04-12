@@ -13,6 +13,13 @@ import 'package:foursquare_ebbok_app/features/latest/data/repository/latest_repo
 import 'package:foursquare_ebbok_app/features/latest/domain/repository/latest_repository.dart';
 import 'package:foursquare_ebbok_app/features/latest/domain/usecases/get_latest_books.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
+import 'package:foursquare_ebbok_app/features/settings/data/datasource/settings_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/settings/data/repository/settings_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/settings/domain/repository/settings_repository.dart';
+import 'package:foursquare_ebbok_app/features/settings/domain/usecases/get_about_us.dart';
+import 'package:foursquare_ebbok_app/features/settings/domain/usecases/get_terms_of_use.dart';
+import 'package:foursquare_ebbok_app/features/settings/domain/usecases/request_account_deletion.dart';
+import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,6 +33,7 @@ Future<void> init() async {
   await _latestBookInit();
   await _homeInit();
   await _bookDetailsInit();
+  await _settingsInit();
 }
 
 Future<void> _latestBookInit() async {
@@ -68,5 +76,24 @@ Future<void> _bookDetailsInit() async {
         () => BookDetailsRepositoryImpl(sl()))
     ..registerLazySingleton<BookDetailsRemoteDatasource>(
       () => BookDetailsRemoteDatasourceImpl(sl()),
+    );
+}
+
+Future<void> _settingsInit() async {
+  sl
+    ..registerFactory(
+      () => SettingsCubit(
+        getAboutUs: sl(),
+        getTermsOfUse: sl(),
+        requestAccountDeletion: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetAboutUs(sl()))
+    ..registerLazySingleton(() => GetTermsOfUse(sl()))
+    ..registerLazySingleton(() => RequestAccountDeletion(sl()))
+    ..registerLazySingleton<SettingsRepository>(
+        () => SettingsRepositoryImpl(sl()))
+    ..registerLazySingleton<SettingsRemoteDatasource>(
+      () => SettingsRemoteDatasourceImpl(sl()),
     );
 }
