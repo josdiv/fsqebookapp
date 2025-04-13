@@ -72,7 +72,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           final model = state.model;
           final model1 = model.getAuthorsNetworkModel;
 
-          if (model1.loading) {
+          if (model1.newLoading) {
             commonLoader(context);
           }
 
@@ -88,15 +88,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             );
           }
 
-          if (model1.loaded) {
+          if (model1.loaded && Loader.isShown) {
             Loader.hide();
-            event.authorScreenEvent(
-              model.copyWith(
-                getAuthorsNetworkModel: model1.copyWith(
-                  loaded: false,
-                ),
-              ),
-            );
           }
         },
         child: Scaffold(

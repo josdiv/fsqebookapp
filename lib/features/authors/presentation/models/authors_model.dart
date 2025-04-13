@@ -59,6 +59,7 @@ class GetAuthorsNetworkModel extends Equatable {
         );
 
   bool get hasError => error.isNotEmpty;
+  bool get newLoading => loading && !loaded;
 
   GetAuthorsNetworkModel copyWith({
     bool? loading,

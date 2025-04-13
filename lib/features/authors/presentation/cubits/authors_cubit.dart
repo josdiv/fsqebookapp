@@ -32,7 +32,6 @@ class AuthorsCubit extends Cubit<AuthorsState> {
         model.copyWith(
           getAuthorsNetworkModel: model1.copyWith(
             loading: true,
-            loaded: false,
             error: '',
           ),
         ),
