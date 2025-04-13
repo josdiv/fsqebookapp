@@ -1,37 +1,18 @@
 part of 'latest_cubit.dart';
 
 sealed class LatestState extends Equatable {
-  const LatestState([this.isLoaded = false]);
+  const LatestState([this.model = const LatestModel.initial()]);
 
-  final bool isLoaded;
+  final LatestModel model;
 
   @override
-  List<Object> get props => [isLoaded];
+  List<Object> get props => [model];
 }
 
 final class LatestInitial extends LatestState {}
 
-final class LatestBooksLoading extends LatestState {
-  const LatestBooksLoading(super.isLoaded);
+
+final class LatestScreenState extends LatestState {
+  const LatestScreenState(super.model);
 }
 
-final class LatestBooksError extends LatestState {
-  const LatestBooksError(this.error);
-
-  final String error;
-
-  @override
-  List<Object> get props => [error];
-}
-
-final class LatestBooksLoaded extends LatestState {
-  const LatestBooksLoaded(
-    super.isLoaded,
-    this.latestBooks,
-  );
-
-  final List<LatestEntity> latestBooks;
-
-  @override
-  List<Object> get props => [latestBooks];
-}

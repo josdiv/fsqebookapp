@@ -1,8 +1,7 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foursquare_ebbok_app/features/latest/domain/entity/latest_entity.dart';
 import 'package:foursquare_ebbok_app/features/latest/domain/usecases/get_latest_books.dart';
+import 'package:foursquare_ebbok_app/features/latest/presentation/models/latest_model.dart';
 
 part 'latest_state.dart';
 
@@ -14,21 +13,41 @@ class LatestCubit extends Cubit<LatestState> {
 
   final GetLatestBooks _getLatestBooks;
 
+  Future<void> latestScreenEvent(LatestModel model) async {
+    emit(LatestScreenState(model));
+  }
+
   Future<void> getLatestBooksEvent() async {
-    emit(LatestBooksLoading(state.isLoaded));
+    final model = state.model;
+
+    emit(
+      LatestScreenState(
+        model.copyWith(
+          loading: true,
+          error: '',
+        ),
+      ),
+    );
 
     final result = await _getLatestBooks();
 
     result.fold(
       (l) => emit(
-        LatestBooksError(
-          l.errorMessage,
+        LatestScreenState(
+          model.copyWith(
+            loading: false,
+            error: l.errorMessage,
+          ),
         ),
       ),
       (r) => emit(
-        LatestBooksLoaded(
-          true,
-          r,
+        LatestScreenState(
+          model.copyWith(
+            loading: false,
+            error: '',
+            loaded: true,
+            latestBooks: r,
+          ),
         ),
       ),
     );
