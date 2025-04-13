@@ -25,6 +25,20 @@ class HomeEntity extends Equatable {
   final String workbookTitle;
   final List<HomeWorkbookList> workbookList;
 
+  const HomeEntity.initial()
+      : this(
+          featuredBookTitle: '',
+          featuredBookList: const [],
+          trendingBookTitle: '',
+          trendingBookList: const [],
+          manualBookTitle: '',
+          manualBookList: const [],
+          subcategoryBookTitle: '',
+          subCategoryBookList: const [],
+          workbookTitle: '',
+          workbookList: const [],
+        );
+
   @override
   List<Object?> get props => [
         featuredBookTitle,
