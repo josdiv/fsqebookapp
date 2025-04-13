@@ -10,40 +10,46 @@ import 'package:foursquare_ebbok_app/features/categories/presentation/screens/su
 import 'category_card.dart';
 
 class CategoryGridWidget extends StatefulWidget {
-  const CategoryGridWidget({super.key, required this.categories});
-
-  final List<CategoryEntity> categories;
+  const CategoryGridWidget({super.key});
 
   @override
   State<CategoryGridWidget> createState() => _CategoryGridWidgetState();
 }
 
 class _CategoryGridWidgetState extends State<CategoryGridWidget> {
-
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CategoriesCubit, CategoriesState>(
       listener: (context, state) {
-        print("My State: $state");
-        if (state is SubCategoriesLoadingState) {
-          // commonLoader(context);
-          print("Loading");
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SubCategoryScreen(),
+        final model = state.model;
+        final model2 = model.model2;
+        final event = context.read<CategoriesCubit>();
+
+        if (model2.loading) {
+          commonLoader(context);
+        }
+
+        if (model2.hasError) {
+          Loader.hide();
+          showSnackBar(context, model2.error);
+          event.categoriesScreenEvent(
+            model.copyWith(
+              model2: model2.copyWith(
+                error: '',
+              ),
             ),
           );
         }
 
-        if (state is SubCategoriesErrorState) {
+        if (model2.loaded) {
           Loader.hide();
-        }
-
-        if (state is SubCategoriesLoadedState) {
-          print("Loaded");
-          Loader.hide();
+          event.categoriesScreenEvent(
+            model.copyWith(
+              model2: model2.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -53,7 +59,10 @@ class _CategoryGridWidgetState extends State<CategoryGridWidget> {
         }
       },
       builder: (context, state) {
-        print(state);
+        final model = state.model;
+        final model1 = model.model1;
+        final event = context.read<CategoriesCubit>();
+
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // 2 items per row
@@ -61,15 +70,16 @@ class _CategoryGridWidgetState extends State<CategoryGridWidget> {
             mainAxisSpacing: 10,
             childAspectRatio: 1.5, // Adjust to your needs
           ),
-          itemCount: widget.categories.length,
+          itemCount: model1.categories.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () => context
-                  .read<CategoriesCubit>()
-                  .getSubCategoriesEvent(widget.categories[index].categoryId),
+              onTap: () => event.getSubCategoriesEvent(
+                id: model1.categories[index].categoryId,
+                categoryName: model1.categories[index].categoryName,
+              ),
               child: CategoryCard(
-                url: widget.categories[index].categoryImage,
-                name: widget.categories[index].categoryName,
+                url: model1.categories[index].categoryImage,
+                name: model1.categories[index].categoryName,
               ),
             );
           },

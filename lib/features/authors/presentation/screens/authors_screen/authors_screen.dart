@@ -31,36 +31,36 @@ class _AuthorsScreenState extends State<AuthorsScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthorsCubit, AuthorsState>(
       listener: (context, state) {
-        final event = context.read<AuthorsCubit>();
-        final model = state.model;
-        final model1 = model.getAuthorsNetworkModel;
-
-        if (model1.loading) {
-          commonLoader(context);
-        }
-
-        if (model1.hasError) {
-          Loader.hide();
-          showSnackBar(context, model1.error);
-          event.authorScreenEvent(
-            model.copyWith(
-              getAuthorsNetworkModel: model1.copyWith(
-                error: '',
-              ),
-            ),
-          );
-        }
-
-        if (model1.loaded) {
-          Loader.hide();
-          event.authorScreenEvent(
-            model.copyWith(
-              getAuthorsNetworkModel: model1.copyWith(
-                loaded: false,
-              ),
-            ),
-          );
-        }
+        // final event = context.read<AuthorsCubit>();
+        // final model = state.model;
+        // final model1 = model.getAuthorsNetworkModel;
+        //
+        // if (model1.loading) {
+        //   commonLoader(context);
+        // }
+        //
+        // if (model1.hasError) {
+        //   Loader.hide();
+        //   showSnackBar(context, model1.error);
+        //   event.authorScreenEvent(
+        //     model.copyWith(
+        //       getAuthorsNetworkModel: model1.copyWith(
+        //         error: '',
+        //       ),
+        //     ),
+        //   );
+        // }
+        //
+        // if (model1.loaded) {
+        //   Loader.hide();
+        //   event.authorScreenEvent(
+        //     model.copyWith(
+        //       getAuthorsNetworkModel: model1.copyWith(
+        //         loaded: false,
+        //       ),
+        //     ),
+        //   );
+        // }
       },
       builder: (context, state) {
         final model = state.model;
@@ -81,9 +81,3 @@ class _AuthorsScreenState extends State<AuthorsScreen> {
     );
   }
 }
-
-
-
-
-
-

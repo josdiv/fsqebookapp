@@ -62,42 +62,39 @@ class LatestCardWidget extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.blueColor,
-                  fontWeight: FontWeight.bold,
-                ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 16,
+                color: AppColors.blueColor,
+                fontWeight: FontWeight.bold,
               ),
-              Text(
-                'by FourSquare Gospel Church',
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF424242),
-                ),
+            ),
+            Text(
+              'by FourSquare Gospel Church',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF424242),
               ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.star,
-                    size: 18,
-                    color: AppColors.purpleColor,
-                  ),
-                  Text("$rating"),
-                  Spacer(),
-                  Text(price),
-                ],
-              )
-            ],
-          ),
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.star,
+                  size: 18,
+                  color: AppColors.purpleColor,
+                ),
+                Text(rating.toStringAsFixed(2)),
+                Spacer(),
+                Text(price),
+              ],
+            )
+          ],
         ),
       ],
     );
