@@ -7,6 +7,7 @@ import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_scr
 import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/widgets/home_header_widget.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/widgets/home_manual_widget.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/widgets/home_trending_widget.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/widgets/home_workbook_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -44,6 +45,11 @@ class HomeScreen extends StatelessWidget {
                     HomeCategoryWidget(
                       subcategoryBookTitle: homeData.subcategoryBookTitle,
                       subCategoryBookList: homeData.subCategoryBookList,
+                    ),
+                    VSpace(20),
+                    HomeWorkbookWidget(
+                      workbookBookTitle: homeData.workbookTitle,
+                      workbookBookList: homeData.workbookList,
                     ),
                     VSpace(20),
                   ],

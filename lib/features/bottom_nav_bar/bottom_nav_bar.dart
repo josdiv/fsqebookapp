@@ -41,17 +41,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeCubit, HomeState>(
+    return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         final model = state.model;
         final event = context.read<HomeCubit>();
-
-        if(context.mounted) {
-          if (model.loadOnce) {
-            commonLoader(context);
-            print("I'm listening");
-          }
-        }
 
         if (model.hasError) {
           Loader.hide();
@@ -67,68 +60,41 @@ class _BottomNavBarState extends State<BottomNavBar> {
           Loader.hide();
         }
       },
-      child: BlocListener<LatestCubit, LatestState>(
-        listener: (context, state) {
-          final model = state.model;
-          final event = context.read<LatestCubit>();
+      builder: (context, state) {
+        final model = state.model;
 
-          if (model.loadOnce) {
-            commonLoader(context);
-          }
-
-          if (model.hasError) {
-            Loader.hide();
-            showSnackBar(context, model.error);
-
-            event.latestScreenEvent(
-              model.copyWith(
-                error: '',
-              ),
-            );
-          }
-
-          if (model.loaded && Loader.isShown) {
-            Loader.hide();
-          }
-        },
-        child: BlocListener<CategoriesCubit, CategoriesState>(
+        if (model.loadOnce) {
+          commonLoader(context);
+        }
+        return BlocListener<LatestCubit, LatestState>(
           listener: (context, state) {
             final model = state.model;
-            final model1 = model.model1;
-            final event = context.read<CategoriesCubit>();
+            final event = context.read<LatestCubit>();
 
-            if (model1.newLoading) {
+            if (model.loadOnce) {
               commonLoader(context);
             }
 
-            if (model1.hasError) {
+            if (model.hasError) {
               Loader.hide();
-              showSnackBar(context, model1.error);
-              event.categoriesScreenEvent(
+              showSnackBar(context, model.error);
+
+              event.latestScreenEvent(
                 model.copyWith(
-                  model1: model1.copyWith(
-                    error: '',
-                  ),
+                  error: '',
                 ),
               );
             }
 
-            if (model1.loaded && Loader.isShown) {
+            if (model.loaded && Loader.isShown) {
               Loader.hide();
-              // event.categoriesScreenEvent(
-              //   model.copyWith(
-              //     model1: model1.copyWith(
-              //       loaded: false,
-              //     ),
-              //   ),
-              // );
             }
           },
-          child: BlocListener<AuthorsCubit, AuthorsState>(
+          child: BlocListener<CategoriesCubit, CategoriesState>(
             listener: (context, state) {
-              final event = context.read<AuthorsCubit>();
               final model = state.model;
-              final model1 = model.getAuthorsNetworkModel;
+              final model1 = model.model1;
+              final event = context.read<CategoriesCubit>();
 
               if (model1.newLoading) {
                 commonLoader(context);
@@ -137,9 +103,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
               if (model1.hasError) {
                 Loader.hide();
                 showSnackBar(context, model1.error);
-                event.authorScreenEvent(
+                event.categoriesScreenEvent(
                   model.copyWith(
-                    getAuthorsNetworkModel: model1.copyWith(
+                    model1: model1.copyWith(
                       error: '',
                     ),
                   ),
@@ -148,83 +114,119 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
               if (model1.loaded && Loader.isShown) {
                 Loader.hide();
+                // event.categoriesScreenEvent(
+                //   model.copyWith(
+                //     model1: model1.copyWith(
+                //       loaded: false,
+                //     ),
+                //   ),
+                // );
               }
             },
-            child: Scaffold(
-              backgroundColor:
-                  _currentIndex == 4 ? AppColors.redColor : Color(0xFFF5F5F5),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: screens[_currentIndex],
-              ),
-              bottomNavigationBar: Material(
-                elevation: 10.0,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
-                child: BottomNavigationBar(
-                  backgroundColor: Colors.white,
-                  currentIndex: _currentIndex,
-                  items: icons
-                      .map(
-                        (icon) => BottomNavigationBarItem(
-                          backgroundColor: Colors.white,
-                          icon: GestureDetector(
-                            onTap: () => setState(() {
-                              _currentIndex = icons.indexOf(icon);
-                              if (icons.indexOf(icon) == 0) {
-                                context
-                                    .read<HomeCubit>()
-                                    .getDashboardDataEvent();
-                              }
-                              if (icons.indexOf(icon) == 1) {
-                                context
-                                    .read<LatestCubit>()
-                                    .getLatestBooksEvent();
-                              }
-                              if (icons.indexOf(icon) == 2) {
-                                context
-                                    .read<CategoriesCubit>()
-                                    .getCategoriesEvent();
-                              }
-                              if (icons.indexOf(icon) == 3) {
-                                context.read<AuthorsCubit>().getAuthorsEvent();
-                              }
-                            }),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 10,
-                              ),
-                              decoration: _currentIndex == icons.indexOf(icon)
-                                  ? BoxDecoration(
-                                      // border: Border.all(),
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: AppColors.purpleColor,
-                                    )
-                                  : null,
-                              child: SvgPicture.asset(
-                                'assets/icons/$icon.svg',
-                                width: 30,
-                                height: 30,
-                                colorFilter:
-                                    _currentIndex != icons.indexOf(icon)
-                                        ? null
-                                        : ColorFilter.mode(
-                                            Colors.white, BlendMode.srcIn),
+            child: BlocListener<AuthorsCubit, AuthorsState>(
+              listener: (context, state) {
+                final event = context.read<AuthorsCubit>();
+                final model = state.model;
+                final model1 = model.getAuthorsNetworkModel;
+
+                if (model1.newLoading) {
+                  commonLoader(context);
+                }
+
+                if (model1.hasError) {
+                  Loader.hide();
+                  showSnackBar(context, model1.error);
+                  event.authorScreenEvent(
+                    model.copyWith(
+                      getAuthorsNetworkModel: model1.copyWith(
+                        error: '',
+                      ),
+                    ),
+                  );
+                }
+
+                if (model1.loaded && Loader.isShown) {
+                  Loader.hide();
+                }
+              },
+              child: Scaffold(
+                backgroundColor:
+                    _currentIndex == 4 ? AppColors.redColor : Color(0xFFF5F5F5),
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: screens[_currentIndex],
+                ),
+                bottomNavigationBar: Material(
+                  elevation: 10.0,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
+                  child: BottomNavigationBar(
+                    backgroundColor: Colors.white,
+                    currentIndex: _currentIndex,
+                    items: icons
+                        .map(
+                          (icon) => BottomNavigationBarItem(
+                            backgroundColor: Colors.white,
+                            icon: GestureDetector(
+                              onTap: () => setState(() {
+                                _currentIndex = icons.indexOf(icon);
+                                if (icons.indexOf(icon) == 0) {
+                                  context
+                                      .read<HomeCubit>()
+                                      .getDashboardDataEvent();
+                                }
+                                if (icons.indexOf(icon) == 1) {
+                                  context
+                                      .read<LatestCubit>()
+                                      .getLatestBooksEvent();
+                                }
+                                if (icons.indexOf(icon) == 2) {
+                                  context
+                                      .read<CategoriesCubit>()
+                                      .getCategoriesEvent();
+                                }
+                                if (icons.indexOf(icon) == 3) {
+                                  context
+                                      .read<AuthorsCubit>()
+                                      .getAuthorsEvent();
+                                }
+                              }),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 10,
+                                ),
+                                decoration: _currentIndex == icons.indexOf(icon)
+                                    ? BoxDecoration(
+                                        // border: Border.all(),
+                                        borderRadius: BorderRadius.circular(6),
+                                        color: AppColors.purpleColor,
+                                      )
+                                    : null,
+                                child: SvgPicture.asset(
+                                  'assets/icons/$icon.svg',
+                                  width: 30,
+                                  height: 30,
+                                  colorFilter:
+                                      _currentIndex != icons.indexOf(icon)
+                                          ? null
+                                          : ColorFilter.mode(
+                                              Colors.white, BlendMode.srcIn),
+                                ),
                               ),
                             ),
+                            label: '',
                           ),
-                          label: '',
-                        ),
-                      )
-                      .toList(),
+                        )
+                        .toList(),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
