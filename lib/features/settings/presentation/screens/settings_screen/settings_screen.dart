@@ -4,6 +4,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
+import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/login_screen.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/screens/about_us_screen/about_us_screen.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/screens/terms_of_use_screen/terms_of_use_screen.dart';
@@ -86,16 +87,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   settingsWidget(
                     text: "Login",
                     iconData: Icons.login_outlined,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    ),
                   ),
                   settingsWidget(
                     text: "About App",
                     iconData: Icons.info_outline,
-                    onTap: () => context.read<SettingsCubit>().getAboutUsEvent(),
+                    onTap: () =>
+                        context.read<SettingsCubit>().getAboutUsEvent(),
                   ),
                   settingsWidget(
                     text: "Terms of Use",
                     iconData: Icons.description_outlined,
-                    onTap: () => context.read<SettingsCubit>().getTermsOfUseEvent(),
+                    onTap: () =>
+                        context.read<SettingsCubit>().getTermsOfUseEvent(),
                   ),
                   settingsWidget(
                     text: "Delete Account",

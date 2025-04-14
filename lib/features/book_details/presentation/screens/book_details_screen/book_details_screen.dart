@@ -7,7 +7,8 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/b
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/about_this_book_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/book_details_header.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/book_details_icon.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/ratings_and_review.dart';
+import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/related_book_widget.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 
@@ -67,18 +68,32 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: state is BookDetailsLoadedState
-                ? SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        VSpace(40),
-                        BookDetailsHeader(),
-                        VSpace(20),
-                        BookDetailsIcon(),
-                        VSpace(20),
-                        AboutThisBookWidget()
-                      ],
-                    ),
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      VSpace(40),
+                      BookDetailsHeader(),
+                      VSpace(20),
+                      BookDetailsIcon(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              VSpace(20),
+                              AboutThisBookWidget(),
+                              VSpace(20),
+                              RatingsAndReview(),
+                              VSpace(20),
+                              RelatedBookWidget(),
+                              VSpace(20),
+                              BookDetailsBuyBookButton(),
+                              VSpace(50),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   )
                 : state is BookDetailsErrorState
                     ? Center(
@@ -88,6 +103,32 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+
+class BookDetailsBuyBookButton extends StatelessWidget {
+  const BookDetailsBuyBookButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: AppColors.redColor,
+        borderRadius: BorderRadius.circular(20)
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        "Buy Book".toUpperCase(),
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
