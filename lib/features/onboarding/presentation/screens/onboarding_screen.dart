@@ -62,22 +62,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             if (index != 0)
               Align(
                 alignment: Alignment.centerLeft,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 5,
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BottomNavBar(),
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                    color: AppColors.orangeColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    "Skip",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.orangeColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      "Skip",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

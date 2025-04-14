@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/core/ui/widgets/default_button.dart';
+import 'package:foursquare_ebbok_app/features/bottom_nav_bar/bottom_nav_bar.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -19,18 +20,27 @@ class LoginScreen extends StatelessWidget {
             VSpace(60),
             Align(
               alignment: Alignment.centerRight,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: AppColors.orangeColor,
-                  borderRadius: BorderRadius.circular(10),
+              child: GestureDetector(
+                onTap: () => Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BottomNavBar(),
+                  ),
+                      (Route<dynamic> route) => false,
                 ),
-                child: Text(
-                  'Skip',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: AppColors.orangeColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
