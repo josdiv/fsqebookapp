@@ -34,14 +34,23 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<HomeCubit>().getDashboardDataEvent();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
       listener: (context, state) {
         final model = state.model;
         final event = context.read<HomeCubit>();
 
-        if (model.loadOnce) {
-          commonLoader(context);
+        if(context.mounted) {
+          if (model.loadOnce) {
+            commonLoader(context);
+            print("I'm listening");
+          }
         }
 
         if (model.hasError) {
@@ -163,13 +172,23 @@ class _BottomNavBarState extends State<BottomNavBar> {
                           icon: GestureDetector(
                             onTap: () => setState(() {
                               _currentIndex = icons.indexOf(icon);
-                              if (icons.indexOf(icon) == 3) {
-                                context.read<AuthorsCubit>().getAuthorsEvent();
+                              if (icons.indexOf(icon) == 0) {
+                                context
+                                    .read<HomeCubit>()
+                                    .getDashboardDataEvent();
+                              }
+                              if (icons.indexOf(icon) == 1) {
+                                context
+                                    .read<LatestCubit>()
+                                    .getLatestBooksEvent();
                               }
                               if (icons.indexOf(icon) == 2) {
                                 context
                                     .read<CategoriesCubit>()
                                     .getCategoriesEvent();
+                              }
+                              if (icons.indexOf(icon) == 3) {
+                                context.read<AuthorsCubit>().getAuthorsEvent();
                               }
                             }),
                             child: Container(

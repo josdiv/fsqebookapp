@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     VSpace(20),
                     HomeTrendingWidget(
-                      trendingBookTitle: homeData.featuredBookTitle,
+                      trendingBookTitle: homeData.trendingBookTitle,
                       trendingBookList: homeData.trendingBookList,
                     ),
                     VSpace(20),

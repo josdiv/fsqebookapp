@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/features/authors/presentation/cubits/authors_cubit.dart';
+import 'package:foursquare_ebbok_app/features/latest/presentation/screens/widgets/latest_card_widget.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 
@@ -49,17 +51,55 @@ class AuthorBooksWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "Author Books",
-          style: TextStyle(
-            fontSize: 21,
-            fontWeight: FontWeight.bold,
-            color: AppColors.blueColor,
-          ),
-        ),
-      ],
+    return BlocBuilder<AuthorsCubit, AuthorsState>(
+      builder: (context, state) {
+        final authorBooks =
+            state.model.getSingleAuthorNetworkModel.author.authorBooks;
+        return authorBooks.isEmpty
+            ? Center(child: Text("No Author Books"))
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Author Books",
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+                color: AppColors.blueColor,
+              ),
+            ),
+            const VSpace(20),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7, // Adjust as needed
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 0,
+                  childAspectRatio: (MediaQuery.of(context).size.width / 2) / 370,
+                ),
+                itemCount: authorBooks.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      toBookDetails(
+                        id: authorBooks[index].bookId,
+                        context: context,
+                      );
+                    },
+                    child: LatestCardWidget(
+                      title: authorBooks[index].bookTitle,
+                      url: authorBooks[index].bookImage,
+                      rating: double.parse(authorBooks[index].bookRating),
+                      price: authorBooks[index].bookPrice,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
