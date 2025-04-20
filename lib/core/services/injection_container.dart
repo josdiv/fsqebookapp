@@ -67,7 +67,7 @@ Future<void> init() async {
   await _authorsInit();
   await _ratingsInit();
   await _signUpInit();
-  _loginInit();
+  await _loginInit();
 }
 
 Future<void> _loginInit() async {
