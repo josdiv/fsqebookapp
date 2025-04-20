@@ -3,29 +3,28 @@ import 'dart:convert';
 
 import 'package:foursquare_ebbok_app/core/constants/constants.dart';
 import 'package:foursquare_ebbok_app/core/failure/exceptions.dart';
-import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
-
-import '../model/home_entity_model.dart';
+import 'package:foursquare_ebbok_app/features/ratings/data/model/rating_entity_model.dart';
 import 'package:http/http.dart' as http;
 
-abstract interface class HomeRemoteDatasource {
-  Future<HomeEntityModel> getDashboardData();
+import '../../../../core/utils/typedefs/typedefs.dart';
+
+abstract interface class RatingsRemoteDatasource {
+  Future<List<RatingEntityModel>> getBookRatings(String id);
 }
 
-const String kHomeDataEndpoint = '/homescreen.php';
+const String kBookRatings = '/viewrating.php?type=viewrating';
 
-class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
-  const HomeRemoteDatasourceImpl(this._client);
+class RatingsRemoteDatasourceImpl implements RatingsRemoteDatasource {
+  const RatingsRemoteDatasourceImpl(this._client);
 
   final http.Client _client;
 
   @override
-  Future<HomeEntityModel> getDashboardData() async {
+  Future<List<RatingEntityModel>> getBookRatings(String id) async {
     try {
       final response = await _client
           .post(
-            Uri.parse(
-                "$kBaseUrl$kHomeDataEndpoint?type=dashboard&authid=$authId"),
+            Uri.parse("$kBaseUrl$kBookRatings&authid=$authId&bookId=$id"),
           )
           .timeout(
             Duration(seconds: 15),
@@ -50,16 +49,21 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
         );
       }
 
-      return HomeEntityModel.fromJson(body);
+      final dynamicRatings = body['ratingList'] as List<dynamic>;
+
+      return dynamicRatings
+          .map(
+            (e) => RatingEntityModel.fromJson(
+              e as DataMap,
+            ),
+          )
+          .toList();
     } on APIException {
       rethrow;
     } on TimeoutException {
       throw ServerException(message: timeoutMessage, statusCode: 409);
     } catch (e) {
-      throw APIException(
-        message: e.toString(),
-        statusCode: 515,
-      );
+      throw APIException(message: e.toString(), statusCode: 515);
     }
   }
 }

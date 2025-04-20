@@ -1,4 +1,6 @@
 PODS:
+  - animated_rating_stars (0.0.1):
+    - Flutter
   - AppAuth (1.7.6):
     - AppAuth/Core (= 1.7.6)
     - AppAuth/ExternalUserAgent (= 1.7.6)
@@ -92,6 +94,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - animated_rating_stars (from `.symlinks/plugins/animated_rating_stars/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -119,6 +122,8 @@ SPEC REPOS:
     - RecaptchaInterop
 
 EXTERNAL SOURCES:
+  animated_rating_stars:
+    :path: ".symlinks/plugins/animated_rating_stars/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   firebase_auth:
@@ -139,6 +144,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
 
 SPEC CHECKSUMS:
+  animated_rating_stars: 127efa3d924c3d9ba9a73507bf6e6450639bb596
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
   Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf

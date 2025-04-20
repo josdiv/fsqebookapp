@@ -7,8 +7,11 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/b
 import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/categories_cubit.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
+import 'package:foursquare_ebbok_app/features/login/presentation/cubits/login_cubit.dart';
 import 'package:foursquare_ebbok_app/features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'package:foursquare_ebbok_app/features/ratings/presentation/cubits/ratings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/presentation/cubits/sign_up_cubit.dart';
 import 'core/services/injection_container.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -58,6 +61,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<BookDetailsCubit>(create: (context) => sl<BookDetailsCubit>()),
         BlocProvider<CategoriesCubit>(create: (context) => sl<CategoriesCubit>()),
         BlocProvider<AuthorsCubit>(create: (context) => sl<AuthorsCubit>()),
+        BlocProvider<SignUpCubit>(create: (context) => sl<SignUpCubit>()),
+        BlocProvider<RatingsCubit>(create: (context) => sl<RatingsCubit>()),
+        BlocProvider<LoginCubit>(create: (context) => sl<LoginCubit>()),
       ],
       child: MaterialApp(
         title: 'FourSquare Ebbok App',

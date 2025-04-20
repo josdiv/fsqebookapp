@@ -1,31 +1,35 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:foursquare_ebbok_app/core/constants/constants.dart';
 import 'package:foursquare_ebbok_app/core/failure/exceptions.dart';
-import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
-
-import '../model/home_entity_model.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/data/model/user_entity_model.dart';
 import 'package:http/http.dart' as http;
 
-abstract interface class HomeRemoteDatasource {
-  Future<HomeEntityModel> getDashboardData();
+import '../../../../core/utils/typedefs/typedefs.dart';
+
+abstract interface class SignUpRemoteDatasource {
+  Future<UserEntityModel> userSignUp(DataMap data);
 }
 
-const String kHomeDataEndpoint = '/homescreen.php';
+const String kSignUp = "/signup.php?type=signup&authid=$authId";
 
-class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
-  const HomeRemoteDatasourceImpl(this._client);
+class SignUpRemoteDatasourceImpl implements SignUpRemoteDatasource {
+  const SignUpRemoteDatasourceImpl(this._client);
 
   final http.Client _client;
 
   @override
-  Future<HomeEntityModel> getDashboardData() async {
+  Future<UserEntityModel> userSignUp(DataMap data) async {
     try {
+      final name = data['name'] as String;
+      final email = data['email'] as String;
+      final password = data['password'] as String;
+      final phone = data['phone'] as String;
+
       final response = await _client
           .post(
-            Uri.parse(
-                "$kBaseUrl$kHomeDataEndpoint?type=dashboard&authid=$authId"),
+            Uri.parse("$kBaseUrl$kSignUp&name=$name&email=$email&password="
+                "$password&phone=$phone"),
           )
           .timeout(
             Duration(seconds: 15),
@@ -50,11 +54,9 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
         );
       }
 
-      return HomeEntityModel.fromJson(body);
+      return UserEntityModel.fromJson(body['userDetail'] as DataMap);
     } on APIException {
       rethrow;
-    } on TimeoutException {
-      throw ServerException(message: timeoutMessage, statusCode: 409);
     } catch (e) {
       throw APIException(
         message: e.toString(),

@@ -26,6 +26,17 @@ import 'package:foursquare_ebbok_app/features/latest/data/repository/latest_repo
 import 'package:foursquare_ebbok_app/features/latest/domain/repository/latest_repository.dart';
 import 'package:foursquare_ebbok_app/features/latest/domain/usecases/get_latest_books.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
+import 'package:foursquare_ebbok_app/features/login/data/datasource/login_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/login/data/repository/login_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/login/domain/repository/login_repository.dart';
+import 'package:foursquare_ebbok_app/features/login/domain/usecases/sign_in_with_google.dart';
+import 'package:foursquare_ebbok_app/features/login/domain/usecases/sign_in_with_password.dart';
+import 'package:foursquare_ebbok_app/features/login/presentation/cubits/login_cubit.dart';
+import 'package:foursquare_ebbok_app/features/ratings/data/datasource/ratings_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/ratings/data/repository/ratings_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/ratings/domain/repository/ratings_repository.dart';
+import 'package:foursquare_ebbok_app/features/ratings/domain/usecases/get_book_ratings.dart';
+import 'package:foursquare_ebbok_app/features/ratings/presentation/cubits/ratings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/data/datasource/settings_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/settings/domain/repository/settings_repository.dart';
@@ -33,6 +44,11 @@ import 'package:foursquare_ebbok_app/features/settings/domain/usecases/get_about
 import 'package:foursquare_ebbok_app/features/settings/domain/usecases/get_terms_of_use.dart';
 import 'package:foursquare_ebbok_app/features/settings/domain/usecases/request_account_deletion.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/data/datasource/sign_up_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/data/repository/sign_up_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/domain/repository/sign_up_repository.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/domain/usecases/user_sign_up.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/presentation/cubits/sign_up_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -49,6 +65,54 @@ Future<void> init() async {
   await _settingsInit();
   await _categoriesInit();
   await _authorsInit();
+  await _ratingsInit();
+  await _signUpInit();
+  _loginInit();
+}
+
+Future<void> _loginInit() async {
+  sl
+    ..registerFactory(
+      () => LoginCubit(
+        signInWithPassword: sl(),
+        signInWithGoogle: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => SignInWithGoogle(sl()))
+    ..registerLazySingleton(() => SignInWithPassword(sl()))
+    ..registerLazySingleton<LoginRepository>(() => LoginRepositoryImpl(sl()))
+    ..registerLazySingleton<LoginRemoteDatasource>(
+      () => LoginRemoteDatasourceImpl(sl()),
+    );
+}
+
+Future<void> _ratingsInit() async {
+  sl
+    ..registerFactory(
+      () => RatingsCubit(
+        getBookRatings: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetBookRatings(sl()))
+    ..registerLazySingleton<RatingsRepository>(
+        () => RatingsRepositoryImpl(sl()))
+    ..registerLazySingleton<RatingsRemoteDatasource>(
+      () => RatingsRemoteDatasourceImpl(sl()),
+    );
+}
+
+Future<void> _signUpInit() async {
+  sl
+    ..registerFactory(
+      () => SignUpCubit(
+        userSignUp: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => UserSignUp(sl()))
+    ..registerLazySingleton<SignUpRepository>(() => SignUpRepositoryImpl(sl()))
+    ..registerLazySingleton<SignUpRemoteDatasource>(
+      () => SignUpRemoteDatasourceImpl(sl()),
+    );
 }
 
 Future<void> _latestBookInit() async {
