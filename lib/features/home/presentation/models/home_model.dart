@@ -1,21 +1,99 @@
 import 'package:equatable/equatable.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/entity/home_entity.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/entity/searched_entity.dart';
 
 class HomeModel extends Equatable {
   const HomeModel({
+    required this.model1,
+    required this.model2,
+  });
+
+  const HomeModel.initial()
+      : this(
+          model1: const HomeScreenModel.initial(),
+          model2: const SearchedBooksModel.initial(),
+        );
+
+  final HomeScreenModel model1;
+  final SearchedBooksModel model2;
+
+  HomeModel copyWith({
+    HomeScreenModel? model1,
+    SearchedBooksModel? model2,
+  }) {
+    return HomeModel(
+      model1: model1 ?? this.model1,
+      model2: model2 ?? this.model2,
+    );
+  }
+
+  @override
+  List<Object?> get props => [model1, model2];
+}
+
+class SearchedBooksModel extends Equatable {
+  const SearchedBooksModel({
+    required this.loading,
+    required this.error,
+    required this.loaded,
+    required this.searchedBooks,
+  });
+
+  const SearchedBooksModel.initial()
+      : this(
+          loading: false,
+          error: '',
+          loaded: false,
+          searchedBooks: const [],
+        );
+
+  final bool loading;
+  final String error;
+  final bool loaded;
+  final List<SearchedEntity> searchedBooks;
+
+  bool get hasError => error.isNotEmpty;
+
+  bool get loadOnce => loading && !loaded;
+
+  SearchedBooksModel copyWith({
+    bool? loading,
+    String? error,
+    bool? loaded,
+    List<SearchedEntity>? searchedBooks,
+  }) {
+    return SearchedBooksModel(
+      loading: loading ?? this.loading,
+      error: error ?? this.error,
+      loaded: loaded ?? this.loaded,
+      searchedBooks: searchedBooks ?? this.searchedBooks,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        loading,
+        error,
+        loaded,
+        searchedBooks,
+      ];
+}
+
+class HomeScreenModel extends Equatable {
+  const HomeScreenModel({
     required this.loading,
     required this.error,
     required this.loaded,
     required this.homeData,
   });
 
-  const HomeModel.initial()
+  const HomeScreenModel.initial()
       : this(
-    loading: false,
-    error: '',
-    loaded: false,
-    homeData: const HomeEntity.initial(),
-  );
+          loading: false,
+          error: '',
+          loaded: false,
+          homeData: const HomeEntity.initial(),
+        );
 
   final bool loading;
   final String error;
@@ -23,15 +101,16 @@ class HomeModel extends Equatable {
   final HomeEntity homeData;
 
   bool get hasError => error.isNotEmpty;
+
   bool get loadOnce => loading && !loaded;
 
-  HomeModel copyWith({
+  HomeScreenModel copyWith({
     bool? loading,
     String? error,
     bool? loaded,
     HomeEntity? homeData,
   }) {
-    return HomeModel(
+    return HomeScreenModel(
       loading: loading ?? this.loading,
       error: error ?? this.error,
       loaded: loaded ?? this.loaded,
@@ -41,9 +120,9 @@ class HomeModel extends Equatable {
 
   @override
   List<Object?> get props => [
-    loading,
-    error,
-    loaded,
-    homeData,
-  ];
+        loading,
+        error,
+        loaded,
+        homeData,
+      ];
 }

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_dashboard_data.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_searched_books.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/models/home_model.dart';
 
 part 'home_state.dart';
@@ -8,10 +9,13 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
     required GetDashboardData getDashboardData,
-  })  : _getDashboardData = getDashboardData,
+    required GetSearchedBooks getSearchedBooks,
+  })  : _getSearchedBooks = getSearchedBooks,
+        _getDashboardData = getDashboardData,
         super(HomeInitial());
 
   final GetDashboardData _getDashboardData;
+  final GetSearchedBooks _getSearchedBooks;
 
   Future<void> homeScreenEvent(HomeModel model) async {
     emit(HomeScreenState(model));
@@ -19,12 +23,15 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getDashboardDataEvent() async {
     final model = state.model;
+    final model1 = model.model1;
 
     emit(
       HomeScreenState(
         model.copyWith(
-          loading: true,
-          error: '',
+          model1: model1.copyWith(
+            loading: true,
+            error: '',
+          ),
         ),
       ),
     );
@@ -35,18 +42,65 @@ class HomeCubit extends Cubit<HomeState> {
       (l) => emit(
         HomeScreenState(
           model.copyWith(
-            loading: false,
-            error: l.errorMessage,
+            model1: model1.copyWith(
+              loading: false,
+              error: l.errorMessage,
+            ),
           ),
         ),
       ),
       (r) => emit(
         HomeScreenState(
           model.copyWith(
-            loading: false,
+            model1: model1.copyWith(
+              loading: false,
+              error: '',
+              loaded: true,
+              homeData: r,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> getSearchedBookEvent(String params) async {
+    final model = state.model;
+    final model2 = model.model2;
+
+    emit(
+      HomeScreenState(
+        model.copyWith(
+          model2: model2.copyWith(
+            loading: true,
             error: '',
-            loaded: true,
-            homeData: r,
+          ),
+        ),
+      ),
+    );
+
+    final result = await _getSearchedBooks(params);
+
+    result.fold(
+      (l) => emit(
+        HomeScreenState(
+          model.copyWith(
+            model2: model2.copyWith(
+              loading: false,
+              error: l.errorMessage,
+            ),
+          ),
+        ),
+      ),
+      (r) => emit(
+        HomeScreenState(
+          model.copyWith(
+            model2: model2.copyWith(
+              loading: false,
+              error: '',
+              loaded: true,
+              searchedBooks: r,
+            ),
           ),
         ),
       ),

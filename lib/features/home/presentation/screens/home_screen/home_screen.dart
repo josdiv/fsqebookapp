@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        final homeData = state.model.homeData;
+        final homeData = state.model.model1.homeData;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

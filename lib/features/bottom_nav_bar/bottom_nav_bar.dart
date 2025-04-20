@@ -44,26 +44,30 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         final model = state.model;
+        final model1 = model.model1;
         final event = context.read<HomeCubit>();
 
-        if (model.hasError) {
+        if (model1.hasError) {
           Loader.hide();
-          showSnackBar(context, model.error);
+          showSnackBar(context, model1.error);
           event.homeScreenEvent(
             model.copyWith(
-              error: '',
+              model1: model1.copyWith(
+                error: '',
+              )
             ),
           );
         }
 
-        if (model.loaded && Loader.isShown) {
+        if (model1.loaded && Loader.isShown) {
           Loader.hide();
         }
       },
       builder: (context, state) {
         final model = state.model;
+        final model1 = model.model1;
 
-        if (model.loadOnce) {
+        if (model1.loadOnce) {
           commonLoader(context);
         }
         return BlocListener<LatestCubit, LatestState>(
