@@ -32,6 +32,12 @@ import 'package:foursquare_ebbok_app/features/login/domain/repository/login_repo
 import 'package:foursquare_ebbok_app/features/login/domain/usecases/sign_in_with_google.dart';
 import 'package:foursquare_ebbok_app/features/login/domain/usecases/sign_in_with_password.dart';
 import 'package:foursquare_ebbok_app/features/login/presentation/cubits/login_cubit.dart';
+import 'package:foursquare_ebbok_app/features/profile/data/datasource/profile_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/profile/data/repository/profile_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/profile/domain/repository/profile_repository.dart';
+import 'package:foursquare_ebbok_app/features/profile/domain/usecases/edit_user_profile.dart';
+import 'package:foursquare_ebbok_app/features/profile/domain/usecases/get_user_profile.dart';
+import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/ratings/data/datasource/ratings_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/ratings/data/repository/ratings_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/ratings/domain/repository/ratings_repository.dart';
@@ -68,6 +74,23 @@ Future<void> init() async {
   await _ratingsInit();
   await _signUpInit();
   await _loginInit();
+  await _profileInit();
+}
+
+Future<void> _profileInit() async {
+  sl
+    ..registerFactory(
+      () => ProfileCubit(
+        getUserProfile: sl(),
+        editUserProfile: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetUserProfile(sl()))
+    ..registerLazySingleton(() => EditUserProfile(sl()))
+    ..registerLazySingleton<ProfileRepository>(() => ProfileRepositoryImpl(sl()))
+    ..registerLazySingleton<ProfileRemoteDatasource>(
+      () => ProfileRemoteDatasourceImpl(sl()),
+    );
 }
 
 Future<void> _loginInit() async {
