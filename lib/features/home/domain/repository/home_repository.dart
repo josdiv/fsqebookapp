@@ -6,4 +6,6 @@ abstract interface class HomeRepository {
   ResultFuture<HomeEntity> getDashboardData();
 
   ResultFuture<List<SearchedEntity>> getSearchedBooks(String params);
+
+  ResultVoid deleteAccount(DataMap data);
 }

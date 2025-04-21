@@ -19,6 +19,7 @@ import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/cat
 import 'package:foursquare_ebbok_app/features/home/data/datasource/home_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/home/data/repository/home_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/repository/home_repository.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/usecases/delete_account.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_dashboard_data.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_searched_books.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
@@ -159,10 +160,12 @@ Future<void> _homeInit() async {
       () => HomeCubit(
         getDashboardData: sl(),
         getSearchedBooks: sl(),
+        deleteAccount: sl(),
       ),
     )
     ..registerLazySingleton(() => GetDashboardData(sl()))
     ..registerLazySingleton(() => GetSearchedBooks(sl()))
+    ..registerLazySingleton(() => DeleteAccount(sl()))
     ..registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl()))
     ..registerLazySingleton<HomeRemoteDatasource>(
       () => HomeRemoteDatasourceImpl(sl()),

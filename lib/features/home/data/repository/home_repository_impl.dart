@@ -35,4 +35,16 @@ class HomeRepositoryImpl implements HomeRepository {
       );
     }
   }
+
+  @override
+  ResultVoid deleteAccount(DataMap data) async {
+    try {
+      await _remoteDatasource.deleteAccount(data);
+      return const Right(null);
+    } on APIException catch (e) {
+      return Left(
+        APIFailure.fromException(e),
+      );
+    }
+  }
 }
