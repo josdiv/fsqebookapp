@@ -57,6 +57,12 @@ import 'package:foursquare_ebbok_app/features/sign_up/data/repository/sign_up_re
 import 'package:foursquare_ebbok_app/features/sign_up/domain/repository/sign_up_repository.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/domain/usecases/user_sign_up.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/presentation/cubits/sign_up_cubit.dart';
+import 'package:foursquare_ebbok_app/features/status/data/datasource/status_local_datasource.dart';
+import 'package:foursquare_ebbok_app/features/status/data/repository/status_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/status/domain/repository/status_repository.dart';
+import 'package:foursquare_ebbok_app/features/status/domain/usecases/get_user_login_status.dart';
+import 'package:foursquare_ebbok_app/features/status/domain/usecases/set_user_login_status.dart';
+import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -77,6 +83,7 @@ Future<void> init() async {
   await _signUpInit();
   await _loginInit();
   await _profileInit();
+  await _statusInit();
 }
 
 Future<void> _profileInit() async {
@@ -89,9 +96,26 @@ Future<void> _profileInit() async {
     )
     ..registerLazySingleton(() => GetUserProfile(sl()))
     ..registerLazySingleton(() => EditUserProfile(sl()))
-    ..registerLazySingleton<ProfileRepository>(() => ProfileRepositoryImpl(sl()))
+    ..registerLazySingleton<ProfileRepository>(
+        () => ProfileRepositoryImpl(sl()))
     ..registerLazySingleton<ProfileRemoteDatasource>(
       () => ProfileRemoteDatasourceImpl(sl()),
+    );
+}
+
+Future<void> _statusInit() async {
+  sl
+    ..registerFactory(
+      () => StatusCubit(
+        getUserLoginStatus: sl(),
+        setUserLoginStatus: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetUserLoginStatus(sl()))
+    ..registerLazySingleton(() => SetUserLoginStatus(sl()))
+    ..registerLazySingleton<StatusRepository>(() => StatusRepositoryImpl(sl()))
+    ..registerLazySingleton<StatusLocalDatasource>(
+      () => StatusLocalDatasourceImpl(sl()),
     );
 }
 

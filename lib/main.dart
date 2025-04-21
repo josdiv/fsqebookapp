@@ -13,6 +13,7 @@ import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profil
 import 'package:foursquare_ebbok_app/features/ratings/presentation/cubits/ratings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/presentation/cubits/sign_up_cubit.dart';
+import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 import 'core/services/injection_container.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -66,6 +67,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<RatingsCubit>(create: (context) => sl<RatingsCubit>()),
         BlocProvider<LoginCubit>(create: (context) => sl<LoginCubit>()),
         BlocProvider<ProfileCubit>(create: (context) => sl<ProfileCubit>()),
+        BlocProvider<StatusCubit>(create: (context) => sl<StatusCubit>()),
       ],
       child: MaterialApp(
         title: 'FourSquare Ebbok App',
