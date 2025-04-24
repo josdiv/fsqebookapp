@@ -60,8 +60,10 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<LatestCubit>(create: (context) => sl<LatestCubit>()),
         BlocProvider<HomeCubit>(create: (context) => sl<HomeCubit>()),
         BlocProvider<SettingsCubit>(create: (context) => sl<SettingsCubit>()),
-        BlocProvider<BookDetailsCubit>(create: (context) => sl<BookDetailsCubit>()),
-        BlocProvider<CategoriesCubit>(create: (context) => sl<CategoriesCubit>()),
+        BlocProvider<BookDetailsCubit>(
+            create: (context) => sl<BookDetailsCubit>()),
+        BlocProvider<CategoriesCubit>(
+            create: (context) => sl<CategoriesCubit>()),
         BlocProvider<AuthorsCubit>(create: (context) => sl<AuthorsCubit>()),
         BlocProvider<SignUpCubit>(create: (context) => sl<SignUpCubit>()),
         BlocProvider<RatingsCubit>(create: (context) => sl<RatingsCubit>()),
@@ -81,4 +83,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-

@@ -65,13 +65,16 @@ import 'package:foursquare_ebbok_app/features/status/domain/usecases/set_user_lo
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  final sharedPrefs = await SharedPreferences.getInstance();
+
   sl
-      // External Dependencies
-      .registerLazySingleton(() => http.Client());
+    ..registerLazySingleton(() => http.Client())
+    ..registerLazySingleton(() => sharedPrefs);
 
   await _latestBookInit();
   await _homeInit();

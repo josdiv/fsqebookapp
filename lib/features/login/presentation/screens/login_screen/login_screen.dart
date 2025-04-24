@@ -63,9 +63,9 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             VSpace(100),
-            AuthForm(),
+            AuthForm(hintText: "Email*"),
             VSpace(20),
-            AuthForm(),
+            AuthForm(hintText: "Password", hasIcon: true),
             VSpace(20),
             Row(
               children: [
@@ -160,25 +160,38 @@ class LoginScreen extends StatelessWidget {
 }
 
 class AuthForm extends StatelessWidget {
-  const AuthForm({super.key});
+  const AuthForm({super.key, this.hintText, this.hasIcon = false});
+
+  final String? hintText;
+  final bool hasIcon;
 
   @override
   Widget build(BuildContext context) {
+    final isPasswordField = hasIcon;
+
     return SizedBox(
       height: 60,
       child: TextFormField(
-        minLines: null,
-        maxLines: null,
-        expands: true,
+        obscureText: isPasswordField,
+        maxLines: isPasswordField ? 1 : null,
+        expands: isPasswordField ? false : true,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Color(0xffDDDDDD),
             ),
           ),
+          hintText: hintText,
+          hintStyle: const TextStyle(
+            fontSize: 16,
+            color: Colors.black54,
+            fontWeight: FontWeight.w700,
+          ),
+          suffixIcon: isPasswordField ? const Icon(Icons.visibility_off) : null,
         ),
       ),
     );
   }
 }
+
