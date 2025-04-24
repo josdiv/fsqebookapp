@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/core/ui/widgets/default_button.dart';
 import 'package:foursquare_ebbok_app/features/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/presentation/screens/sign_up_screen/sign_up_screen.dart';
+
+import '../../../../../core/helper/auth_form.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -26,7 +28,7 @@ class LoginScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const BottomNavBar(),
                   ),
-                      (Route<dynamic> route) => false,
+                  (Route<dynamic> route) => false,
                 ),
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
@@ -151,7 +153,39 @@ class LoginScreen extends StatelessWidget {
             // SvgPicture.asset('assets/icons/google1.png')
             Align(
               child: Image.asset('assets/icons/google1.png'),
-            )
+            ),
+            Spacer(),
+            Align(
+              child: InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpScreen(),
+                  ),
+                ),
+                child: Text.rich(
+                  TextSpan(
+                    text: "Don't have an account?",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: ' Sign Up',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFF97F68),
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            VSpace(50)
           ],
         ),
       ),
@@ -159,39 +193,4 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class AuthForm extends StatelessWidget {
-  const AuthForm({super.key, this.hintText, this.hasIcon = false});
-
-  final String? hintText;
-  final bool hasIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    final isPasswordField = hasIcon;
-
-    return SizedBox(
-      height: 60,
-      child: TextFormField(
-        obscureText: isPasswordField,
-        maxLines: isPasswordField ? 1 : null,
-        expands: isPasswordField ? false : true,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: Color(0xffDDDDDD),
-            ),
-          ),
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            fontSize: 16,
-            color: Colors.black54,
-            fontWeight: FontWeight.w700,
-          ),
-          suffixIcon: isPasswordField ? const Icon(Icons.visibility_off) : null,
-        ),
-      ),
-    );
-  }
-}
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../theme/app_colors.dart';
 
@@ -13,6 +15,8 @@ class DefaultButton extends StatelessWidget {
     this.height,
     this.borderRadius = 16.0,
     this.fontSize = 16,
+    this.loading = false,
+    this.opacity = false,
   });
 
   final String text;
@@ -23,21 +27,23 @@ class DefaultButton extends StatelessWidget {
   final double? height;
   final double borderRadius;
   final double fontSize;
+  final bool loading;
+  final bool opacity;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: (loading || !opacity) ? null : onTap,
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: height,
         padding: EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: backgroundColor?.withOpacity(opacity ? 1 : 0.4),
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         alignment: Alignment.center,
-        child: Text(
+        child: loading ? buttonLoader(context) : Text(
           text,
           style: TextStyle(
             color: Colors.white,

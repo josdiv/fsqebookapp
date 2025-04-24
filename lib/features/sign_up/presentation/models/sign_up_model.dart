@@ -1,48 +1,37 @@
 import 'package:equatable/equatable.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/domain/entity/user_entity.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/presentation/models/sign_up_network_model.dart';
+import 'package:foursquare_ebbok_app/features/sign_up/presentation/models/sign_up_screen_model.dart';
 
 class SignUpModel extends Equatable {
   const SignUpModel({
-    required this.loading,
-    required this.error,
-    required this.loaded,
-    required this.user,
+    required this.networkModel,
+    required this.screenModel,
   });
 
   const SignUpModel.initial()
       : this(
-    loading: false,
-    error: '',
-    loaded: false,
-    user: const UserEntity.initial(),
+    networkModel: const SignUpNetworkModel.initial(),
+    screenModel: const SignUpScreenModel.initial(),
   );
 
-  final bool loading;
-  final String error;
-  final bool loaded;
-  final UserEntity user;
+  final SignUpNetworkModel networkModel;
+  final SignUpScreenModel screenModel;
 
-  bool get hasError => error.isNotEmpty;
 
   SignUpModel copyWith({
-    bool? loading,
-    String? error,
-    bool? loaded,
-    UserEntity? user,
+    SignUpNetworkModel? networkModel,
+    SignUpScreenModel? screenModel,
   }) {
     return SignUpModel(
-      loading: loading ?? this.loading,
-      error: error ?? this.error,
-      loaded: loaded ?? this.loaded,
-      user: user ?? this.user,
+      networkModel: networkModel ?? this.networkModel,
+      screenModel: screenModel ?? this.screenModel,
     );
   }
 
   @override
   List<Object?> get props => [
-    loading,
-    error,
-    loaded,
-    user,
+    networkModel,
+    screenModel,
   ];
 }

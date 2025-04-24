@@ -20,13 +20,16 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   Future<void> userSignUpEvent(DataMap data) async {
     final model = state.model;
+    final networkModel = model.networkModel;
 
     emit(
       SignUpScreenState(
         model.copyWith(
-          loading: true,
-          error: '',
-          loaded: false,
+          networkModel: networkModel.copyWith(
+            loading: true,
+            loaded: false,
+            error: '',
+          ),
         ),
       ),
     );
@@ -37,19 +40,23 @@ class SignUpCubit extends Cubit<SignUpState> {
       (l) => emit(
         SignUpScreenState(
           model.copyWith(
-            loading: false,
-            error: l.errorMessage,
-            loaded: false,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              loaded: false,
+              error: l.errorMessage,
+            ),
           ),
         ),
       ),
       (r) => emit(
         SignUpScreenState(
           model.copyWith(
-            loading: false,
-            error: '',
-            loaded: true,
-            user: r,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              loaded: true,
+              error: '',
+              user: r,
+            ),
           ),
         ),
       ),

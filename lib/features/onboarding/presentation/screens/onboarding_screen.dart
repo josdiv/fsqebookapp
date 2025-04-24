@@ -121,6 +121,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: DefaultButton(
                       text: 'GET STARTED',
                       backgroundColor: AppColors.orangeColor,
+                      opacity: true,
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(

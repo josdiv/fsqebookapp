@@ -10,7 +10,7 @@ class UserEntityModel extends UserEntity {
 
   factory UserEntityModel.fromJson(DataMap json) {
     return UserEntityModel(
-      userId: json['userId'] as String,
+      userId: (json['userId'] as int).toString(),
       name: json['name'] as String,
       email: json['email'] as String,
     );
