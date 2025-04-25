@@ -8,6 +8,7 @@ import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_s
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/screens/about_us_screen/about_us_screen.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/screens/terms_of_use_screen/terms_of_use_screen.dart';
+import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -64,6 +65,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       },
       builder: (context, state) {
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
           appBar: AppBar(
@@ -85,14 +88,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 children: [
                   settingsWidget(
-                    text: "Login",
-                    iconData: Icons.login_outlined,
-                    onTap: () => Navigator.push(
+                    text: isUserLoggedIn ? "Logout" : "Login",
+                    iconData: isUserLoggedIn
+                        ? Icons.logout_outlined
+                        : Icons.login_outlined,
+                    onTap: isUserLoggedIn ? () => Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),
                       ),
-                    ),
+                    ) : null,
                   ),
                   settingsWidget(
                     text: "About App",

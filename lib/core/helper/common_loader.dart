@@ -19,7 +19,7 @@ void showSnackBar(BuildContext context, String content) =>
     );
 
 
-Widget buttonLoader(BuildContext context) => LoadingAnimationWidget.threeArchedCircle(
-  color: Colors.white,
+Widget buttonLoader(BuildContext context, {Color color = Colors.white}) => LoadingAnimationWidget.threeArchedCircle(
+  color: color,
   size: 20,
 );
