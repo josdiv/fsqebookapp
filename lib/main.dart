@@ -14,6 +14,7 @@ import 'package:foursquare_ebbok_app/features/ratings/presentation/cubits/rating
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/presentation/cubits/sign_up_cubit.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/injection_container.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -27,6 +28,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // final prefs = await SharedPreferences.getInstance();
+  // prefs.clear();
+
+
   runApp(const MyApp());
 }
 

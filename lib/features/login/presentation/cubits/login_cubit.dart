@@ -18,15 +18,22 @@ class LoginCubit extends Cubit<LoginState> {
   final SignInWithPassword _signInWithPassword;
   final SignInWithGoogle _signInWithGoogle;
 
+  Future<void> signInScreenEvent(LoginModel model) async {
+    emit(LoginScreenState(model));
+  }
+
   Future<void> signInWithPasswordEvent(DataMap data) async {
     final model = state.model;
+    final networkModel = model.networkModel;
 
     emit(
       LoginScreenState(
         model.copyWith(
-          loading: true,
-          error: '',
-          loaded: false,
+          networkModel: networkModel.copyWith(
+            loading: true,
+            error: '',
+            loaded: false,
+          ),
         ),
       ),
     );
@@ -37,19 +44,23 @@ class LoginCubit extends Cubit<LoginState> {
       (l) => emit(
         LoginScreenState(
           model.copyWith(
-            loading: false,
-            error: l.errorMessage,
-            loaded: false,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              error: l.errorMessage,
+              loaded: false,
+            ),
           ),
         ),
       ),
       (r) => emit(
         LoginScreenState(
           model.copyWith(
-            loading: false,
-            error: '',
-            loaded: true,
-            user: r,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              error: '',
+              loaded: true,
+              user: r,
+            ),
           ),
         ),
       ),
@@ -58,13 +69,16 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> signInWithGoogleEvent(DataMap data) async {
     final model = state.model;
+    final networkModel = model.networkModel;
 
     emit(
       LoginScreenState(
         model.copyWith(
-          loading: true,
-          error: '',
-          loaded: false,
+          networkModel: networkModel.copyWith(
+            loading: true,
+            error: '',
+            loaded: false,
+          ),
         ),
       ),
     );
@@ -75,19 +89,23 @@ class LoginCubit extends Cubit<LoginState> {
       (l) => emit(
         LoginScreenState(
           model.copyWith(
-            loading: false,
-            error: l.errorMessage,
-            loaded: false,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              error: l.errorMessage,
+              loaded: false,
+            ),
           ),
         ),
       ),
       (r) => emit(
         LoginScreenState(
           model.copyWith(
-            loading: false,
-            error: '',
-            loaded: true,
-            user: r,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              error: '',
+              loaded: true,
+              user: r,
+            ),
           ),
         ),
       ),

@@ -26,8 +26,6 @@ class SignUpRemoteDatasourceImpl implements SignUpRemoteDatasource {
       final password = data['password'] as String;
       final phone = data['phone'] as String;
 
-      print(data);
-
       final response = await _client
           .post(
             Uri.parse("$kBaseUrl$kSignUp&name=$name&email=$email&password="
@@ -56,7 +54,7 @@ class SignUpRemoteDatasourceImpl implements SignUpRemoteDatasource {
         );
       }
 
-      return UserEntityModel.fromJson(body['userDetail'] as DataMap);
+      return UserEntityModel.fromJson(body);
     } on APIException {
       rethrow;
     } catch (e) {

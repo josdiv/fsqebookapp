@@ -52,13 +52,13 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDatasource {
 
       if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
         final message = body['message'] as String;
-        throw ServerException(
+        throw APIException(
           message: message,
           statusCode: response.statusCode,
         );
       }
 
-      return UserEntityModel.fromJson(body['userDetail'] as DataMap);
+      return UserEntityModel.fromJson(body);
     } on APIException {
       rethrow;
     } catch (e) {
@@ -103,7 +103,7 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDatasource {
         );
       }
 
-      return UserEntityModel.fromJson(body['userDetail'] as DataMap);
+      return UserEntityModel.fromJson(body);
     } on APIException {
       rethrow;
     } catch (e) {

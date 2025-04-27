@@ -106,7 +106,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 VSpace(20),
                 AuthForm(
-                  hintText: "Password",
+                  hintText: "Password*",
                   hasIcon: !screenModel.viewPassword,
                   onChanged: (e) => event.signUpScreenEvent(
                     model.copyWith(
@@ -120,9 +120,11 @@ class SignUpScreen extends StatelessWidget {
                         screenModel: screenModel.togglePassword(),
                       ),
                     ),
-                    child: Icon(screenModel.viewPassword
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined),
+                    child: Icon(
+                      screenModel.viewPassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
                   ),
                 ),
                 VSpace(20),
