@@ -10,6 +10,7 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/ui/widgets/default_button.dart';
 import '../../../../bottom_nav_bar/bottom_nav_bar.dart';
 import '../../../../login/presentation/screens/login_screen/login_screen.dart';
+import '../../../../profile/presentation/cubits/profile_cubit.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -36,6 +37,8 @@ class SignUpScreen extends StatelessWidget {
 
         if (networkModel.loaded) {
           context.read<StatusCubit>().setUserLoginStatusEvent(true);
+          context.read<ProfileCubit>().getUserProfileEvent(
+              state.model.networkModel.user.profileDetails.email);
 
           event.signUpScreenEvent(
             model.copyWith(

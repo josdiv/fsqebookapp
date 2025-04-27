@@ -10,6 +10,8 @@ import 'package:foursquare_ebbok_app/features/settings/presentation/screens/abou
 import 'package:foursquare_ebbok_app/features/settings/presentation/screens/terms_of_use_screen/terms_of_use_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
+import '../../../../bottom_nav_bar/bottom_nav_bar.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -65,6 +67,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       },
       builder: (context, state) {
+        void showLogoutDialog(BuildContext context) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: const Text('Logout'),
+              content: const Text('Are you sure you want to logout?'),
+              actionsPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              actionsAlignment: MainAxisAlignment.spaceBetween,
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close dialog
+                    context.read<StatusCubit>().setUserLoginStatusEvent(false);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BottomNavBar(),
+                      ),
+                          (Route<dynamic> route) => false,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green, // Red for "Yes"
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Yes',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Just close dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red, // Grey for "No"
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'No',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
         final isUserLoggedIn =
             context.read<StatusCubit>().state.model.isUserLoggedIn;
         return Scaffold(
@@ -92,12 +154,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     iconData: isUserLoggedIn
                         ? Icons.logout_outlined
                         : Icons.login_outlined,
-                    onTap: isUserLoggedIn ? () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    ) : null,
+                    onTap: !isUserLoggedIn
+                        ? () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                            )
+                        : () => showLogoutDialog(context),
                   ),
                   settingsWidget(
                     text: "About App",

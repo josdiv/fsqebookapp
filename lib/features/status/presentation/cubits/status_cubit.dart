@@ -57,7 +57,9 @@ class StatusCubit extends Cubit<StatusState> {
       ),
       (r) => emit(
         StatusScreenModel(
-          model.copyWith(),
+          model.copyWith(
+            isUserLoggedIn: status,
+          ),
         ),
       ),
     );

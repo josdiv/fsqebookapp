@@ -70,9 +70,7 @@ class ProfileRemoteDatasourceImpl implements ProfileRemoteDatasource {
   Future<ProfileEntityModel> getUserProfile(String email) async {
     try {
       final response = await _client
-          .post(
-            Uri.parse("$kBaseUrl$kGetProfile&email=$email")
-          )
+          .post(Uri.parse("$kBaseUrl$kGetProfile&email=$email"))
           .timeout(
             Duration(seconds: 15),
           );
@@ -96,7 +94,7 @@ class ProfileRemoteDatasourceImpl implements ProfileRemoteDatasource {
         );
       }
 
-      return ProfileEntityModel();
+      return ProfileEntityModel.fromMap(body['userProfile']);
     } on APIException {
       rethrow;
     } catch (e) {
