@@ -11,7 +11,7 @@ class SubCategoryEntityModel extends SubCategoryEntity {
 
   factory SubCategoryEntityModel.fromJson(DataMap json) {
     return SubCategoryEntityModel(
-      subcategoryId: json['subcategoryId'] as String,
+      subcategoryId: (json['subcategoryId'] as num).toString(),
       subcategoryName: json['subcategoryName'] as String,
       subcategoryImage: json['subcategoryImage'] as String,
     );

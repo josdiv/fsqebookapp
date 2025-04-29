@@ -14,7 +14,7 @@ class LatestEntityModel extends LatestEntity {
 
   factory LatestEntityModel.fromJson(Map<String, dynamic> json) {
     return LatestEntityModel(
-      bookId: json["bookId"],
+      bookId: json["bookId"].toString(),
       authorName: json["authorName"],
       bookTitle: json["bookTitle"],
       bookImage: json["bookImage"],

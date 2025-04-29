@@ -69,7 +69,7 @@ class HomeFeaturedBookListModel extends HomeFeaturedBookList {
 
   factory HomeFeaturedBookListModel.fromJson(Map<String, dynamic> json) {
     return HomeFeaturedBookListModel(
-      featuredId: json["featuredId"],
+      featuredId: json["featuredId"].toString(),
       featuredTitle: json["featuredTitle"],
       featuredImage: json["featuredImage"],
     );
@@ -87,7 +87,7 @@ class HomeTrendingBookListModel extends HomeTrendingBookList {
 
   factory HomeTrendingBookListModel.fromJson(Map<String, dynamic> json) {
     return HomeTrendingBookListModel(
-      trendingId: json["trendingId"],
+      trendingId: json["trendingId"].toString(),
       trendingTitle: json["trendingTitle"],
       trendingImage: json["trendingImage"],
       trendingBookPrice: json["trendingBookPrice"],
@@ -108,7 +108,7 @@ class HomeManualBookListModel extends HomeManualBookList {
 
   factory HomeManualBookListModel.fromJson(Map<String, dynamic> json) {
     return HomeManualBookListModel(
-      manualId: json["manualId"],
+      manualId: json["manualId"].toString(),
       manualTitle: json["manualTitle"],
       manualImage: json["manualImage"],
       manualBookPrice: json["manualBookPrice"],
@@ -127,7 +127,7 @@ class HomeSubCategoryBookListModel extends HomeSubCategoryBookList {
 
   factory HomeSubCategoryBookListModel.fromJson(Map<String, dynamic> json) {
     return HomeSubCategoryBookListModel(
-      subCategoryId: json["subCategoryId"],
+      subCategoryId: json["subCategoryId"].toString(),
       subCategoryTitle: json["subCategoryTitle"],
       subCategoryImage: json["subCategoryImage"],
     );
@@ -145,7 +145,7 @@ class HomeWorkbookListModel extends HomeWorkbookList {
 
   factory HomeWorkbookListModel.fromJson(Map<String, dynamic> json) {
     return HomeWorkbookListModel(
-      workbookId: json["workbookId"],
+      workbookId: json["workbookId"].toString(),
       workbookTitle: json["workbookTitle"],
       workbookImage: json["workbookImage"],
       workbookPrice: json["workbookPrice"],

@@ -13,7 +13,7 @@ class SubCategoryDetailsEntityModel extends SubCategoryDetailsEntity {
 
   factory SubCategoryDetailsEntityModel.fromJson(DataMap json) {
     return SubCategoryDetailsEntityModel(
-      bookId: json['bookId'] as String,
+      bookId: (json['bookId'] as num).toString(),
       authorName: json['authorName'] as String,
       bookTitle: json['bookTitle'] as String,
       bookImage: json['bookImage'] as String,

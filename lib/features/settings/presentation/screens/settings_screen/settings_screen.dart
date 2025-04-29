@@ -7,6 +7,7 @@ import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/login_screen.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/screens/about_us_screen/about_us_screen.dart';
+import 'package:foursquare_ebbok_app/features/settings/presentation/screens/account_deletion_screen/account_deletion_screen.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/screens/terms_of_use_screen/terms_of_use_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
@@ -89,7 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       MaterialPageRoute(
                         builder: (context) => const BottomNavBar(),
                       ),
-                          (Route<dynamic> route) => false,
+                      (Route<dynamic> route) => false,
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -178,6 +179,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   settingsWidget(
                     text: "Delete Account",
                     iconData: Icons.delete_forever_outlined,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AccountDeletionScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),

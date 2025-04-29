@@ -34,7 +34,7 @@ class BookDetailsEntityModel extends BookDetailsEntity {
     final bookDescription = document.body?.text ?? "No content found";
 
     return BookDetailsEntityModel(
-      bookId: bookDetail['bookId'] as String,
+      bookId: bookDetail['bookId'].toString(),
       bookAccess: bookDetail['bookAccess'] as String,
       bookImg: bookDetail['bookImg'] as String,
       bookTitle: bookDetail['bookTitle'] as String,
@@ -63,7 +63,7 @@ class RelatedBookEntityModel extends RelatedBookEntity {
 
   factory RelatedBookEntityModel.fromJson(DataMap json) {
     return RelatedBookEntityModel(
-      relatedBookId: json['relatedBookId'] as String,
+      relatedBookId: json['relatedBookId'].toString(),
       relatedBookAuthor: json['relatedBookAuthor'] as String,
       relatedBookTitle: json['relatedBookTitle'] as String,
       realatedBookImage: json['realatedBookImage'] as String,

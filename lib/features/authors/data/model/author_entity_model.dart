@@ -9,7 +9,7 @@ class AuthorEntityModel extends AuthorEntity {
 
   factory AuthorEntityModel.fromJson(Map<String, dynamic> json) {
     return AuthorEntityModel(
-      authorId: json["authorId"],
+      authorId: json["authorId"].toString(),
       authorName: json["authorName"],
       authorImage: json["authorImage"],
     );

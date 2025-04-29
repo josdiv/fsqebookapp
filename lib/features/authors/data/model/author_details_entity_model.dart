@@ -41,7 +41,7 @@ class AuthorDetailsBookEntityModel extends AuthorDetailsBookEntity {
   factory AuthorDetailsBookEntityModel.fromJson(DataMap json) {
 
     return AuthorDetailsBookEntityModel(
-      bookId: json['bookId'] as String,
+      bookId: json['bookId'].toString(),
       bookTitle: json['bookTitle'] as String,
       bookImage: json['bookImage'] as String,
       bookPrice: json['bookPrice'] as String,
