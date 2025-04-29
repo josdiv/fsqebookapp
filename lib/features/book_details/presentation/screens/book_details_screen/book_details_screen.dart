@@ -86,8 +86,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                               RatingsAndReview(),
                               VSpace(20),
                               RelatedBookWidget(),
-                              VSpace(20),
-                              BookDetailsBuyBookButton(),
+                              // VSpace(20),
+                              // BookDetailsBuyBookButton(),
                               VSpace(50),
                             ],
                           ),
@@ -101,12 +101,18 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                       )
                     : const SizedBox(),
           ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SizedBox(
+              height: 50,
+              child: BookDetailsBuyBookButton(),
+            ),
+          ),
         );
       },
     );
   }
 }
-
 
 class BookDetailsBuyBookButton extends StatelessWidget {
   const BookDetailsBuyBookButton({super.key});
@@ -117,9 +123,7 @@ class BookDetailsBuyBookButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 12),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: AppColors.redColor,
-        borderRadius: BorderRadius.circular(20)
-      ),
+          color: AppColors.redColor, borderRadius: BorderRadius.circular(20)),
       alignment: Alignment.center,
       child: Text(
         "Buy Book".toUpperCase(),

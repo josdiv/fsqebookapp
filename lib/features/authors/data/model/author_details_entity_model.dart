@@ -15,9 +15,10 @@ class AuthorDetailsEntityModel extends AuthorDetailsEntity {
     final document = html_parser.parse(json['authorInfo'] as String);
     final authorInfo = document.body?.text ?? 'No content found';
     final dynamicBooks = json['authorBooks'] as List<dynamic>;
-    print(json['authorBooks']);
-    final authorBooks = dynamicBooks.map((book) =>
-        AuthorDetailsBookEntityModel.fromJson(book as DataMap)).toList();
+
+    final authorBooks = dynamicBooks
+        .map((book) => AuthorDetailsBookEntityModel.fromJson(book as DataMap))
+        .toList();
 
     return AuthorDetailsEntityModel(
       authorName: json['authorName'] as String,
@@ -39,7 +40,6 @@ class AuthorDetailsBookEntityModel extends AuthorDetailsBookEntity {
   });
 
   factory AuthorDetailsBookEntityModel.fromJson(DataMap json) {
-
     return AuthorDetailsBookEntityModel(
       bookId: json['bookId'].toString(),
       bookTitle: json['bookTitle'] as String,
