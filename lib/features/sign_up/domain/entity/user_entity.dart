@@ -16,9 +16,9 @@ class UserEntity extends Equatable {
           profileDetails: const ProfileDetails.initial(),
         );
 
-  final List<dynamic> listFavoriteBook;
-  final List<dynamic> listReadingBook;
-  final List<dynamic> listDownloadBook;
+  final List<FavouriteBookEntity> listFavoriteBook;
+  final List<ReadingBookEntity> listReadingBook;
+  final List<DownloadedBookEntity> listDownloadBook;
   final ProfileDetails profileDetails;
 
   @override
@@ -65,5 +65,62 @@ class ProfileDetails extends Equatable {
         phone,
         profileImage,
         registereDate,
+      ];
+}
+
+class FavouriteBookEntity extends Equatable {
+  const FavouriteBookEntity({
+    required this.favoriteBookId,
+    required this.favoriteBookTitle,
+    required this.favoriteBookImage,
+  });
+
+  final String favoriteBookId;
+  final String favoriteBookTitle;
+  final String favoriteBookImage;
+
+  @override
+  List<Object?> get props => [
+        favoriteBookId,
+        favoriteBookTitle,
+        favoriteBookImage,
+      ];
+}
+
+class ReadingBookEntity extends Equatable {
+  const ReadingBookEntity({
+    required this.readingBookId,
+    required this.readingBookTitle,
+    required this.readingBookImage,
+  });
+
+  final String readingBookId;
+  final String readingBookTitle;
+  final String readingBookImage;
+
+  @override
+  List<Object?> get props => [
+        readingBookId,
+        readingBookTitle,
+        readingBookImage,
+      ];
+}
+
+class DownloadedBookEntity extends Equatable {
+  const DownloadedBookEntity({
+    required this.downloadedBookId,
+    required this.downloadedBookTitle,
+    required this.downloadedBookImage,
+  });
+
+  final String downloadedBookId;
+  final String downloadedBookTitle;
+  final String downloadedBookImage;
+
+  @override
+  List<Object?> get props => [
+        downloadedBookId,
+        downloadedBookTitle,
+        downloadedBookImage,
       ];
 }

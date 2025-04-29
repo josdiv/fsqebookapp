@@ -40,7 +40,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
     super.initState();
     context.read<HomeCubit>().getDashboardDataEvent();
     context.read<StatusCubit>().getUserLoginStatusEvent();
-
   }
 
   @override
@@ -56,9 +55,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
           showSnackBar(context, model1.error);
           event.homeScreenEvent(
             model.copyWith(
-                model1: model1.copyWith(
-              error: '',
-            )),
+              model1: model1.copyWith(
+                error: '',
+              ),
+            ),
           );
         }
 
@@ -77,7 +77,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           listener: (context, state) {
             final model = state.model;
             print(model.isUserLoggedIn);
-            if(model.isUserLoggedIn) {
+            if (model.isUserLoggedIn) {
               // context.read<ProfileCubit>().getUserProfileEvent(email)
             }
           },

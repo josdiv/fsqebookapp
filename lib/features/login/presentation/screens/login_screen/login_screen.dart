@@ -5,6 +5,7 @@ import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/core/ui/widgets/default_button.dart';
 import 'package:foursquare_ebbok_app/features/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:foursquare_ebbok_app/features/login/presentation/cubits/login_cubit.dart';
+import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/widgets/google_sign_in_widget.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/presentation/screens/sign_up_screen/sign_up_screen.dart';
 
@@ -256,9 +257,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   VSpace(20),
                   // SvgPicture.asset('assets/icons/google1.png')
-                  Align(
-                    child: Image.asset('assets/icons/google1.png'),
-                  ),
+                  GoogleSignInWidget(),
                   VSpace(50),
                   Align(
                     child: InkWell(
