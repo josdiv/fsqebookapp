@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
@@ -24,27 +23,30 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> editUserProfile(DataMap data) async {
-    emit(EditProfileLoading());
+    emit(EditProfileLoading(state.model));
 
     final result = await _editUserProfile(data);
 
     result.fold(
-      (l) => emit(EditProfileError(l.errorMessage)),
+      (l) => emit(EditProfileError(l.errorMessage, state.model)),
       (r) => emit(
-        EditProfileSuccess(),
+        EditProfileSuccess(state.model),
       ),
     );
   }
 
   Future<void> getUserProfileEvent(String email) async {
     final model = state.model;
+    final networkModel = model.networkModel;
 
     emit(
       ProfileScreenState(
         model.copyWith(
-          loading: true,
-          error: '',
-          loaded: false,
+          networkModel: networkModel.copyWith(
+            loading: true,
+            error: '',
+            loaded: false,
+          ),
         ),
       ),
     );
@@ -55,19 +57,23 @@ class ProfileCubit extends Cubit<ProfileState> {
       (l) => emit(
         ProfileScreenState(
           model.copyWith(
-            loading: false,
-            error: l.errorMessage,
-            loaded: false,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              error: l.errorMessage,
+              loaded: false,
+            ),
           ),
         ),
       ),
       (r) => emit(
         ProfileScreenState(
           model.copyWith(
-            loading: false,
-            error: '',
-            loaded: true,
-            profile: r,
+            networkModel: networkModel.copyWith(
+              loading: false,
+              error: '',
+              loaded: true,
+              profile: r,
+            ),
           ),
         ),
       ),

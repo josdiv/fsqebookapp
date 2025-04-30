@@ -26,8 +26,8 @@ class ProfileRemoteDatasourceImpl implements ProfileRemoteDatasource {
     try {
       final name = data['name'] as String;
       final email = data['email'] as String;
-      final password = data['password'] as String;
-      final phone = data['phone'] as String;
+      final password = data['password'] ?? '';
+      final phone = data['phone'] ?? '';
 
       final response = await _client
           .post(

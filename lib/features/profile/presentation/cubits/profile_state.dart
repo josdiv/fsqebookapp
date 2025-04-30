@@ -16,7 +16,7 @@ final class ProfileScreenState extends ProfileState {
 }
 
 final class EditProfileError extends ProfileState {
-  const EditProfileError(this.error);
+  const EditProfileError(this.error, super.model);
 
   final String error;
 
@@ -24,6 +24,10 @@ final class EditProfileError extends ProfileState {
   List<Object> get props => [error];
 }
 
-final class EditProfileLoading extends ProfileState {}
+final class EditProfileLoading extends ProfileState {
+  const EditProfileLoading(super.model);
+}
 
-final class EditProfileSuccess extends ProfileState {}
+final class EditProfileSuccess extends ProfileState {
+  const EditProfileSuccess(super.model);
+}

@@ -40,7 +40,12 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     if (isUserLoggedIn)
                       InkWell(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileEditScreen(),),),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileEditScreen(),
+                          ),
+                        ),
                         child: Text(
                           "Edit",
                           style: TextStyle(
@@ -56,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
               isUserLoggedIn
                   ? BlocBuilder<ProfileCubit, ProfileState>(
                       builder: (context, state) {
-                        final profile = state.model.profile;
+                        final profile = state.model.networkModel.profile;
                         final userName = profile.userName;
                         final email = profile.userEmail;
                         final profilePic = profile.profileImage;
@@ -151,4 +156,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-

@@ -57,6 +57,10 @@ dependencies:
   html: ^0.15.5+1
   animated_rating_stars: ^1.0.1
   image_picker: ^1.1.2
+  http_parser: ^4.1.2
+  image: ^4.5.4
+  path: ^1.9.1
+  flutter_image_compress: ^2.4.0
 
 dev_dependencies:
   flutter_test:
