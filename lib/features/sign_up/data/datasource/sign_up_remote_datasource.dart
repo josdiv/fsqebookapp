@@ -4,6 +4,7 @@ import 'package:foursquare_ebbok_app/core/constants/constants.dart';
 import 'package:foursquare_ebbok_app/core/failure/exceptions.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/data/model/user_entity_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/utils/typedefs/typedefs.dart';
 
@@ -53,6 +54,9 @@ class SignUpRemoteDatasourceImpl implements SignUpRemoteDatasource {
           statusCode: response.statusCode,
         );
       }
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', email);
 
       return UserEntityModel.fromJson(body);
     } on APIException {

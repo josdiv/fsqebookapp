@@ -12,7 +12,7 @@ class ProfileEntityModel extends ProfileEntity {
 
   factory ProfileEntityModel.fromMap(Map<String, dynamic> map) {
     return ProfileEntityModel(
-      userId: map['userId'] as String,
+      userId: map['userId'].toString(),
       userName: map['userName'] as String,
       userPhone: map['userPhone'] as String,
       userEmail: map['userEmail'] as String,

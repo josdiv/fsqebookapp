@@ -69,7 +69,7 @@ class FavouriteBookEntityModel extends FavouriteBookEntity {
 
   factory FavouriteBookEntityModel.fromMap(Map<String, dynamic> map) {
     return FavouriteBookEntityModel(
-      favoriteBookId: map['favoriteBookId'] as String,
+      favoriteBookId: map['favoriteBookId'].toString(),
       favoriteBookTitle: map['favoriteBookTitle'] as String,
       favoriteBookImage: map['favoriteBookImage'] as String,
     );
@@ -85,7 +85,7 @@ class ReadingBookEntityModel extends ReadingBookEntity {
 
   factory ReadingBookEntityModel.fromMap(Map<String, dynamic> map) {
     return ReadingBookEntityModel(
-      readingBookId: map['readingBookId'] as String,
+      readingBookId: map['readingBookId'].toString(),
       readingBookTitle: map['readingBookTitle'] as String,
       readingBookImage: map['readingBookImage'] as String,
     );
@@ -101,7 +101,7 @@ class DownloadedBookEntityModel extends DownloadedBookEntity {
 
   factory DownloadedBookEntityModel.fromMap(Map<String, dynamic> map) {
     return DownloadedBookEntityModel(
-      downloadedBookId: map['downloadedBookId'] as String,
+      downloadedBookId: map['downloadedBookId'].toString(),
       downloadedBookTitle: map['downloadedBookTitle'] as String,
       downloadedBookImage: map['downloadedBookImage'] as String,
     );

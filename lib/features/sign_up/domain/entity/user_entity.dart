@@ -16,6 +16,8 @@ class UserEntity extends Equatable {
           profileDetails: const ProfileDetails.initial(),
         );
 
+  bool get hasReadingBooks => listReadingBook.isNotEmpty;
+
   final List<FavouriteBookEntity> listFavoriteBook;
   final List<ReadingBookEntity> listReadingBook;
   final List<DownloadedBookEntity> listDownloadBook;

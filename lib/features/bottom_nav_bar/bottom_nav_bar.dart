@@ -14,6 +14,7 @@ import 'package:foursquare_ebbok_app/features/latest/presentation/screens/latest
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/helper/common_loader.dart';
 
@@ -74,11 +75,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
           commonLoader(context);
         }
         return BlocListener<StatusCubit, StatusState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             final model = state.model;
             print(model.isUserLoggedIn);
+            final prefs = await SharedPreferences.getInstance();
+            final email = prefs.getString('email');
             if (model.isUserLoggedIn) {
-              // context.read<ProfileCubit>().getUserProfileEvent(email)
+              print(email);
+              context.read<ProfileCubit>().getUserProfileEvent(email!);
             }
           },
           child: BlocListener<LatestCubit, LatestState>(

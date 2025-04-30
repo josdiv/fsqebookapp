@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+	    <key>NSMicrophoneUsageDescription</key>
+        <string>This app requires access to your microphone to perform a liveliness check during identity verification. The microphone will capture audio to ensure the verification process is secure and accurate. The recorded audio will be used only for this purpose and will be securely processed.</string>
+	    <key>NSCameraUsageDescription</key>
+    	<string>This app requires access to your camera to take a selfie for profile upload</string>
+	    <key>NSPhotoLibraryUsageDescription</key>
+        <string>This app needs access to your photo library to allow you to upload photos when editing your profile</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
