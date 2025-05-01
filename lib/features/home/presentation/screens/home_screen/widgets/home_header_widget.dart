@@ -3,12 +3,19 @@ import 'package:foursquare_ebbok_app/features/settings/presentation/screens/sett
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
+import '../../search_books_page/search_books_page.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   const HomeHeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    void navigateToSearch(BuildContext context) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const SearchBooksPage()),
+      );
+    }
     return Column(
       children: [
         Row(
@@ -52,6 +59,8 @@ class HomeHeaderWidget extends StatelessWidget {
             maxLines: null,
             minLines: null,
             expands: true,
+            onTap: () => navigateToSearch(context),
+            readOnly: true,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               border: OutlineInputBorder(
