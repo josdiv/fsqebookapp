@@ -16,7 +16,7 @@ abstract interface class SettingsRemoteDatasource {
 
 const String kAboutUs = "/terms.php?type=terms";
 const String kTermsOfUse = "/terms.php?type=terms";
-const String kDeleteAccount = "/deleteaccount.php?type=deleteaccount";
+const kDeleteAccount = "/deleteaccount.php?type=deleteaccount&authid=$authId";
 
 class SettingsRemoteDatasourceImpl implements SettingsRemoteDatasource {
   const SettingsRemoteDatasourceImpl(this._client);
@@ -103,7 +103,40 @@ class SettingsRemoteDatasourceImpl implements SettingsRemoteDatasource {
 
   @override
   Future<void> requestAccountDeletion(DataMap data) async {
-    // TODO: implement requestAccountDeletion
-    throw UnimplementedError();
+    try {
+      final email = data['email'] as String;
+      final reason = data['reason'] as String;
+
+      final response = await _client.get(
+        Uri.parse(
+          "$kBaseUrl$kDeleteAccount&authid=$authId&email=$email&reason=$reason",
+        ),
+      );
+
+      if (response.statusCode != 200) {
+        throw APIException(
+          message: serverError,
+          statusCode: response.statusCode,
+        );
+      }
+      final body = jsonDecode(response.body) as DataMap;
+
+      final status = body['status'] as String;
+
+      if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
+        final message = body['message'] as String;
+        throw ServerException(
+          message: message,
+          statusCode: response.statusCode,
+        );
+      }
+    } on APIException {
+      rethrow;
+    } catch (e) {
+      throw APIException(
+        message: e.toString(),
+        statusCode: 515,
+      );
+    }
   }
 }
