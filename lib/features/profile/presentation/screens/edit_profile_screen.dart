@@ -101,6 +101,7 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
 
         if (response.statusCode == 200) {
           final respStr = response.body;
+          print(respStr);
 
           final data = jsonDecode(respStr);
           final url = data['url'] as String;

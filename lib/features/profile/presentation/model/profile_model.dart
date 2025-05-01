@@ -127,7 +127,7 @@ class ProfileScreenModel extends Equatable {
         'email': email,
         if (password.length >= 6) 'password': password,
         if (phone.isNotEmpty) 'phone': phone,
-        if (profilePic.isNotEmpty) 'profilePic': profilePic,
+        if (profilePic.isNotEmpty) 'userimage': profilePic,
       };
 
   //Add Phone Number
