@@ -1,8 +1,0 @@
-app_identifier("com.foursquareng.store") # The bundle identifier of your app
-apple_id("tedxgbagada.app@gmail.com") # Your Apple Developer Portal username
-
-itc_team_id("118531340") # App Store Connect Team ID
-team_id("932B2QQQ55") # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
