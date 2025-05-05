@@ -136,6 +136,35 @@ class HomeWorkbookWidget extends StatelessWidget {
                     color: Color(0xFF424242),
                   ),
                 ),
+                VSpace(4),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      size: 17,
+                      color: AppColors.purpleColor,
+                    ),
+                    Text(
+                      '$rating',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      bookPrice,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
