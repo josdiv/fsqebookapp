@@ -104,7 +104,7 @@ class HomeManualWidget extends StatelessWidget {
                   SvgPicture.asset('assets/icons/premium.svg'),
                   HSpace(4),
                   Text(
-                    "Premium",
+                    bookPrice.toLowerCase() == 'free' ? 'Free' : 'Premium',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,

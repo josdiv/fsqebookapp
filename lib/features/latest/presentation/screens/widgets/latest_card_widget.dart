@@ -51,7 +51,7 @@ class LatestCardWidget extends StatelessWidget {
                 SvgPicture.asset('assets/icons/premium.svg'),
                 HSpace(4),
                 Text(
-                  "Premium",
+                  price.toLowerCase() == 'free' ? 'Free' : 'Premium',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12,

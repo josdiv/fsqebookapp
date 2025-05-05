@@ -43,6 +43,8 @@ class AuthorDetailsBookEntity {
     required this.bookRating,
   });
 
+  bool get isFree => bookPrice.toLowerCase() == 'free';
+
   final String bookId;
   final String bookTitle;
   final String bookImage;
