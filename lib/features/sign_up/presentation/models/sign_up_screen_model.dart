@@ -65,7 +65,7 @@ class SignUpScreenModel extends Equatable {
       name.isNotEmpty &&
       isValidEmail(email) &&
       validatePassword(password) == null &&
-      acceptPolicy;
+      validatePhoneNumber(phone) == null;
 
   DataMap get data => {
     'name': name,
@@ -74,7 +74,21 @@ class SignUpScreenModel extends Equatable {
     'phone': phone,
   };
 
-  //Add Phone Number
+// Allows only digits (including numbers starting with zero), no spaces or signs
+  bool isValidNumber(String input) {
+    final regex = RegExp(r'^\d+$');
+    return regex.hasMatch(input.trim());
+  }
+
+  String? validatePhoneNumber(String? e) {
+    if (e == null || e.trim().isEmpty) {
+      return 'A valid phone number is required';
+    } else if (!isValidNumber(e)) {
+      return 'Invalid phone number';
+    }
+    return null;
+  }
+
 
   SignUpScreenModel addPhone(String e) => copyWith(phone: e);
 

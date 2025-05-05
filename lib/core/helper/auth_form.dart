@@ -8,6 +8,7 @@ class AuthForm extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.suffixIcon,
+    this.keyboardType,
   });
 
   final String? hintText;
@@ -15,6 +16,7 @@ class AuthForm extends StatelessWidget {
   final bool hasIcon;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class AuthForm extends StatelessWidget {
         obscureText: isPasswordField,
         maxLines: 1,
         validator: validator,
+        keyboardType: keyboardType,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onChanged: onChanged,
         decoration: InputDecoration(
