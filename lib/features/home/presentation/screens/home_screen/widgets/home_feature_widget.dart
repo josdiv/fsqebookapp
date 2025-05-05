@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
@@ -6,7 +7,7 @@ import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../domain/entity/home_entity.dart';
 
-class HomeFeaturedWidget extends StatelessWidget {
+class HomeFeaturedWidget extends StatefulWidget {
   const HomeFeaturedWidget({
     super.key,
     required this.featuredBookTitle,
@@ -17,6 +18,48 @@ class HomeFeaturedWidget extends StatelessWidget {
   final List<HomeFeaturedBookList> featuredBookList;
 
   @override
+  State<HomeFeaturedWidget> createState() => _HomeFeaturedWidgetState();
+}
+
+class _HomeFeaturedWidgetState extends State<HomeFeaturedWidget> {
+  final ScrollController _scrollController = ScrollController();
+  Timer? _scrollTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoScroll();
+  }
+
+  void _startAutoScroll() {
+    _scrollTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (!_scrollController.hasClients) return;
+
+      final maxScrollExtent = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.offset;
+      final cardWidth = MediaQuery.of(context).size.width - 40 + 10;
+
+      double targetScroll = currentScroll + cardWidth;
+
+      if (targetScroll >= maxScrollExtent) {
+        _scrollController.animateTo(0.0,
+            duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+      } else {
+        _scrollController.animateTo(targetScroll,
+            duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+      }
+    });
+  }
+
+
+  @override
+  void dispose() {
+    _scrollTimer?.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
@@ -24,7 +67,7 @@ class HomeFeaturedWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            featuredBookTitle,
+            widget.featuredBookTitle,
             style: TextStyle(
               fontSize: 21,
               fontWeight: FontWeight.bold,
@@ -32,24 +75,26 @@ class HomeFeaturedWidget extends StatelessWidget {
             ),
           ),
           VSpace(10),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: featuredBookList
-                  .map(
-                    (item) => GestureDetector(
-                      onTap: () => toBookDetails(
-                        id: item.featuredId,
-                        context: context,
-                      ),
-                      child: featuredCard(
-                        title: item.featuredTitle,
-                        imageUrl: item.featuredImage,
-                        context: context,
-                      ),
-                    ),
-                  )
-                  .toList(),
+          SizedBox(
+            height: 200, // adjust as needed
+            child: ListView.builder(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.featuredBookList.length,
+              itemBuilder: (context, index) {
+                final item = widget.featuredBookList[index];
+                return GestureDetector(
+                  onTap: () => toBookDetails(
+                    id: item.featuredId,
+                    context: context,
+                  ),
+                  child: featuredCard(
+                    title: item.featuredTitle,
+                    imageUrl: item.featuredImage,
+                    context: context,
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -73,7 +118,6 @@ class HomeFeaturedWidget extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          // Distributes space
           children: [
             Expanded(
               child: Column(
