@@ -118,9 +118,24 @@ class ProfileScreenModel extends Equatable {
     return null;
   }
 
+  // Allows only digits (including numbers starting with zero), no spaces or signs
+  bool isValidNumber(String input) {
+    final regex = RegExp(r'^\d+$');
+    return regex.hasMatch(input.trim());
+  }
+
+  String? validatePhoneNumber(String? e) {
+    if (e == null || e.trim().isEmpty) {
+      return 'A valid phone number is required';
+    } else if (!isValidNumber(e)) {
+      return 'Invalid phone number';
+    }
+    return null;
+  }
+
   ProfileScreenModel togglePassword() => copyWith(viewPassword: !viewPassword);
 
-  bool get register => name.isNotEmpty;
+  bool get register => name.isNotEmpty && validatePhoneNumber(phone) == null;
 
   DataMap get data => {
         'name': name,

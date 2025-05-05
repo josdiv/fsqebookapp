@@ -47,6 +47,8 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
         screenModel: screenModel.copyWith(
           email: email,
           profilePic: profile.profileImage,
+          name: profile.userName,
+          phone: profile.userPhone,
         ),
       ),
     );
@@ -257,6 +259,7 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
     TextEditingController? controller,
     String? Function(String?)? validator,
     void Function(String)? onChanged,
+    TextInputType? keyboardType,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -265,6 +268,7 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
         controller: controller,
         validator: validator,
         onChanged: onChanged,
+        keyboardType: keyboardType,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         readOnly: readOnly,
         decoration: InputDecoration(
@@ -324,7 +328,9 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
                 ),
                 _buildTextField(
                   label: 'Phone',
+                  keyboardType: TextInputType.phone,
                   controller: phoneController,
+                  validator: screenModel.validatePhoneNumber,
                   onChanged: (e) => event.profileScreenEvent(
                     model.copyWith(
                       screenModel: screenModel.addPhone(e),
@@ -370,13 +376,16 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
           title: Text('Edit Profile'),
           backgroundColor: AppColors.background,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildAvatar(),
-              _buildNameEmailText(),
-              _buildForm(),
-            ],
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildAvatar(),
+                _buildNameEmailText(),
+                _buildForm(),
+              ],
+            ),
           ),
         ),
       ),
