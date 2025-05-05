@@ -1,5 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../core/misc/spacer.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -22,46 +23,62 @@ class LatestCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 250,
-          margin: EdgeInsets.only(right: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10),
-              topLeft: Radius.circular(5),
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(10),
-            ),
-            image: DecorationImage(
-              image: NetworkImage(url),
-              fit: BoxFit.cover,
-            ),
+        ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(10),
+            topLeft: Radius.circular(5),
+            bottomLeft: Radius.circular(5),
+            bottomRight: Radius.circular(10),
           ),
-          alignment: Alignment.topLeft,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-            decoration: BoxDecoration(
-                color: AppColors.orangeColor,
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(5))),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset('assets/icons/premium.svg'),
-                HSpace(4),
-                Text(
-                  price.toLowerCase() == 'free' ? 'Free' : 'Premium',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
+          child: Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              CachedNetworkImage(
+                imageUrl: url,
+                width: MediaQuery.of(context).size.width,
+                height: 250,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Image.asset(
+                  'assets/images/book_placeholder.png',
+                  width: MediaQuery.of(context).size.width,
+                  height: 250,
+                  fit: BoxFit.cover,
+                ),
+                errorWidget: (context, url, error) => Image.asset(
+                  'assets/images/book_placeholder.png',
+                  width: MediaQuery.of(context).size.width,
+                  height: 250,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.orangeColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomRight: Radius.circular(5),
                   ),
                 ),
-              ],
-            ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset('assets/icons/premium.svg'),
+                    const HSpace(4),
+                    Text(
+                      price.toLowerCase() == 'free' ? 'Free' : 'Premium',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
+        const SizedBox(height: 8),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -74,7 +91,8 @@ class LatestCardWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
+            const SizedBox(height: 2),
+            const Text(
               'by FourSquare Gospel Church',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -82,6 +100,7 @@ class LatestCardWidget extends StatelessWidget {
                 color: Color(0xFF424242),
               ),
             ),
+            const SizedBox(height: 4),
             Row(
               children: [
                 Icon(
@@ -90,10 +109,10 @@ class LatestCardWidget extends StatelessWidget {
                   color: AppColors.purpleColor,
                 ),
                 Text(rating.toStringAsFixed(2)),
-                Spacer(),
+                const Spacer(),
                 Text(price),
               ],
-            )
+            ),
           ],
         ),
       ],

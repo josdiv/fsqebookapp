@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
@@ -43,11 +44,13 @@ class HomeTrendingWidget extends StatelessWidget {
           child: Row(
             children: trendingBookList
                 .map(
-                  (item) => GestureDetector(
-                    onTap: () => toBookDetails(
-                      id: item.trendingId,
-                      context: context,
-                    ),
+                  (item) =>
+                  GestureDetector(
+                    onTap: () =>
+                        toBookDetails(
+                          id: item.trendingId,
+                          context: context,
+                        ),
                     child: homeCardWidget(
                       title: item.trendingTitle,
                       url: item.trendingImage,
@@ -56,7 +59,7 @@ class HomeTrendingWidget extends StatelessWidget {
                       context: context,
                     ),
                   ),
-                )
+            )
                 .toList(),
           ),
         ),
@@ -72,43 +75,72 @@ class HomeTrendingWidget extends StatelessWidget {
     required BuildContext context,
   }) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / 2.5,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width / 2.5,
       child: Column(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width / 2.5,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width / 2.5,
             height: 250,
             margin: EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
+            child: ClipRRect(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(10),
                 topLeft: Radius.circular(5),
                 bottomLeft: Radius.circular(5),
                 bottomRight: Radius.circular(10),
               ),
-              image: DecorationImage(
-                image: NetworkImage(url),
-                fit: BoxFit.cover,
-              ),
-            ),
-            alignment: Alignment.topLeft,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-              decoration: BoxDecoration(
-                  color: AppColors.orangeColor,
-                  borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(5))),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              child: Stack(
+                alignment: Alignment.topLeft,
                 children: [
-                  SvgPicture.asset('assets/icons/premium.svg'),
-                  HSpace(4),
-                  Text(
-                    bookPrice.toLowerCase() == 'free' ? 'Free' : 'Premium',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                  CachedNetworkImage(
+                    imageUrl: url,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                    placeholder: (context, url) =>
+                        Image.asset(
+                          'assets/images/book_placeholder.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                    errorWidget: (context, url, error) =>
+                        Image.asset(
+                          'assets/images/book_placeholder.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.orangeColor,
+                      borderRadius:
+                      BorderRadius.only(bottomRight: Radius.circular(5)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset('assets/icons/premium.svg'),
+                        HSpace(4),
+                        Text(
+                          bookPrice.toLowerCase() == 'free'
+                              ? 'Free'
+                              : 'Premium',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -134,7 +166,7 @@ class HomeTrendingWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFF424242),
-                    fontWeight: FontWeight.w600
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 VSpace(4),

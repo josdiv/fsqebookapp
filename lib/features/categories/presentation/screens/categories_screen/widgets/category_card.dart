@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/theme/app_colors.dart';
@@ -16,34 +17,38 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double cardWidth = width ?? MediaQuery.of(context).size.width;
+
     return Stack(
       children: [
         Container(
-          width: width ?? MediaQuery.of(context).size.width,
+          width: cardWidth,
           height: 121,
-          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              image: NetworkImage(url),
-              fit: BoxFit.cover,
-            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3), // Shadow color
-                spreadRadius: 0, // No spread
-                blurRadius: 15, // How soft the shadow should be
-                offset: Offset(0, 2), // Moves shadow 10px downward
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 15,
+                offset: Offset(0, 2),
               ),
             ],
           ),
-          alignment: Alignment.bottomLeft,
-          child: Text(
-            name,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: CachedNetworkImage(
+              imageUrl: url,
+              fit: BoxFit.cover,
+              width: cardWidth,
+              height: 121,
+              placeholder: (context, url) => Image.asset(
+                'assets/images/book_placeholder.png',
+                fit: BoxFit.cover,
+              ),
+              errorWidget: (context, url, error) => Image.asset(
+                'assets/images/book_placeholder.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -52,27 +57,42 @@ class CategoryCard extends StatelessWidget {
           left: 0,
           right: 0,
           child: Container(
-            height: 60, // Adjust height for a softer fade
+            height: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
               ),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
                   AppColors.redColor.withOpacity(0.0),
-                  // Fully transparent start (smooth blend)
                   AppColors.redColor.withOpacity(0.1),
-                  // Very light shadow
                   AppColors.redColor.withOpacity(0.3),
-                  // Medium shadow
                   AppColors.redColor.withOpacity(0.5),
-                  // Darkest shadow at bottom
                 ],
-                stops: [0.0, 0.3, 0.7, 1.0], // Controls blending smoothness
+                stops: [0.0, 0.3, 0.7, 1.0],
               ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 10,
+          left: 10,
+          child: Text(
+            name,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  offset: Offset(0, 1),
+                  blurRadius: 2,
+                  color: Colors.black38,
+                )
+              ],
             ),
           ),
         ),

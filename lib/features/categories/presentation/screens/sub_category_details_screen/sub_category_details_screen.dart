@@ -60,10 +60,10 @@ class SubCategoryDetailsGrid extends StatelessWidget {
         ) : GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // 2 items per row
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 0,
             childAspectRatio: (MediaQuery.of(context).size.width / 2) /
-                370, // Adjust to your needs
+                400, // Adjust to your needs
           ),
           itemCount: categories.length,
           itemBuilder: (context, index) {

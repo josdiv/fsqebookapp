@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -78,36 +79,55 @@ class RelatedBookWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width / 2.5,
             height: 250,
             margin: EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
+            child: ClipRRect(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(10),
                 topLeft: Radius.circular(5),
                 bottomLeft: Radius.circular(5),
                 bottomRight: Radius.circular(10),
               ),
-              image: DecorationImage(
-                image: NetworkImage(url),
-                fit: BoxFit.cover,
-              ),
-            ),
-            alignment: Alignment.topLeft,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-              decoration: BoxDecoration(
-                  color: AppColors.orangeColor,
-                  borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(5))),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              child: Stack(
+                alignment: Alignment.topLeft,
                 children: [
-                  SvgPicture.asset('assets/icons/premium.svg'),
-                  HSpace(4),
-                  Text(
-                    "Premium",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                  CachedNetworkImage(
+                    imageUrl: url,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                    placeholder: (context, url) => Image.asset(
+                      'assets/images/book_placeholder.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/book_placeholder.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.orangeColor,
+                      borderRadius:
+                      BorderRadius.only(bottomRight: Radius.circular(5)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset('assets/icons/premium.svg'),
+                        HSpace(4),
+                        Text(
+                          bookPrice.toLowerCase() == 'free' ? 'Free' : 'Premium',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -131,9 +151,39 @@ class RelatedBookWidget extends StatelessWidget {
                   'by FourSquare Gospel Church',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Color(0xFF424242),
+                    fontWeight: FontWeight.w600,
                   ),
+                ),
+                VSpace(4),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      size: 17,
+                      color: AppColors.purpleColor,
+                    ),
+                    Text(
+                      '$rating',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      bookPrice,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

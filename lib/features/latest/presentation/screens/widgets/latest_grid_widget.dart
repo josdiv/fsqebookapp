@@ -17,10 +17,10 @@ class LatestGridWidget extends StatelessWidget {
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // 2 items per row
-            crossAxisSpacing: 0,
+            crossAxisSpacing: 15,
             mainAxisSpacing: 0,
             childAspectRatio: (MediaQuery.of(context).size.width / 2) /
-                370, // Adjust to your needs
+                400, // Adjust to your needs
           ),
           itemCount: latestBooks.length,
           itemBuilder: (context, index) {
