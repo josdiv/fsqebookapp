@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../sign_up/domain/entity/user_entity.dart';
+
 class ProfileEntity extends Equatable {
   const ProfileEntity({
     required this.userId,
@@ -8,8 +10,14 @@ class ProfileEntity extends Equatable {
     required this.userEmail,
     required this.profileImage,
     required this.createdAt,
+    required this.listFavoriteBook,
+    required this.listReadingBook,
+    required this.listDownloadBook,
   });
 
+  final List<FavouriteBookEntity> listFavoriteBook;
+  final List<ReadingBookEntity> listReadingBook;
+  final List<DownloadedBookEntity> listDownloadBook;
   final String userId;
   final String userName;
   final String userPhone;
@@ -25,7 +33,12 @@ class ProfileEntity extends Equatable {
           userEmail: '',
           profileImage: '',
           createdAt: '',
+          listReadingBook: const [],
+          listDownloadBook: const [],
+          listFavoriteBook: const [],
         );
+
+  bool get hasReadingBooks => listReadingBook.isNotEmpty;
 
   @override
   List<Object?> get props => throw [
@@ -35,5 +48,8 @@ class ProfileEntity extends Equatable {
         userEmail,
         profileImage,
         createdAt,
+        listDownloadBook,
+        listFavoriteBook,
+        listReadingBook,
       ];
 }

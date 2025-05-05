@@ -95,7 +95,7 @@ class ProfileRemoteDatasourceImpl implements ProfileRemoteDatasource {
         );
       }
 
-      return ProfileEntityModel.fromMap(body['userProfile']);
+      return ProfileEntityModel.fromMap(body);
     } on APIException {
       rethrow;
     } catch (e) {

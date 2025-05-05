@@ -1,5 +1,8 @@
 import 'package:foursquare_ebbok_app/features/profile/domain/entity/profile_entity.dart';
 
+import '../../../../core/utils/typedefs/typedefs.dart';
+import '../../../sign_up/data/model/user_entity_model.dart';
+
 class ProfileEntityModel extends ProfileEntity {
   const ProfileEntityModel({
     required super.userId,
@@ -8,16 +11,39 @@ class ProfileEntityModel extends ProfileEntity {
     required super.userEmail,
     required super.profileImage,
     required super.createdAt,
+    required super.listDownloadBook,
+    required super.listFavoriteBook,
+    required super.listReadingBook,
   });
 
   factory ProfileEntityModel.fromMap(Map<String, dynamic> map) {
+    final dynamicFavoriteBook = map['listFavoriteBook'] as List<dynamic>;
+    final dynamicReadingBook = map['listReadingBook'] as List<dynamic>;
+    final dynamicDownloadBook = map['listDownloadBook'] as List<dynamic>;
+
+    final listFavoriteBook = dynamicFavoriteBook
+        .map((e) => FavouriteBookEntityModel.fromMap(e as DataMap))
+        .toList();
+
+    final listReadingBook = dynamicReadingBook
+        .map((e) => ReadingBookEntityModel.fromMap(e as DataMap))
+        .toList();
+
+    final listDownloadBook = dynamicDownloadBook
+        .map((e) => DownloadedBookEntityModel.fromMap(e as DataMap))
+        .toList();
+    final userProfile = map['userProfile'] as DataMap;
+
     return ProfileEntityModel(
-      userId: map['userId'].toString(),
-      userName: map['userName'] as String,
-      userPhone: map['userPhone'] as String,
-      userEmail: map['userEmail'] as String,
-      profileImage: map['profileImage'] as String,
-      createdAt: map['createdAt'] as String,
+      userId: userProfile['userId'].toString(),
+      userName: userProfile['userName'] as String,
+      userPhone: userProfile['userPhone'] as String,
+      userEmail: userProfile['userEmail'] as String,
+      profileImage: userProfile['profileImage'] as String,
+      createdAt: userProfile['createdAt'] as String,
+      listReadingBook: listReadingBook,
+      listFavoriteBook: listFavoriteBook,
+      listDownloadBook: listDownloadBook,
     );
   }
 }

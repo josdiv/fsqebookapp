@@ -119,20 +119,29 @@ class BookDetailsBuyBookButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 12),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          color: AppColors.redColor, borderRadius: BorderRadius.circular(20)),
-      alignment: Alignment.center,
-      child: Text(
-        "Buy Book".toUpperCase(),
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+    return BlocBuilder<BookDetailsCubit, BookDetailsState>(
+      builder: (context, state) {
+        return state is BookDetailsLoadedState
+            ? Container(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: AppColors.redColor,
+                    borderRadius: BorderRadius.circular(20)),
+                alignment: Alignment.center,
+                child: Text(
+                  state.entity.bookPrice.toLowerCase() == 'free'
+                      ? "READ BOOK"
+                      : "BUY BOOK",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            : SizedBox();
+      },
     );
   }
 }
