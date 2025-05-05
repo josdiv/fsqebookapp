@@ -117,7 +117,7 @@ class LoginScreenModel extends Equatable {
   LoginScreenModel toggleRememberMe() => copyWith(rememberMe: !rememberMe);
 
   bool get login =>
-      email.isNotEmpty && validatePassword(password) == null && acceptPolicy;
+      email.isNotEmpty && validatePassword(password) == null;
 
   DataMap get data => {
         'email': email,
