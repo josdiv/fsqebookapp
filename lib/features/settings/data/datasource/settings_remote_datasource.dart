@@ -14,7 +14,7 @@ abstract interface class SettingsRemoteDatasource {
   Future<void> requestAccountDeletion(DataMap data);
 }
 
-const String kAboutUs = "/terms.php?type=terms";
+const String kAboutUs = "/about.php?type=about";
 const String kTermsOfUse = "/terms.php?type=terms";
 const kDeleteAccount = "/deleteaccount.php?type=deleteaccount&authid=$authId";
 
@@ -48,7 +48,7 @@ class SettingsRemoteDatasourceImpl implements SettingsRemoteDatasource {
         );
       }
 
-      final termsContent = body['termsContent'] as String;
+      final termsContent = body['aboutContent'] as String;
       final document = html_parser.parse(termsContent);
 
       return document.body?.text ?? "No content found";

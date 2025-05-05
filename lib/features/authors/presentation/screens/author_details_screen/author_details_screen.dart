@@ -74,9 +74,9 @@ class AuthorBooksWidget extends StatelessWidget {
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 0,
-                  childAspectRatio: (MediaQuery.of(context).size.width / 2) / 370,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: (MediaQuery.of(context).size.width / 2) / 400,
                 ),
                 itemCount: authorBooks.length,
                 itemBuilder: (context, index) {
