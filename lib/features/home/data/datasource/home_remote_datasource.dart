@@ -51,7 +51,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
 
       if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
         final message = body['message'] as String;
-        throw ServerException(
+        throw APIException(
           message: message,
           statusCode: response.statusCode,
         );
@@ -61,7 +61,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
     } on APIException {
       rethrow;
     } on TimeoutException {
-      throw ServerException(message: timeoutMessage, statusCode: 409);
+      throw APIException(message: timeoutMessage, statusCode: 409);
     } catch (e) {
       throw APIException(
         message: e.toString(),
@@ -96,7 +96,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
 
       if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
         final message = body['message'] as String;
-        throw ServerException(
+        throw APIException(
           message: message,
           statusCode: response.statusCode,
         );
@@ -112,7 +112,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
     } on APIException {
       rethrow;
     } on TimeoutException {
-      throw ServerException(message: timeoutMessage, statusCode: 409);
+      throw APIException(message: timeoutMessage, statusCode: 409);
     } catch (e) {
       throw APIException(
         message: e.toString(),
@@ -150,7 +150,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
 
       if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
         final message = body['message'] as String;
-        throw ServerException(
+        throw APIException(
           message: message,
           statusCode: response.statusCode,
         );
@@ -158,7 +158,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
     } on APIException {
       rethrow;
     } on TimeoutException {
-      throw ServerException(
+      throw APIException(
         message: timeoutMessage,
         statusCode: 409,
       );

@@ -42,7 +42,7 @@ class SettingsRemoteDatasourceImpl implements SettingsRemoteDatasource {
 
       if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
         final message = body['message'] as String;
-        throw ServerException(
+        throw APIException(
           message: message,
           statusCode: response.statusCode,
         );
@@ -81,7 +81,7 @@ class SettingsRemoteDatasourceImpl implements SettingsRemoteDatasource {
 
       if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
         final message = body['message'] as String;
-        throw ServerException(
+        throw APIException(
           message: message,
           statusCode: response.statusCode,
         );
@@ -125,7 +125,7 @@ class SettingsRemoteDatasourceImpl implements SettingsRemoteDatasource {
 
       if (status.toLowerCase() == 'failed' || status.toLowerCase() == 'error') {
         final message = body['message'] as String;
-        throw ServerException(
+        throw APIException(
           message: message,
           statusCode: response.statusCode,
         );
