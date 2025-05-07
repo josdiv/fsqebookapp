@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_close_app/flutter_close_app.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
@@ -168,81 +169,91 @@ class _BottomNavBarState extends State<BottomNavBar> {
                     Loader.hide();
                   }
                 },
-                child: Scaffold(
-                  backgroundColor: _currentIndex == 4
-                      ? AppColors.redColor
-                      : Color(0xFFF5F5F5),
-                  body: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: _currentIndex == 4 ? 0.0 : 20.0),
-                    child: screens[_currentIndex],
-                  ),
-                  bottomNavigationBar: Material(
-                    elevation: 10.0,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
-                    child: BottomNavigationBar(
-                      backgroundColor: Colors.white,
-                      currentIndex: _currentIndex,
-                      items: icons
-                          .map(
-                            (icon) => BottomNavigationBarItem(
-                              backgroundColor: Colors.white,
-                              icon: GestureDetector(
-                                onTap: () => setState(() {
-                                  _currentIndex = icons.indexOf(icon);
-                                  if (icons.indexOf(icon) == 0) {
-                                    context
-                                        .read<HomeCubit>()
-                                        .getDashboardDataEvent();
-                                  }
-                                  if (icons.indexOf(icon) == 1) {
-                                    context
-                                        .read<LatestCubit>()
-                                        .getLatestBooksEvent();
-                                  }
-                                  if (icons.indexOf(icon) == 2) {
-                                    context
-                                        .read<CategoriesCubit>()
-                                        .getCategoriesEvent();
-                                  }
-                                  if (icons.indexOf(icon) == 3) {
-                                    context
-                                        .read<AuthorsCubit>()
-                                        .getAuthorsEvent();
-                                  }
-                                }),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 10,
-                                  ),
-                                  decoration:
-                                      _currentIndex == icons.indexOf(icon)
-                                          ? BoxDecoration(
-                                              // border: Border.all(),
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                              color: AppColors.purpleColor,
-                                            )
-                                          : null,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/$icon.svg',
-                                    width: 30,
-                                    height: 30,
-                                    colorFilter:
-                                        _currentIndex != icons.indexOf(icon)
-                                            ? null
-                                            : ColorFilter.mode(
-                                                Colors.white, BlendMode.srcIn),
+                child: FlutterCloseAppPage(
+                  onCloseFailed: () {
+                    // Condition does not match: the first press or the second press interval is more than 2 seconds, display a prompt message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Press again to exit 🎉"),
+                      ),
+                    );
+                  },
+                  child: Scaffold(
+                    backgroundColor: _currentIndex == 4
+                        ? AppColors.redColor
+                        : Color(0xFFF5F5F5),
+                    body: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: _currentIndex == 4 ? 0.0 : 20.0),
+                      child: screens[_currentIndex],
+                    ),
+                    bottomNavigationBar: Material(
+                      elevation: 10.0,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                      child: BottomNavigationBar(
+                        backgroundColor: Colors.white,
+                        currentIndex: _currentIndex,
+                        items: icons
+                            .map(
+                              (icon) => BottomNavigationBarItem(
+                                backgroundColor: Colors.white,
+                                icon: GestureDetector(
+                                  onTap: () => setState(() {
+                                    _currentIndex = icons.indexOf(icon);
+                                    if (icons.indexOf(icon) == 0) {
+                                      context
+                                          .read<HomeCubit>()
+                                          .getDashboardDataEvent();
+                                    }
+                                    if (icons.indexOf(icon) == 1) {
+                                      context
+                                          .read<LatestCubit>()
+                                          .getLatestBooksEvent();
+                                    }
+                                    if (icons.indexOf(icon) == 2) {
+                                      context
+                                          .read<CategoriesCubit>()
+                                          .getCategoriesEvent();
+                                    }
+                                    if (icons.indexOf(icon) == 3) {
+                                      context
+                                          .read<AuthorsCubit>()
+                                          .getAuthorsEvent();
+                                    }
+                                  }),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: 10,
+                                    ),
+                                    decoration:
+                                        _currentIndex == icons.indexOf(icon)
+                                            ? BoxDecoration(
+                                                // border: Border.all(),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                                color: AppColors.purpleColor,
+                                              )
+                                            : null,
+                                    child: SvgPicture.asset(
+                                      'assets/icons/$icon.svg',
+                                      width: 30,
+                                      height: 30,
+                                      colorFilter: _currentIndex !=
+                                              icons.indexOf(icon)
+                                          ? null
+                                          : ColorFilter.mode(
+                                              Colors.white, BlendMode.srcIn),
+                                    ),
                                   ),
                                 ),
+                                label: '',
                               ),
-                              label: '',
-                            ),
-                          )
-                          .toList(),
+                            )
+                            .toList(),
+                      ),
                     ),
                   ),
                 ),
