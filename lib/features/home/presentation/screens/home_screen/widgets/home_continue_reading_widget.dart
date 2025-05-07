@@ -34,10 +34,11 @@ class HomeContinueReadingWidget extends StatelessWidget {
             ),
             VSpace(10),
             SizedBox(
-              height: 230,
+              height: 230, // keep this if you want
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                // remove vertical padding
                 itemCount: books.length,
                 separatorBuilder: (_, __) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
@@ -46,7 +47,7 @@ class HomeContinueReadingWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 170,
+                        height: 160, // reduce image height
                         width: 120,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -58,21 +59,24 @@ class HomeContinueReadingWidget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        book.readingBookTitle,
-                        // textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
+                      SizedBox(
+                        width: 120,
+                        child: Text(
+                          book.readingBookTitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       )
                     ],
                   );
                 },
               ),
-            ),
+            )
+
             // VSpace(20),
           ],
         );
