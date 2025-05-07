@@ -5,6 +5,8 @@ import 'package:html/parser.dart' as html_parser;
 class BookDetailsEntityModel extends BookDetailsEntity {
   const BookDetailsEntityModel({
     required super.bookId,
+    required super.favStatus,
+    required super.purchasedStatus,
     required super.bookAccess,
     required super.bookImg,
     required super.bookTitle,
@@ -35,6 +37,8 @@ class BookDetailsEntityModel extends BookDetailsEntity {
 
     return BookDetailsEntityModel(
       bookId: bookDetail['bookId'].toString(),
+      favStatus: json['favStatus'],
+      purchasedStatus: json['purchasedStatus'],
       bookAccess: bookDetail['bookAccess'] as String,
       bookImg: bookDetail['bookImg'] as String,
       bookTitle: bookDetail['bookTitle'] as String,

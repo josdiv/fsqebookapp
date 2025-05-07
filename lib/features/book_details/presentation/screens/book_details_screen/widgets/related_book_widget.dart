@@ -7,6 +7,9 @@ import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 
+import '../../../../../profile/presentation/cubits/profile_cubit.dart';
+import '../../../../../status/presentation/cubits/status_cubit.dart';
+
 class RelatedBookWidget extends StatelessWidget {
   const RelatedBookWidget({super.key});
 
@@ -17,6 +20,10 @@ class RelatedBookWidget extends StatelessWidget {
         final model = state.model;
         final getBookDetailsModel = model.getBookDetailsModel;
         final entity = getBookDetailsModel.entity;
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
+        final profile =
+            context.read<ProfileCubit>().state.model.networkModel.profile;
 
         final relatedBooks = entity.relatedBookList;
 
@@ -47,7 +54,10 @@ class RelatedBookWidget extends StatelessWidget {
                     .map(
                       (item) => GestureDetector(
                         onTap: () => toBookDetails(
-                          id: item.relatedBookId,
+                          data: {
+                            'id': item.relatedBookId,
+                            'userId': isUserLoggedIn ? profile.userId : '',
+                          },
                           context: context,
                         ),
                         child: homeCardWidget(

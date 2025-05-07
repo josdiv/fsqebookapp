@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 class BookDetailsEntity extends Equatable {
   const BookDetailsEntity({
     required this.bookId,
+    required this.favStatus,
+    required this.purchasedStatus,
     required this.bookAccess,
     required this.bookImg,
     required this.bookTitle,
@@ -18,6 +20,8 @@ class BookDetailsEntity extends Equatable {
   const BookDetailsEntity.initial()
       : this(
           bookId: '',
+          favStatus: false,
+          purchasedStatus: false,
           bookAccess: '',
           bookImg: '',
           bookTitle: '',
@@ -31,6 +35,8 @@ class BookDetailsEntity extends Equatable {
         );
 
   final String bookId;
+  final bool favStatus;
+  final bool purchasedStatus;
   final String bookAccess;
   final String bookImg;
   final String bookTitle;
@@ -45,6 +51,8 @@ class BookDetailsEntity extends Equatable {
   @override
   List<Object?> get props => [
         bookId,
+        favStatus,
+        purchasedStatus,
         bookAccess,
         bookImg,
         bookTitle,

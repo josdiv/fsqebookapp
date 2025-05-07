@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
 
+import '../../../../profile/presentation/cubits/profile_cubit.dart';
+import '../../../../status/presentation/cubits/status_cubit.dart';
 import 'latest_card_widget.dart';
 
 class LatestGridWidget extends StatelessWidget {
@@ -13,6 +15,10 @@ class LatestGridWidget extends StatelessWidget {
     return BlocBuilder<LatestCubit, LatestState>(
       builder: (context, state) {
         final latestBooks = state.model.latestBooks;
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
+        final profile =
+            context.read<ProfileCubit>().state.model.networkModel.profile;
 
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -27,7 +33,10 @@ class LatestGridWidget extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 toBookDetails(
-                  id: latestBooks[index].bookId,
+                  data: {
+                    'id': latestBooks[index].bookId,
+                    'userId': isUserLoggedIn ? profile.userId : '',
+                  },
                   context: context,
                 );
               },

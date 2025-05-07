@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import '../../../../core/utils/typedefs/typedefs.dart';
 
 abstract interface class BookDetailsRemoteDatasource {
-  Future<BookDetailsEntityModel> getBookDetails(String id);
+  Future<BookDetailsEntityModel> getBookDetails(DataMap data);
 
   Future<void> reportBook(DataMap data);
 
@@ -37,11 +37,14 @@ class BookDetailsRemoteDatasourceImpl implements BookDetailsRemoteDatasource {
   final http.Client _client;
 
   @override
-  Future<BookDetailsEntityModel> getBookDetails(String id) async {
+  Future<BookDetailsEntityModel> getBookDetails(DataMap data) async {
     try {
+      final id = data['id'] as String;
+      final userId = data['userId'] as String;
+
       final response = await _client.post(
         Uri.parse(
-          "$kBaseUrl$kBookDetails?type=bookdetail&authid=$authId&bookId=$id",
+          "$kBaseUrl$kBookDetails?type=bookdetail&authid=$authId&bookId=$id&userId=$userId",
         ),
       );
 

@@ -3,7 +3,7 @@ import 'package:foursquare_ebbok_app/features/book_details/domain/entity/book_de
 import 'package:foursquare_ebbok_app/features/book_details/domain/entity/book_url_entity.dart';
 
 abstract interface class BookDetailsRepository {
-  ResultFuture<BookDetailsEntity> getBookDetails(String id);
+  ResultFuture<BookDetailsEntity> getBookDetails(DataMap data);
 
   ResultVoid reportBook(DataMap data);
 

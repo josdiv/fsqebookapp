@@ -7,6 +7,8 @@ import 'package:foursquare_ebbok_app/features/authors/presentation/cubits/author
 import 'package:foursquare_ebbok_app/features/latest/presentation/screens/widgets/latest_card_widget.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../profile/presentation/cubits/profile_cubit.dart';
+import '../../../../status/presentation/cubits/status_cubit.dart';
 
 class AuthorDetailsScreen extends StatelessWidget {
   const AuthorDetailsScreen({super.key});
@@ -53,6 +55,10 @@ class AuthorBooksWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthorsCubit, AuthorsState>(
       builder: (context, state) {
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
+        final profile =
+            context.read<ProfileCubit>().state.model.networkModel.profile;
         final authorBooks =
             state.model.getSingleAuthorNetworkModel.author.authorBooks;
         return authorBooks.isEmpty
@@ -83,7 +89,10 @@ class AuthorBooksWidget extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       toBookDetails(
-                        id: authorBooks[index].bookId,
+                        data: {
+                          'id': authorBooks[index].bookId,
+                          'userId': isUserLoggedIn ? profile.userId : '',
+                        },
                         context: context,
                       );
                     },

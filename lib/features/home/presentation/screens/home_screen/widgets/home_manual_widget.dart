@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
+import '../../../../../profile/presentation/cubits/profile_cubit.dart';
+import '../../../../../status/presentation/cubits/status_cubit.dart';
 import '../../../../domain/entity/home_entity.dart';
 
 class HomeManualWidget extends StatelessWidget {
@@ -19,6 +22,10 @@ class HomeManualWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isUserLoggedIn =
+        context.read<StatusCubit>().state.model.isUserLoggedIn;
+    final profile =
+        context.read<ProfileCubit>().state.model.networkModel.profile;
     return Column(
       children: [
         Row(
@@ -46,7 +53,10 @@ class HomeManualWidget extends StatelessWidget {
                 .map(
                   (item) => GestureDetector(
                     onTap: () => toBookDetails(
-                      id: item.manualId,
+                      data: {
+                        'id': item.manualId,
+                        'userId': isUserLoggedIn ? profile.userId : '',
+                      },
                       context: context,
                     ),
                     child: homeCardWidget(

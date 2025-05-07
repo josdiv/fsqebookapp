@@ -13,9 +13,9 @@ class BookDetailsRepositoryImpl implements BookDetailsRepository {
   final BookDetailsRemoteDatasource _remoteDatasource;
 
   @override
-  ResultFuture<BookDetailsEntity> getBookDetails(String id) async {
+  ResultFuture<BookDetailsEntity> getBookDetails(DataMap data) async {
     try {
-      final result = await _remoteDatasource.getBookDetails(id);
+      final result = await _remoteDatasource.getBookDetails(data);
       return Right(result);
     } on APIException catch (e) {
       return Left(

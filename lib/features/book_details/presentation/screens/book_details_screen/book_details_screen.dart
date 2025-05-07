@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
+import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/about_this_book_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/book_details_header.dart';
@@ -13,9 +14,9 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/
 import '../../../../../core/theme/app_colors.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  const BookDetailsScreen({super.key, required this.id});
+  const BookDetailsScreen({super.key, required this.data});
 
-  final String id;
+  final DataMap data;
 
   @override
   State<BookDetailsScreen> createState() => _BookDetailsScreenState();
@@ -25,7 +26,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<BookDetailsCubit>().getBookDetailsEvent(widget.id);
+    context.read<BookDetailsCubit>().getBookDetailsEvent(widget.data);
   }
 
   @override

@@ -38,7 +38,7 @@ class BookDetailsCubit extends Cubit<BookDetailsState> {
     emit(BookDetailsScreenState(model));
   }
 
-  Future<void> getBookDetailsEvent(String id) async {
+  Future<void> getBookDetailsEvent(DataMap data) async {
     final model = state.model;
     final getBookDetailsModel = model.getBookDetailsModel;
 
@@ -54,7 +54,7 @@ class BookDetailsCubit extends Cubit<BookDetailsState> {
       ),
     );
 
-    final result = await _getBookDetails(id);
+    final result = await _getBookDetails(data);
 
     result.fold(
       (l) => emit(

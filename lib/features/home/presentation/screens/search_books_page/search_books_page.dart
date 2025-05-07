@@ -6,6 +6,8 @@ import 'package:foursquare_ebbok_app/features/home/domain/entity/searched_entity
 import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 
 import '../../../../../core/helper/navigate_to_book_details.dart';
+import '../../../../profile/presentation/cubits/profile_cubit.dart';
+import '../../../../status/presentation/cubits/status_cubit.dart';
 
 class SearchBooksPage extends StatelessWidget {
   const SearchBooksPage({super.key});
@@ -27,6 +29,11 @@ class SearchBooksPage extends StatelessWidget {
       ),
       body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
+          final isUserLoggedIn =
+              context.read<StatusCubit>().state.model.isUserLoggedIn;
+          final profile =
+              context.read<ProfileCubit>().state.model.networkModel.profile;
+
           final model = state.model;
           final searchedModel = model.model2;
 
@@ -41,7 +48,10 @@ class SearchBooksPage extends StatelessWidget {
               itemCount: books.length,
               itemBuilder: (_, index) => GestureDetector(
                 onTap: () => toBookDetails(
-                  id: books[index].bookId,
+                  data: {
+                    'id': books[index].bookId,
+                    'userId': isUserLoggedIn ? profile.userId : '',
+                  },
                   context: context,
                 ),
                 child: BookItem(book: books[index]),
