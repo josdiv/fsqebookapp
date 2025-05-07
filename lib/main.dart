@@ -14,8 +14,11 @@ import 'package:foursquare_ebbok_app/features/ratings/presentation/cubits/rating
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/presentation/cubits/sign_up_cubit.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/injection_container.dart';
+import 'features/bottom_nav_bar/bottom_nav_bar.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -44,6 +47,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  Widget? _initialScreen;
 
   @override
   void initState() {
@@ -54,9 +58,17 @@ class _MyAppState extends State<MyApp> {
   Future<void> initialization() async {
     print('Pausing...');
     await Future.delayed(const Duration(seconds: 3));
-    print('Unpausing...');
+
+    final prefs = await SharedPreferences.getInstance();
+    final hasOnboarded = prefs.getBool('hasOnboarded') ?? false;
+
+    setState(() {
+      _initialScreen = hasOnboarded ? const BottomNavBar() : const OnboardingScreen();
+    });
+
     FlutterNativeSplash.remove();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +77,8 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<LatestCubit>(create: (context) => sl<LatestCubit>()),
         BlocProvider<HomeCubit>(create: (context) => sl<HomeCubit>()),
         BlocProvider<SettingsCubit>(create: (context) => sl<SettingsCubit>()),
-        BlocProvider<BookDetailsCubit>(
-            create: (context) => sl<BookDetailsCubit>()),
-        BlocProvider<CategoriesCubit>(
-            create: (context) => sl<CategoriesCubit>()),
+        BlocProvider<BookDetailsCubit>(create: (context) => sl<BookDetailsCubit>()),
+        BlocProvider<CategoriesCubit>(create: (context) => sl<CategoriesCubit>()),
         BlocProvider<AuthorsCubit>(create: (context) => sl<AuthorsCubit>()),
         BlocProvider<SignUpCubit>(create: (context) => sl<SignUpCubit>()),
         BlocProvider<RatingsCubit>(create: (context) => sl<RatingsCubit>()),
@@ -83,10 +93,13 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: OnboardingScreen(),
+        home: _initialScreen ?? const Scaffold( // show loader while deciding
+          body: Center(child: CircularProgressIndicator()),
+        ),
       ),
     );
   }
+
 }
 
 //Your app-specific password is:

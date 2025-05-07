@@ -6,6 +6,7 @@ import 'package:foursquare_ebbok_app/core/ui/widgets/default_button.dart';
 import 'package:foursquare_ebbok_app/features/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:foursquare_ebbok_app/features/onboarding/presentation/model/onboarding_model.dart';
 import 'package:foursquare_ebbok_app/features/onboarding/presentation/screens/widgets/onboarding_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -26,6 +27,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     }
+  }
+
+  Future<void> setOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasOnboarded', true);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setOnboarding();
   }
 
   @override
