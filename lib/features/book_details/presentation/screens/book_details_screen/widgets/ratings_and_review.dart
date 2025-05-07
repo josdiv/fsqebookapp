@@ -52,16 +52,17 @@ class RatingsAndReview extends StatelessWidget {
         final loading = state.model.screenModel.loading;
         return BlocBuilder<BookDetailsCubit, BookDetailsState>(
           builder: (context, state) {
-            final ratings = state is BookDetailsLoadedState
-                ? state.entity.bookAverageRating
-                : 0;
-            final ratingCount = state is BookDetailsLoadedState
-                ? state.entity.bookReviewCount
-                : 0;
+            final model = state.model;
+            final getBookDetailsModel = model.getBookDetailsModel;
+            final entity = getBookDetailsModel.entity;
+
+            final ratings = entity.bookAverageRating;
+            final ratingCount = entity.bookReviewCount;
 
             return InkWell(
-              onTap: () => context.read<RatingsCubit>().getBookRatingsEvent(
-                  state is BookDetailsLoadedState ? state.entity.bookId : '0'),
+              onTap: () => context
+                  .read<RatingsCubit>()
+                  .getBookRatingsEvent(entity.bookId),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

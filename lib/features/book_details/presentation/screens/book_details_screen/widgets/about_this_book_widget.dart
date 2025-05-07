@@ -11,7 +11,11 @@ class AboutThisBookWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookDetailsCubit, BookDetailsState>(
       builder: (context, state) {
-        return state is BookDetailsLoadedState ? Column(
+        final model = state.model;
+        final getBookDetailsModel = model.getBookDetailsModel;
+        final entity = getBookDetailsModel.entity;
+
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -23,10 +27,10 @@ class AboutThisBookWidget extends StatelessWidget {
               ),
             ),
             Text(
-              state.entity.bookDescription,
+              entity.bookDescription,
             )
           ],
-        ) : SizedBox();
+        );
       },
     );
   }

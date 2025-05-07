@@ -15,6 +15,21 @@ class BookDetailsEntity extends Equatable {
     required this.relatedBookList,
   });
 
+  const BookDetailsEntity.initial()
+      : this(
+          bookId: '',
+          bookAccess: '',
+          bookImg: '',
+          bookTitle: '',
+          authorName: '',
+          bookPrice: '',
+          bookDescription: '',
+          bookReviewCount: 0,
+          bookAverageRating: 0,
+          postViewCount: '',
+          relatedBookList: const [],
+        );
+
   final String bookId;
   final String bookAccess;
   final String bookImg;

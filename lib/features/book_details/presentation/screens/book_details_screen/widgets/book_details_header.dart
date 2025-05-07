@@ -12,8 +12,13 @@ class BookDetailsHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookDetailsCubit, BookDetailsState>(
       builder: (context, state) {
-        return (state is BookDetailsLoadedState)
-            ? SizedBox(
+        final model = state.model;
+        final getBookDetailsModel = model.getBookDetailsModel;
+        final entity = getBookDetailsModel.entity;
+
+        // final event = context.read<BookDetailsCubit>();
+
+        return SizedBox(
                 height: 180, // Give space for the image to float properly
                 child: Stack(
                   clipBehavior: Clip.none,
@@ -34,7 +39,7 @@ class BookDetailsHeader extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    state.entity.bookTitle,
+                                    entity.bookTitle,
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
@@ -42,7 +47,7 @@ class BookDetailsHeader extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "by ${state.entity.authorName}",
+                                    "by ${entity.authorName}",
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
@@ -56,7 +61,7 @@ class BookDetailsHeader extends StatelessWidget {
                                           "assets/icons/views.svg"),
                                       HSpace(6),
                                       Text(
-                                        state.entity.postViewCount,
+                                        entity.postViewCount,
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
@@ -76,7 +81,7 @@ class BookDetailsHeader extends StatelessWidget {
                                       color: Colors.red,
                                     ),
                                     child: Text(
-                                      state.entity.bookPrice,
+                                      entity.bookPrice,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -110,7 +115,7 @@ class BookDetailsHeader extends StatelessWidget {
                           ],
                           image: DecorationImage(
                             image: NetworkImage(
-                              state.entity.bookImg,
+                              entity.bookImg,
                             ),
                             fit: BoxFit.cover,
                           ),
@@ -119,8 +124,7 @@ class BookDetailsHeader extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
-            : const SizedBox();
+              );
       },
     );
   }

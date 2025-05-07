@@ -7,7 +7,12 @@ import 'package:foursquare_ebbok_app/features/authors/presentation/cubits/author
 import 'package:foursquare_ebbok_app/features/book_details/data/datasource/book_details_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/book_details/data/repository/book_details_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/repository/book_details_repository.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/download_book.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/get_book_details.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/read_book.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/report_book.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/toggle_favourite.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/write_review.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/categories/data/datasource/categories_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/categories/data/repository/categories_repository_impl.dart';
@@ -204,9 +209,19 @@ Future<void> _bookDetailsInit() async {
     ..registerFactory(
       () => BookDetailsCubit(
         getBookDetails: sl(),
+        reportBook: sl(),
+        toggleFavourite: sl(),
+        readBook: sl(),
+        downloadBook: sl(),
+        writeReview: sl(),
       ),
     )
     ..registerLazySingleton(() => GetBookDetails(sl()))
+    ..registerLazySingleton(() => ReportBook(sl()))
+    ..registerLazySingleton(() => ToggleFavourite(sl()))
+    ..registerLazySingleton(() => ReadBook(sl()))
+    ..registerLazySingleton(() => DownloadBook(sl()))
+    ..registerLazySingleton(() => WriteReview(sl()))
     ..registerLazySingleton<BookDetailsRepository>(
         () => BookDetailsRepositoryImpl(sl()))
     ..registerLazySingleton<BookDetailsRemoteDatasource>(

@@ -14,8 +14,12 @@ class RelatedBookWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookDetailsCubit, BookDetailsState>(
       builder: (context, state) {
-        final relatedBooks =
-            state is BookDetailsLoadedState ? state.entity.relatedBookList : [];
+        final model = state.model;
+        final getBookDetailsModel = model.getBookDetailsModel;
+        final entity = getBookDetailsModel.entity;
+
+        final relatedBooks = entity.relatedBookList;
+
         return Column(
           children: [
             Row(
@@ -112,7 +116,7 @@ class RelatedBookWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.orangeColor,
                       borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(5)),
+                          BorderRadius.only(bottomRight: Radius.circular(5)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -120,7 +124,9 @@ class RelatedBookWidget extends StatelessWidget {
                         SvgPicture.asset('assets/icons/premium.svg'),
                         HSpace(4),
                         Text(
-                          bookPrice.toLowerCase() == 'free' ? 'Free' : 'Premium',
+                          bookPrice.toLowerCase() == 'free'
+                              ? 'Free'
+                              : 'Premium',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,

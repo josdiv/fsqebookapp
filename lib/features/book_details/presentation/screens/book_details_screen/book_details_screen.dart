@@ -38,16 +38,38 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<BookDetailsCubit, BookDetailsState>(
       listener: (context, state) {
-        if (state is BookDetailsLoadedState) {
+        final model = state.model;
+        final getBookDetailsModel = model.getBookDetailsModel;
+        final event = context.read<BookDetailsCubit>();
+
+        if (getBookDetailsModel.loaded && Loader.isShown) {
           Loader.hide();
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              getBookDetailsModel: getBookDetailsModel.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
         }
 
-        if (state is BookDetailsErrorState) {
+        if (getBookDetailsModel.hasError && Loader.isShown) {
           Loader.hide();
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              getBookDetailsModel: getBookDetailsModel.copyWith(
+                error: '',
+              ),
+            ),
+          );
         }
       },
       builder: (context, state) {
-        if (state is BookDetailsLoadingState) {
+        final model = state.model;
+        final getBookDetailsModel = model.getBookDetailsModel;
+        // final event = context.read<BookDetailsCubit>();
+
+        if (getBookDetailsModel.loading) {
           commonLoader(context);
         }
         return Scaffold(
@@ -67,39 +89,33 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: state is BookDetailsLoadedState
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      VSpace(40),
-                      BookDetailsHeader(),
-                      VSpace(20),
-                      BookDetailsIcon(),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              VSpace(20),
-                              AboutThisBookWidget(),
-                              VSpace(20),
-                              RatingsAndReview(),
-                              VSpace(20),
-                              RelatedBookWidget(),
-                              // VSpace(20),
-                              // BookDetailsBuyBookButton(),
-                              VSpace(50),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                : state is BookDetailsErrorState
-                    ? Center(
-                        child: Text(state.error),
-                      )
-                    : const SizedBox(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                VSpace(40),
+                BookDetailsHeader(),
+                VSpace(20),
+                BookDetailsIcon(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        VSpace(20),
+                        AboutThisBookWidget(),
+                        VSpace(20),
+                        RatingsAndReview(),
+                        VSpace(20),
+                        RelatedBookWidget(),
+                        // VSpace(20),
+                        // BookDetailsBuyBookButton(),
+                        VSpace(50),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -121,26 +137,29 @@ class BookDetailsBuyBookButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookDetailsCubit, BookDetailsState>(
       builder: (context, state) {
-        return state is BookDetailsLoadedState
-            ? Container(
-                padding: EdgeInsets.symmetric(vertical: 12),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: AppColors.redColor,
-                    borderRadius: BorderRadius.circular(20)),
-                alignment: Alignment.center,
-                child: Text(
-                  state.entity.bookPrice.toLowerCase() == 'free'
-                      ? "READ BOOK"
-                      : "BUY BOOK",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            : SizedBox();
+        final model = state.model;
+        final getBookDetailsModel = model.getBookDetailsModel;
+        final entity = getBookDetailsModel.entity;
+        // final event = context.read<BookDetailsCubit>();
+
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: AppColors.redColor,
+              borderRadius: BorderRadius.circular(20)),
+          alignment: Alignment.center,
+          child: Text(
+            entity.bookPrice.toLowerCase() == 'free'
+                ? "READ BOOK"
+                : "BUY BOOK",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        );
       },
     );
   }

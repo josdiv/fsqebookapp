@@ -10,6 +10,7 @@ import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_scr
 import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/widgets/home_trending_widget.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/widgets/home_workbook_widget.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,6 +27,8 @@ class HomeScreen extends StatelessWidget {
             .networkModel
             .profile
             .hasReadingBooks;
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                       featuredBookList: homeData.featuredBookList,
                     ),
                     VSpace(20),
-                    if(hasReadingBooks) HomeContinueReadingWidget(),
+                    if (isUserLoggedIn && hasReadingBooks) HomeContinueReadingWidget(),
                     HomeTrendingWidget(
                       trendingBookTitle: homeData.trendingBookTitle,
                       trendingBookList: homeData.trendingBookList,
