@@ -54,14 +54,16 @@ class BookDetailsIcon extends StatelessWidget {
               icon: "Download",
               text: "Download",
               context: context,
-              onTap: () {},
             ),
             spacer(),
             iconWidget(
               icon: "read",
               text: "Read",
               context: context,
-              onTap: () {},
+              onTap: () => event.readBookEvent({
+                "userId": userId,
+                "bookId": bookId,
+              }),
             ),
             spacer(),
             iconWidget(

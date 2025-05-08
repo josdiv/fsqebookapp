@@ -11,6 +11,7 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/ratings_and_review.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/related_book_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/write_review_widget.dart';
+import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/pdf_viewer_screen/pdf_viewer_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -44,7 +45,43 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         final model = state.model;
         final getBookDetailsModel = model.getBookDetailsModel;
         final toggleFavouriteModel = model.toggleFavouriteModel;
+        final readBookModel = model.readBookModel;
         final event = context.read<BookDetailsCubit>();
+
+        if (readBookModel.loading) {
+          commonLoader(context);
+        }
+
+        if (readBookModel.hasError && Loader.isShown) {
+          Loader.hide();
+          showSnackBar(context, readBookModel.error);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              readBookModel: readBookModel.copyWith(
+                error: '',
+              ),
+            ),
+          );
+        }
+
+        if (readBookModel.loaded && Loader.isShown) {
+          Loader.hide();
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              readBookModel: readBookModel.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PdfViewerScreen(
+                title: getBookDetailsModel.entity.bookTitle,
+              ),
+            ),
+          );
+        }
 
         if (toggleFavouriteModel.hasError) {
           showSnackBar(context, toggleFavouriteModel.error);

@@ -39,6 +39,7 @@ class BookDetailsCubit extends Cubit<BookDetailsState> {
   }
 
   Future<void> getBookDetailsEvent(DataMap data) async {
+    print(data);
     final model = state.model;
     final getBookDetailsModel = model.getBookDetailsModel;
 
