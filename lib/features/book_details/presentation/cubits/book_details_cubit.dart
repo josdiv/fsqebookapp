@@ -71,6 +71,8 @@ class BookDetailsCubit extends Cubit<BookDetailsState> {
       (r) => emit(
         BookDetailsScreenState(
           model.copyWith(
+            purchasedStatus: r.purchasedStatus,
+            favStatus: r.favStatus,
             getBookDetailsModel: getBookDetailsModel.copyWith(
               loading: false,
               error: '',

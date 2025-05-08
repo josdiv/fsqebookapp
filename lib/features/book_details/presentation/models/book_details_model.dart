@@ -8,6 +8,8 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/
 
 class BookDetailsModel extends Equatable {
   const BookDetailsModel({
+    required this.favStatus,
+    required this.purchasedStatus,
     required this.getBookDetailsModel,
     required this.reportBookModel,
     required this.toggleFavouriteModel,
@@ -18,6 +20,8 @@ class BookDetailsModel extends Equatable {
 
   const BookDetailsModel.initial()
       : this(
+          favStatus: false,
+          purchasedStatus: false,
           getBookDetailsModel: const GetBookDetailsModel.initial(),
           reportBookModel: const ReportBookModel.initial(),
           toggleFavouriteModel: const ToggleFavouriteModel.initial(),
@@ -26,6 +30,8 @@ class BookDetailsModel extends Equatable {
           writeReviewModel: const WriteReviewModel.initial(),
         );
 
+  final bool favStatus;
+  final bool purchasedStatus;
   final GetBookDetailsModel getBookDetailsModel;
   final ReportBookModel reportBookModel;
   final ToggleFavouriteModel toggleFavouriteModel;
@@ -34,6 +40,8 @@ class BookDetailsModel extends Equatable {
   final WriteReviewModel writeReviewModel;
 
   BookDetailsModel copyWith({
+    bool? favStatus,
+    bool? purchasedStatus,
     GetBookDetailsModel? getBookDetailsModel,
     ReportBookModel? reportBookModel,
     ToggleFavouriteModel? toggleFavouriteModel,
@@ -42,6 +50,8 @@ class BookDetailsModel extends Equatable {
     WriteReviewModel? writeReviewModel,
   }) {
     return BookDetailsModel(
+      favStatus: favStatus ?? this.favStatus,
+      purchasedStatus: purchasedStatus ?? this.purchasedStatus,
       getBookDetailsModel: getBookDetailsModel ?? this.getBookDetailsModel,
       reportBookModel: reportBookModel ?? this.reportBookModel,
       toggleFavouriteModel: toggleFavouriteModel ?? this.toggleFavouriteModel,
@@ -59,5 +69,7 @@ class BookDetailsModel extends Equatable {
         readBookModel,
         downloadBookModel,
         writeReviewModel,
+        favStatus,
+        purchasedStatus,
       ];
 }

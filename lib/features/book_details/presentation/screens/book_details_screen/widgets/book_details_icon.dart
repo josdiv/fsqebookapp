@@ -1,47 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
+import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../login/presentation/screens/login_screen/login_screen.dart';
 
 class BookDetailsIcon extends StatelessWidget {
-  const BookDetailsIcon({super.key});
+  const BookDetailsIcon({super.key, required this.bookId});
+
+  final String bookId;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        iconWidget(
-          icon: "favourite",
-          text: "Favourite",
-          context: context,
-          onTap: () {},
-        ),
-        spacer(),
-        iconWidget(
-          icon: "Download",
-          text: "Download",
-          context: context,
-          onTap: () {},
-        ),
-        spacer(),
-        iconWidget(
-          icon: "read",
-          text: "Read",
-          context: context,
-          onTap: () {},
-        ),
-        spacer(),
-        iconWidget(
-          icon: "Report",
-          text: "Report",
-          context: context,
-          onTap: () {},
-        ),
-      ],
+    return BlocBuilder<BookDetailsCubit, BookDetailsState>(
+      builder: (context, state) {
+        final model = state.model;
+        final favStatus = model.favStatus;
+        final event = context.read<BookDetailsCubit>();
+        final userId = context
+            .read<ProfileCubit>()
+            .state
+            .model
+            .networkModel
+            .profile
+            .userId;
+
+        return Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            iconWidget(
+              icon: favStatus ? "favourite_filled" : "favourite",
+              text: "Favourite",
+              context: context,
+              onTap: () {
+                event.bookDetailsScreenEvent(
+                  model.copyWith(
+                    favStatus: !favStatus,
+                  ),
+                );
+                Future.delayed(Duration(seconds: 2), () {
+                  event.toggleFavouriteEvent({
+                    "userId": userId,
+                    "bookId": bookId,
+                  });
+                });
+              },
+            ),
+            spacer(),
+            iconWidget(
+              icon: "Download",
+              text: "Download",
+              context: context,
+              onTap: () {},
+            ),
+            spacer(),
+            iconWidget(
+              icon: "read",
+              text: "Read",
+              context: context,
+              onTap: () {},
+            ),
+            spacer(),
+            iconWidget(
+              icon: "Report",
+              text: "Report",
+              context: context,
+              onTap: () {},
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -61,7 +92,7 @@ class BookDetailsIcon extends StatelessWidget {
         context.read<StatusCubit>().state.model.isUserLoggedIn;
 
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
         onTap: isUserLoggedIn
             ? onTap
             : () => Navigator.push(

@@ -10,6 +10,8 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/book_details_icon.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/ratings_and_review.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/related_book_widget.dart';
+import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/write_review_widget.dart';
+import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 
@@ -41,7 +43,32 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       listener: (context, state) {
         final model = state.model;
         final getBookDetailsModel = model.getBookDetailsModel;
+        final toggleFavouriteModel = model.toggleFavouriteModel;
         final event = context.read<BookDetailsCubit>();
+
+        if (toggleFavouriteModel.hasError) {
+          showSnackBar(context, toggleFavouriteModel.error);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              favStatus: !model.favStatus,
+              toggleFavouriteModel: toggleFavouriteModel.copyWith(
+                error: '',
+              ),
+            ),
+          );
+        }
+
+        if (toggleFavouriteModel.loaded) {
+          showSnackBar(context, toggleFavouriteModel.message);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              // favStatus: model.favStatus,
+              toggleFavouriteModel: toggleFavouriteModel.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
+        }
 
         if (getBookDetailsModel.loaded && Loader.isShown) {
           Loader.hide();
@@ -73,6 +100,12 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         if (getBookDetailsModel.loading) {
           commonLoader(context);
         }
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
+        final purchasedStatus = model.purchasedStatus;
+
+        final showIcons = isUserLoggedIn && purchasedStatus;
+
         return Scaffold(
           backgroundColor: Color(0xFFF5F5F5),
           appBar: AppBar(
@@ -96,7 +129,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 VSpace(40),
                 BookDetailsHeader(),
                 VSpace(20),
-                BookDetailsIcon(),
+                if (showIcons)
+                  BookDetailsIcon(bookId: widget.data['id'] as String),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -106,6 +140,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         AboutThisBookWidget(),
                         VSpace(20),
                         RatingsAndReview(),
+                        if (showIcons) WriteReviewWidget(),
                         VSpace(20),
                         RelatedBookWidget(),
                         // VSpace(20),
@@ -118,13 +153,15 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ],
             ),
           ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SizedBox(
-              height: 50,
-              child: BookDetailsBuyBookButton(),
-            ),
-          ),
+          bottomNavigationBar: showIcons
+              ? null
+              : Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: SizedBox(
+                    height: 50,
+                    child: BookDetailsBuyBookButton(),
+                  ),
+                ),
         );
       },
     );
@@ -142,22 +179,25 @@ class BookDetailsBuyBookButton extends StatelessWidget {
         final getBookDetailsModel = model.getBookDetailsModel;
         final entity = getBookDetailsModel.entity;
         // final event = context.read<BookDetailsCubit>();
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
 
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              color: AppColors.redColor,
-              borderRadius: BorderRadius.circular(20)),
-          alignment: Alignment.center,
-          child: Text(
-            entity.bookPrice.toLowerCase() == 'free'
-                ? "READ BOOK"
-                : "BUY BOOK",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+        return GestureDetector(
+          onTap: () {},
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: AppColors.redColor,
+                borderRadius: BorderRadius.circular(20)),
+            alignment: Alignment.center,
+            child: Text(
+              "BUY BOOK",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         );
