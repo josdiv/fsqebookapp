@@ -24,7 +24,6 @@ void toBookDetailsV2({required DataMap data, required BuildContext context}) {
       final event = context.read<BookDetailsCubit>();
 
       if (getBookDetailsModel.loading) {
-        print('loading');
         commonLoader(context);
       }
 

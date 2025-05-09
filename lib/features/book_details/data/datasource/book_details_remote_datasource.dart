@@ -167,10 +167,11 @@ class BookDetailsRemoteDatasourceImpl implements BookDetailsRemoteDatasource {
     try {
       final userId = data['userId'] as String;
       final reasons = data['reasons'] as String;
+      final bookId = data['bookId'] as String;
 
       final response = await _client.post(
         Uri.parse(
-          "$kBaseUrl$kReportBook&userId=$userId&reasons=$reasons",
+          "$kBaseUrl$kReportBook&bookId=$bookId&userId=$userId&reasons=$reasons",
         ),
       );
 

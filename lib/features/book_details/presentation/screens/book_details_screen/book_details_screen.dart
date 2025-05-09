@@ -46,7 +46,31 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         final getBookDetailsModel = model.getBookDetailsModel;
         final toggleFavouriteModel = model.toggleFavouriteModel;
         final readBookModel = model.readBookModel;
+        final reportBookModel = model.reportBookModel;
         final event = context.read<BookDetailsCubit>();
+
+        if(reportBookModel.hasError) {
+          showSnackBar(context, reportBookModel.error);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              reportBookModel: reportBookModel.copyWith(
+                error: '',
+              ),
+            ),
+          );
+        }
+
+        if(reportBookModel.loaded) {
+          showSnackBar(context, 'Report sent successfully');
+          Navigator.pop(context);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              reportBookModel: reportBookModel.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
+        }
 
         if (readBookModel.loading) {
           commonLoader(context);
