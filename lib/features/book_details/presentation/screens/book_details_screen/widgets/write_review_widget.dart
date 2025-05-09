@@ -9,9 +9,9 @@ import '../../../../../profile/presentation/cubits/profile_cubit.dart';
 import '../../../cubits/book_details_cubit.dart';
 
 class WriteReviewWidget extends StatelessWidget {
-  const WriteReviewWidget({super.key, required this.bookId});
+  const WriteReviewWidget({super.key});
 
-  final String bookId;
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,8 @@ class WriteReviewWidget extends StatelessWidget {
             .networkModel
             .profile
             .userId;
+        final book = state.model.getBookDetailsModel.entity;
+
         return Align(
           child: Column(
             children: [
@@ -61,7 +63,7 @@ class WriteReviewWidget extends StatelessWidget {
                 onTap: () => showWriteReviewBottomSheet(
                   context: context,
                   userId: userId,
-                  bookId: bookId,
+                  bookId: book.bookId,
                 ),
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 7, horizontal: 20),

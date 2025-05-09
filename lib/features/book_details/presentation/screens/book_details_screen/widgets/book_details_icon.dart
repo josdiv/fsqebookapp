@@ -10,9 +10,8 @@ import '../../../../../../core/misc/spacer.dart';
 import '../../../../../login/presentation/screens/login_screen/login_screen.dart';
 
 class BookDetailsIcon extends StatelessWidget {
-  const BookDetailsIcon({super.key, required this.bookId});
+  const BookDetailsIcon({super.key});
 
-  final String bookId;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +27,7 @@ class BookDetailsIcon extends StatelessWidget {
             .networkModel
             .profile
             .userId;
+        final book = model.getBookDetailsModel.entity;
 
         return Row(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,7 +45,7 @@ class BookDetailsIcon extends StatelessWidget {
                 Future.delayed(Duration(seconds: 2), () {
                   event.toggleFavouriteEvent({
                     "userId": userId,
-                    "bookId": bookId,
+                    "bookId": book.bookId,
                   });
                 });
               },
@@ -63,7 +63,7 @@ class BookDetailsIcon extends StatelessWidget {
               context: context,
               onTap: () => event.readBookEvent({
                 "userId": userId,
-                "bookId": bookId,
+                "bookId": book.bookId,
               }),
             ),
             spacer(),
@@ -74,7 +74,7 @@ class BookDetailsIcon extends StatelessWidget {
               onTap: () => showReportBookBottomSheet(
                 context: context,
                 userId: userId,
-                bookId: bookId,
+                bookId: book.bookId,
               ),
             ),
           ],

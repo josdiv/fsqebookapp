@@ -12,6 +12,8 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/related_book_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/write_review_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/pdf_viewer_screen/pdf_viewer_screen.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/presentation/screens/buy_book_screen/buy_book_screen.dart';
+import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/login_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -215,7 +217,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 BookDetailsHeader(),
                 VSpace(20),
                 if (showIcons)
-                  BookDetailsIcon(bookId: widget.data['id'] as String),
+                  BookDetailsIcon(),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -226,8 +228,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         VSpace(20),
                         RatingsAndReview(),
                         if (showIcons)
-                          WriteReviewWidget(
-                              bookId: widget.data['id'] as String),
+                          WriteReviewWidget(),
                         VSpace(20),
                         RelatedBookWidget(),
                         // VSpace(20),
@@ -260,35 +261,33 @@ class BookDetailsBuyBookButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookDetailsCubit, BookDetailsState>(
-      builder: (context, state) {
-        final model = state.model;
-        final getBookDetailsModel = model.getBookDetailsModel;
-        final entity = getBookDetailsModel.entity;
-        // final event = context.read<BookDetailsCubit>();
-        final isUserLoggedIn =
-            context.read<StatusCubit>().state.model.isUserLoggedIn;
+    final isUserLoggedIn =
+        context.read<StatusCubit>().state.model.isUserLoggedIn;
 
-        return GestureDetector(
-          onTap: () {},
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                color: AppColors.redColor,
-                borderRadius: BorderRadius.circular(20)),
-            alignment: Alignment.center,
-            child: Text(
-              "BUY BOOK",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+          isUserLoggedIn ? BuyBookScreen() : LoginScreen(),
+        ),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 12),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            color: AppColors.redColor,
+            borderRadius: BorderRadius.circular(20)),
+        alignment: Alignment.center,
+        child: Text(
+          "BUY BOOK",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

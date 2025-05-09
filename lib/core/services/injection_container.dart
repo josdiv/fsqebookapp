@@ -14,6 +14,11 @@ import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/repor
 import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/toggle_favourite.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/write_review.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/data/datasource/buy_book_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/data/repository/buy_book_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/domain/repository/buy_book_repository.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/domain/usecases/purchase_book.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/presentation/cubits/buy_book_cubit.dart';
 import 'package:foursquare_ebbok_app/features/categories/data/datasource/categories_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/categories/data/repository/categories_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/categories/domain/repository/categories_repository.dart';
@@ -92,6 +97,23 @@ Future<void> init() async {
   await _loginInit();
   await _profileInit();
   await _statusInit();
+  await _buyBookInit();
+}
+
+
+Future<void> _buyBookInit() async {
+  sl
+    ..registerFactory(
+          () => BuyBookCubit(
+        purchaseBook: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => PurchaseBook(sl()))
+    ..registerLazySingleton<BuyBookRepository>(
+            () => BuyBookRepositoryImpl(sl()))
+    ..registerLazySingleton<BuyBookRemoteDatasource>(
+          () => BuyBookRemoteDatasourceImpl(sl()),
+    );
 }
 
 Future<void> _profileInit() async {

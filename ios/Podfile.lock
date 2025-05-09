@@ -61,6 +61,8 @@ PODS:
     - OrderedSet (~> 6.0.3)
   - flutter_native_splash (2.4.3):
     - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
   - google_sign_in_ios (0.0.1):
     - AppAuth (>= 1.7.4)
     - Flutter
@@ -143,6 +145,9 @@ PODS:
     - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - animated_rating_stars (from `.symlinks/plugins/animated_rating_stars/ios`)
@@ -154,6 +159,7 @@ DEPENDENCIES:
   - flutter_image_compress_common (from `.symlinks/plugins/flutter_image_compress_common/ios`)
   - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -161,6 +167,7 @@ DEPENDENCIES:
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - syncfusion_flutter_pdfviewer (from `.symlinks/plugins/syncfusion_flutter_pdfviewer/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -204,6 +211,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in_ios:
     :path: ".symlinks/plugins/google_sign_in_ios/darwin"
   image_picker_ios:
@@ -218,6 +227,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/syncfusion_flutter_pdfviewer/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
   animated_rating_stars: 127efa3d924c3d9ba9a73507bf6e6450639bb596
@@ -238,6 +249,7 @@ SPEC CHECKSUMS:
   flutter_image_compress_common: 1697a328fd72bfb335507c6bca1a65fa5ad87df1
   flutter_inappwebview_ios: b89ba3482b96fb25e00c967aae065701b66e9b99
   flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
+  fluttertoast: 2c67e14dce98bbdb200df9e1acf610d7a6264ea1
   google_sign_in_ios: b48bb9af78576358a168361173155596c845f0b9
   GoogleSignIn: ce8c89bb9b37fb624b92e7514cc67335d1e277e4
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
@@ -256,6 +268,7 @@ SPEC CHECKSUMS:
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   syncfusion_flutter_pdfviewer: 90dc48305d2e33d4aa20681d1e98ddeda891bc14
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
+  webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
 
 PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 
