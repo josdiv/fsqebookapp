@@ -9,7 +9,7 @@ class DefaultButton extends StatelessWidget {
     super.key,
     required this.text,
     this.backgroundColor = AppColors.orangeColor,
-    this.textColor,
+    this.textColor = Colors.white,
     this.onTap,
     this.padding,
     this.height,
@@ -46,7 +46,7 @@ class DefaultButton extends StatelessWidget {
         child: loading ? buttonLoader(context) : Text(
           text,
           style: TextStyle(
-            color: Colors.white,
+            color: textColor,
             fontSize: fontSize,
             fontWeight: FontWeight.w600
           ),

@@ -47,9 +47,33 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         final toggleFavouriteModel = model.toggleFavouriteModel;
         final readBookModel = model.readBookModel;
         final reportBookModel = model.reportBookModel;
+        final writeReviewModel = model.writeReviewModel;
         final event = context.read<BookDetailsCubit>();
 
-        if(reportBookModel.hasError) {
+        if (writeReviewModel.hasError) {
+          showSnackBar(context, writeReviewModel.error);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              writeReviewModel: writeReviewModel.copyWith(
+                error: '',
+              ),
+            ),
+          );
+        }
+
+        if (writeReviewModel.loaded) {
+          showSnackBar(context, 'Review sent successfully');
+          Navigator.pop(context);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              writeReviewModel: writeReviewModel.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
+        }
+
+        if (reportBookModel.hasError) {
           showSnackBar(context, reportBookModel.error);
           event.bookDetailsScreenEvent(
             model.copyWith(
@@ -60,7 +84,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           );
         }
 
-        if(reportBookModel.loaded) {
+        if (reportBookModel.loaded) {
           showSnackBar(context, 'Report sent successfully');
           Navigator.pop(context);
           event.bookDetailsScreenEvent(
@@ -201,7 +225,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         AboutThisBookWidget(),
                         VSpace(20),
                         RatingsAndReview(),
-                        if (showIcons) WriteReviewWidget(),
+                        if (showIcons)
+                          WriteReviewWidget(
+                              bookId: widget.data['id'] as String),
                         VSpace(20),
                         RelatedBookWidget(),
                         // VSpace(20),

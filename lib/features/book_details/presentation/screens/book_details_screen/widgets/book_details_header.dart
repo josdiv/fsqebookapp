@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 
 import '../../../../../../core/misc/spacer.dart';
+import '../../../../../status/presentation/cubits/status_cubit.dart';
 
 class BookDetailsHeader extends StatelessWidget {
   const BookDetailsHeader({super.key});
@@ -15,6 +16,11 @@ class BookDetailsHeader extends StatelessWidget {
         final model = state.model;
         final getBookDetailsModel = model.getBookDetailsModel;
         final entity = getBookDetailsModel.entity;
+
+        final isUserLoggedIn =
+            context.read<StatusCubit>().state.model.isUserLoggedIn;
+        final purchasedStatus = model.purchasedStatus;
+        final showIcons = isUserLoggedIn && purchasedStatus;
 
         // final event = context.read<BookDetailsCubit>();
 
@@ -71,7 +77,7 @@ class BookDetailsHeader extends StatelessWidget {
                                     ],
                                   ),
                                   VSpace(5),
-                                  Container(
+                                  if(!showIcons)Container(
                                     padding: EdgeInsets.symmetric(
                                       vertical: 1,
                                       horizontal: 10,
