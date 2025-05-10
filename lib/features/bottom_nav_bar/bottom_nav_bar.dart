@@ -76,17 +76,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
         final model1 = model.model1;
 
         if (model1.loadOnce) {
-          commonLoader(context);
+          // commonLoader(context);
         }
         return BlocListener<StatusCubit, StatusState>(
           listener: (context, state) async {
             final model = state.model;
-            print(model.isUserLoggedIn);
+
             final prefs = await SharedPreferences.getInstance();
             final email = prefs.getString('email');
             if (model.isUserLoggedIn) {
-              print(email);
-              context.read<ProfileCubit>().getUserProfileEvent(email!);
+              if (context.mounted) {
+                context.read<ProfileCubit>().getUserProfileEvent(email!);
+              }
             }
           },
           child: BlocListener<LatestCubit, LatestState>(

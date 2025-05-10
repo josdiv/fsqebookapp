@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/categories_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/helper/common_loader.dart';
 import '../../../../../../core/misc/spacer.dart';
@@ -108,6 +109,98 @@ class HomeCategoryWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+
+class HomeCategoryShimmer extends StatelessWidget {
+  const HomeCategoryShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Title Row Shimmer
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 150,
+                height: 24,
+                color: Colors.white,
+              ),
+              Container(
+                width: 24,
+                height: 24,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        // Horizontal List Shimmer
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(4, (index) => _buildCategoryCardShimmer(context)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryCardShimmer(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 15.0),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Stack(
+          children: [
+            // Main Card Container
+            Container(
+              width: 185,
+              height: 121,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+            ),
+
+            // Gradient Overlay (simplified for shimmer)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
+            // Category Name Placeholder
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: Container(
+                width: 120,
+                height: 16,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

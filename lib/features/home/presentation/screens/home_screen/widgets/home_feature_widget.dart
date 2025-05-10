@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -162,6 +163,92 @@ class _HomeFeaturedWidgetState extends State<HomeFeaturedWidget> {
                 height: 150,
                 fit: BoxFit.cover,
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class ShimmerHomeFeaturedWidget extends StatelessWidget {
+  const ShimmerHomeFeaturedWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Shimmer title
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            height: 24,
+            width: 150,
+            color: Colors.white,
+          ),
+        ),
+        VSpace(10),
+        // Horizontal shimmer cards
+        SizedBox(
+          height: 200,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: 3,
+            separatorBuilder: (_, __) => const SizedBox(width: 10),
+            itemBuilder: (context, index) {
+              return shimmerCard(context);
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget shimmerCard(BuildContext context) {
+    final cardWidth = MediaQuery.of(context).size.width - 40;
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        width: cardWidth,
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          children: [
+            // Left text section
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 20,
+                    width: 120,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 30,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            // Right image section
+            Container(
+              height: 150,
+              width: 100,
+              color: Colors.white,
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/theme/app_colors.dart';
 
@@ -81,6 +82,91 @@ class HomeContinueReadingWidget extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+
+
+class ShimmerHomeContinueReadingWidget extends StatelessWidget {
+  const ShimmerHomeContinueReadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Shimmer title row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Shimmer effect on title
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                height: 24,
+                width: 150,
+                color: Colors.white,
+              ),
+            ),
+            // Shimmer effect on icon
+            Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Icon(
+                Icons.arrow_forward_outlined,
+                color: AppColors.orangeColor,
+              ),
+            )
+          ],
+        ),
+        VSpace(10),
+        // Shimmer effect on the horizontal book cards
+        SizedBox(
+          height: 230,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: 5, // placeholder item count
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              return shimmerBookCard();
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget shimmerBookCard() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Shimmer effect on the image container
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            height: 160,
+            width: 120,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        // Shimmer effect on the title text
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            width: 120,
+            height: 12,
+            color: Colors.white,
+          ),
+        ),
+      ],
     );
   }
 }

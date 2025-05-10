@@ -53,3 +53,23 @@ class LatestGridWidget extends StatelessWidget {
     );
   }
 }
+
+class LatestGridShimmer extends StatelessWidget {
+  const LatestGridShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 15,
+        mainAxisSpacing: 0,
+        childAspectRatio: (MediaQuery.of(context).size.width / 2) / 400,
+      ),
+      itemCount: 4, // Show 4 shimmer items (2x2 grid)
+      itemBuilder: (context, index) {
+        return const LatestCardShimmer();
+      },
+    );
+  }
+}

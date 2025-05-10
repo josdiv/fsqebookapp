@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -213,6 +214,152 @@ class HomeTrendingWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class HomeTrendingShimmer extends StatelessWidget {
+  const HomeTrendingShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Title Row Shimmer
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 150,
+                height: 24,
+                color: Colors.white,
+              ),
+              Container(
+                width: 24,
+                height: 24,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        // Horizontal List Shimmer
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(4, (index) => _buildBookCardShimmer(context)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBookCardShimmer(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 2.5,
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image Container with Premium Badge
+            Container(
+              width: MediaQuery.of(context).size.width / 2.5,
+              height: 250,
+              margin: const EdgeInsets.only(right: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(5),
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
+              child: Stack(
+                children: [
+                  // Premium Badge Shimmer
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                            bottomRight: Radius.circular(5)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 16,
+                            height: 16,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 4),
+                          Container(
+                            width: 40,
+                            height: 12,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Text Content Shimmer
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  Container(
+                    width: double.infinity,
+                    height: 16,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    width: 120,
+                    height: 12,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Container(
+                        width: 17,
+                        height: 17,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4),
+                      Container(
+                        width: 20,
+                        height: 14,
+                        color: Colors.white,
+                      ),
+                      const Spacer(),
+                      Container(
+                        width: 40,
+                        height: 14,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

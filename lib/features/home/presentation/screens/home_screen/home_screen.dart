@@ -20,6 +20,7 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final homeData = state.model.model1.homeData;
+        final loading = state.model.model1.loading;
         final hasReadingBooks = context
             .read<ProfileCubit>()
             .state
@@ -40,30 +41,43 @@ class HomeScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    HomeFeaturedWidget(
-                      featuredBookTitle: homeData.featuredBookTitle,
-                      featuredBookList: homeData.featuredBookList,
-                    ),
+                    loading
+                        ? ShimmerHomeFeaturedWidget()
+                        : HomeFeaturedWidget(
+                            featuredBookTitle: homeData.featuredBookTitle,
+                            featuredBookList: homeData.featuredBookList,
+                          ),
                     VSpace(20),
-                    if (isUserLoggedIn && hasReadingBooks) HomeContinueReadingWidget(),
-                    HomeTrendingWidget(
-                      trendingBookTitle: homeData.trendingBookTitle,
-                      trendingBookList: homeData.trendingBookList,
-                    ),
-                    HomeManualWidget(
-                      manualBookTitle: homeData.manualBookTitle,
-                      manualBookList: homeData.manualBookList,
-                    ),
+                    if (isUserLoggedIn && hasReadingBooks)
+                      loading
+                          ? ShimmerHomeContinueReadingWidget()
+                          : HomeContinueReadingWidget(),
+                    loading
+                        ? HomeTrendingShimmer()
+                        : HomeTrendingWidget(
+                            trendingBookTitle: homeData.trendingBookTitle,
+                            trendingBookList: homeData.trendingBookList,
+                          ),
+                    loading
+                        ? HomeTrendingShimmer()
+                        : HomeManualWidget(
+                            manualBookTitle: homeData.manualBookTitle,
+                            manualBookList: homeData.manualBookList,
+                          ),
                     VSpace(20),
-                    HomeCategoryWidget(
-                      subcategoryBookTitle: homeData.subcategoryBookTitle,
-                      subCategoryBookList: homeData.subCategoryBookList,
-                    ),
+                    loading
+                        ? HomeCategoryShimmer()
+                        : HomeCategoryWidget(
+                            subcategoryBookTitle: homeData.subcategoryBookTitle,
+                            subCategoryBookList: homeData.subCategoryBookList,
+                          ),
                     VSpace(20),
-                    HomeWorkbookWidget(
-                      workbookBookTitle: homeData.workbookTitle,
-                      workbookBookList: homeData.workbookList,
-                    ),
+                    loading
+                        ? HomeTrendingShimmer()
+                        : HomeWorkbookWidget(
+                            workbookBookTitle: homeData.workbookTitle,
+                            workbookBookList: homeData.workbookList,
+                          ),
                     VSpace(20),
                   ],
                 ),
