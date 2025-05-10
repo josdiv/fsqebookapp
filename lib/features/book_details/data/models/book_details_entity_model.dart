@@ -38,7 +38,10 @@ class BookDetailsEntityModel extends BookDetailsEntity {
     return BookDetailsEntityModel(
       bookId: bookDetail['bookId'].toString(),
       favStatus: json['favStatus'],
-      purchasedStatus: json['purchasedStatus'],
+      purchasedStatus:
+          bookDetail['bookPrice'].toString().toLowerCase() == 'free'
+              ? true
+              : json['purchasedStatus'],
       bookAccess: bookDetail['bookAccess'] as String,
       bookImg: bookDetail['bookImg'] as String,
       bookTitle: bookDetail['bookTitle'] as String,
