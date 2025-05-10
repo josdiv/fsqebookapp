@@ -20,7 +20,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/helper/common_loader.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  const BottomNavBar({super.key, this.currentIndex = 0});
+
+  final int currentIndex;
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -42,6 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     super.initState();
     context.read<HomeCubit>().getDashboardDataEvent();
     context.read<StatusCubit>().getUserLoginStatusEvent();
+    _currentIndex = widget.currentIndex;
   }
 
   @override

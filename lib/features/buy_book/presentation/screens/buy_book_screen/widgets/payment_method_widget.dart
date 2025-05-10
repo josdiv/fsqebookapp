@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/presentation/cubits/buy_book_cubit.dart';
 
 class PaymentMethodWidget extends StatefulWidget {
   const PaymentMethodWidget({super.key});
@@ -12,9 +14,22 @@ class PaymentMethodWidget extends StatefulWidget {
 class _PaymentMethodWidgetState extends State<PaymentMethodWidget> {
   int _selectedIndex = 0;
 
-  void selectPaymentMethod(int index) => setState(() {
-        _selectedIndex = index;
-      });
+  void selectPaymentMethod(int index) {
+    final event = context.read<BuyBookCubit>();
+    final model = event.state.model;
+    final screenModel = model.screenModel;
+
+    event.buyBookScreenEvent(
+      model.copyWith(
+        screenModel: screenModel.copyWith(
+          isPaystack: index == 0,
+        ),
+      ),
+    );
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

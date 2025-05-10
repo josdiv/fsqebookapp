@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foursquare_ebbok_app/features/authors/presentation/cubits/authors_cubit.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
+import 'package:foursquare_ebbok_app/features/buy_book/presentation/cubits/buy_book_cubit.dart';
 import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/categories_cubit.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
@@ -27,6 +29,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await init();
+  await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -85,6 +88,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<LoginCubit>(create: (context) => sl<LoginCubit>()),
         BlocProvider<ProfileCubit>(create: (context) => sl<ProfileCubit>()),
         BlocProvider<StatusCubit>(create: (context) => sl<StatusCubit>()),
+        BlocProvider<BuyBookCubit>(create: (context) => sl<BuyBookCubit>()),
       ],
       child: MaterialApp(
         title: 'FourSquare Ebbok App',

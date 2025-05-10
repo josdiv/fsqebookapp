@@ -34,6 +34,22 @@ class BookDetailsEntity extends Equatable {
           relatedBookList: const [],
         );
 
+  double parseBookPrice(String bookPrice) {
+    // Trim whitespace and convert to lowercase for safety
+    final price = bookPrice.trim().toLowerCase();
+
+    if (price == 'free') {
+      return 0;
+    }
+
+    // Remove non-numeric characters except dot
+    final cleaned = price.replaceAll(RegExp(r'[^\d.]'), '');
+
+    // Parse to double (or int if you prefer)
+    return double.tryParse(cleaned) ?? 0;
+  }
+
+
   final String bookId;
   final bool favStatus;
   final bool purchasedStatus;
@@ -47,6 +63,12 @@ class BookDetailsEntity extends Equatable {
   final int bookAverageRating;
   final String postViewCount;
   final List<RelatedBookEntity> relatedBookList;
+
+  double get parsedPrice => parseBookPrice(bookPrice);
+
+  double get paystackPrice => parsedPrice * 100;
+
+  String get flutterwavePrice => parsedPrice.toString();
 
   @override
   List<Object?> get props => [
