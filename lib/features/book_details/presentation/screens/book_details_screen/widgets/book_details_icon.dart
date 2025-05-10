@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/core/ui/widgets/default_button.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../login/presentation/screens/login_screen/login_screen.dart';
 
 class BookDetailsIcon extends StatelessWidget {
   const BookDetailsIcon({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class BookDetailsIcon extends StatelessWidget {
             .profile
             .userId;
         final book = model.getBookDetailsModel.entity;
+        final loading = model.downloadBookModel.loading;
 
         return Row(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,6 +57,12 @@ class BookDetailsIcon extends StatelessWidget {
               icon: "Download",
               text: "Download",
               context: context,
+              onTap: () => event.downloadBookEvent(
+                {
+                  'userId': userId,
+                  'bookId': book.bookId,
+                },
+              ),
             ),
             spacer(),
             iconWidget(
@@ -153,9 +161,11 @@ void showReportBookBottomSheet({
 
           return GestureDetector(
             onTap: () {
-              FocusScope.of(context).unfocus(); // ✅ Dismiss keyboard on tap outside
+              FocusScope.of(context)
+                  .unfocus(); // ✅ Dismiss keyboard on tap outside
             },
-            behavior: HitTestBehavior.opaque, // ensures it catches taps on empty space
+            behavior: HitTestBehavior.opaque,
+            // ensures it catches taps on empty space
             child: Padding(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom * .6,
@@ -174,7 +184,8 @@ void showReportBookBottomSheet({
                         Center(
                           child: Text(
                             'Report Book',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                         SizedBox(height: 16),
@@ -187,19 +198,18 @@ void showReportBookBottomSheet({
                             decoration: InputDecoration(
                               labelText: 'Report Book',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20)
-                              ),
+                                  borderRadius: BorderRadius.circular(20)),
                               alignLabelWithHint: true,
                               suffixIcon: reportController.text.isNotEmpty
                                   ? IconButton(
-                                icon: Icon(Icons.clear),
-                                onPressed: () {
-                                  reportController.clear();
-                                  if (formKey.currentState != null) {
-                                    formKey.currentState!.validate();
-                                  }
-                                },
-                              )
+                                      icon: Icon(Icons.clear),
+                                      onPressed: () {
+                                        reportController.clear();
+                                        if (formKey.currentState != null) {
+                                          formKey.currentState!.validate();
+                                        }
+                                      },
+                                    )
                                   : null,
                             ),
                             validator: (value) {
@@ -247,9 +257,6 @@ void showReportBookBottomSheet({
     },
   );
 }
-
-
-
 
 /*DefaultButton(
                       onTap: () {

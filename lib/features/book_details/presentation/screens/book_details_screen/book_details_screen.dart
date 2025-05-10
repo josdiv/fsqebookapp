@@ -8,6 +8,7 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/b
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/about_this_book_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/book_details_header.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/book_details_icon.dart';
+import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/download_progress_dialog.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/ratings_and_review.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/related_book_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/write_review_widget.dart';
@@ -16,7 +17,9 @@ import 'package:foursquare_ebbok_app/features/buy_book/presentation/screens/buy_
 import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/login_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
+import '../../../../../core/services/download_service.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../domain/repository/download_repository.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   const BookDetailsScreen({super.key, required this.data});
@@ -50,7 +53,75 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         final readBookModel = model.readBookModel;
         final reportBookModel = model.reportBookModel;
         final writeReviewModel = model.writeReviewModel;
+        final downloadBookModel = model.downloadBookModel;
         final event = context.read<BookDetailsCubit>();
+
+        if (downloadBookModel.hasError) {
+          showSnackBar(context, downloadBookModel.error);
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              downloadBookModel: downloadBookModel.copyWith(
+                error: '',
+              ),
+            ),
+          );
+        }
+
+        if (downloadBookModel.loaded) {
+          final book = getBookDetailsModel.entity;
+          final url = downloadBookModel.entity.bookUrl;
+          final extension = downloadBookModel.entity.bookExtension;
+
+          (() async {
+            // First check if already downloaded
+            if (DownloadsRepository.isBookDownloaded(book.bookId)) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('"${book.bookTitle}" is already downloaded')),
+              );
+              return;
+            }
+
+            double progress = 0;
+            showDownloadProgress(context, progress);
+
+            try {
+              final path = await DownloadService.downloadFile(
+                url: url,
+                fileName: '${book.bookId}.$extension', // e.g., '123.pdf'
+                onProgress: (p) {
+                  progress = p;
+                  // Update dialog
+                  Navigator.pop(context);
+                  showDownloadProgress(context, progress);
+                },
+              );
+
+              // Save download record
+              await DownloadsRepository.saveDownload(book, path);
+
+              if(context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Download successful!')),
+                );
+              }
+            } catch (e) {
+              if(context.mounted) {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Download failed: $e')),
+                );
+              }
+            }
+          })();
+
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              downloadBookModel: downloadBookModel.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
+        }
 
         if (writeReviewModel.hasError) {
           showSnackBar(context, writeReviewModel.error);
@@ -216,8 +287,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 VSpace(40),
                 BookDetailsHeader(),
                 VSpace(20),
-                if (showIcons)
-                  BookDetailsIcon(),
+                if (showIcons) BookDetailsIcon(),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -227,8 +297,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         AboutThisBookWidget(),
                         VSpace(20),
                         RatingsAndReview(),
-                        if (showIcons)
-                          WriteReviewWidget(),
+                        if (showIcons) WriteReviewWidget(),
                         VSpace(20),
                         RelatedBookWidget(),
                         // VSpace(20),
@@ -269,15 +338,14 @@ class BookDetailsBuyBookButton extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) =>
-          isUserLoggedIn ? BuyBookScreen() : LoginScreen(),
+              isUserLoggedIn ? BuyBookScreen() : LoginScreen(),
         ),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            color: AppColors.redColor,
-            borderRadius: BorderRadius.circular(20)),
+            color: AppColors.redColor, borderRadius: BorderRadius.circular(20)),
         alignment: Alignment.center,
         child: Text(
           "BUY BOOK",

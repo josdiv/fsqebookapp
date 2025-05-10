@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/injection_container.dart';
+import 'features/book_details/domain/repository/download_repository.dart';
 import 'features/bottom_nav_bar/bottom_nav_bar.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -30,6 +31,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await init();
   await dotenv.load(fileName: ".env");
+  await DownloadsRepository.init();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
