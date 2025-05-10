@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../sign_up/domain/entity/user_entity.dart';
 
@@ -47,36 +49,44 @@ class _ModalContentState extends State<ModalContent>
       );
     }
 
-    return SizedBox(
-      height: 250,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(16),
-        itemCount: books.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          final book = books[index];
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 170,
-                width: 120,
-                decoration: BoxDecoration(
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Wrap(
+        spacing: 12,
+        runSpacing: 16,
+        children: books.map((book) {
+          return SizedBox(
+            width: 110,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade200,
-                  image: DecorationImage(
-                    image: NetworkImage(getImage(book)),
+                  child: CachedNetworkImage(
+                    imageUrl: getImage(book),
+                    height: 170,
+                    width: 110,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        height: 170,
+                        width: 110,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      height: 170,
+                      width: 110,
+                      color: Colors.grey.shade300,
+                      child: const Icon(Icons.broken_image, size: 40),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: 100,
-                child: Text(
+                const SizedBox(height: 8),
+                Text(
                   getTitle(book),
-                  // textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -84,13 +94,14 @@ class _ModalContentState extends State<ModalContent>
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-              )
-            ],
+              ],
+            ),
           );
-        },
+        }).toList(),
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

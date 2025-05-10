@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
@@ -95,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   shape: BoxShape.circle,
                                   border: Border.all(),
                                   image: DecorationImage(
-                                    image: NetworkImage(profilePic),
+                                    image: CachedNetworkImageProvider(profilePic),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
