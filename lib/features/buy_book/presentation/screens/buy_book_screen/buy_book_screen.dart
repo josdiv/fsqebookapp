@@ -10,6 +10,7 @@ import 'package:foursquare_ebbok_app/features/buy_book/presentation/screens/buy_
 import 'package:foursquare_ebbok_app/features/buy_book/presentation/screens/buy_book_screen/widgets/flutterwave_payment.dart';
 import 'package:foursquare_ebbok_app/features/buy_book/presentation/screens/buy_book_screen/widgets/payment_method_widget.dart';
 import 'package:foursquare_ebbok_app/features/buy_book/presentation/screens/buy_book_screen/widgets/paystack_payment.dart';
+import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 
 import '../buy_book_success_screen/buy_book_success_screen.dart';
 // import 'package:paystack_for_flutter/paystack_for_flutter.dart';
@@ -44,7 +45,14 @@ class BuyBookScreen extends StatelessWidget {
 
         if (networkModel.loaded && Loader.isShown) {
           Loader.hide();
-
+          final email = context
+              .read<ProfileCubit>()
+              .state
+              .model
+              .networkModel
+              .profile
+              .userEmail;
+          context.read<ProfileCubit>().getUserProfileEvent(email);
           event.buyBookScreenEvent(
             model.copyWith(
               networkModel: networkModel.copyWith(

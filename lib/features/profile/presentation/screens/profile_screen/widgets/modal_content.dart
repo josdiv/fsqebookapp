@@ -15,7 +15,7 @@ class _ModalContentState extends State<ModalContent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final List<String> _tabs = ['Favorite', 'Downloads', 'Continue Book'];
+  final List<String> _tabs = ['Purchased', 'Favorite', 'Downloads', 'Reading'];
 
   @override
   void initState() {
@@ -92,7 +92,6 @@ class _ModalContentState extends State<ModalContent>
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
@@ -101,6 +100,7 @@ class _ModalContentState extends State<ModalContent>
         final favoriteBooks = profile.listFavoriteBook;
         final downloadBooks = profile.listDownloadBook;
         final continueBooks = profile.listReadingBook;
+        final purchasedBooks = profile.purchasedBooks;
 
         return Container(
           decoration: const BoxDecoration(
@@ -127,6 +127,11 @@ class _ModalContentState extends State<ModalContent>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
+                    _buildBookList<PurchasedBookEntity>(
+                      books: purchasedBooks,
+                      getTitle: (book) => book.purchasedBookTitle,
+                      getImage: (book) => book.purchasedBookImage,
+                    ),
                     _buildBookList<FavouriteBookEntity>(
                       books: favoriteBooks,
                       getTitle: (book) => book.favoriteBookTitle,

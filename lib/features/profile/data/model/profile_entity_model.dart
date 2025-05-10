@@ -14,12 +14,14 @@ class ProfileEntityModel extends ProfileEntity {
     required super.listDownloadBook,
     required super.listFavoriteBook,
     required super.listReadingBook,
+    required super.purchasedBooks,
   });
 
   factory ProfileEntityModel.fromMap(Map<String, dynamic> map) {
     final dynamicFavoriteBook = map['listFavoriteBook'] as List<dynamic>;
     final dynamicReadingBook = map['listReadingBook'] as List<dynamic>;
     final dynamicDownloadBook = map['listDownloadBook'] as List<dynamic>;
+    final dynamicPurchasedBook = map['purchasedBookList'] as List<dynamic>;
 
     final listFavoriteBook = dynamicFavoriteBook
         .map((e) => FavouriteBookEntityModel.fromMap(e as DataMap))
@@ -32,6 +34,11 @@ class ProfileEntityModel extends ProfileEntity {
     final listDownloadBook = dynamicDownloadBook
         .map((e) => DownloadedBookEntityModel.fromMap(e as DataMap))
         .toList();
+
+    final purchasedBooks = dynamicPurchasedBook
+        .map((e) => PurchasedBookEntityModel.fromMap(e as DataMap))
+        .toList();
+
     final userProfile = map['userProfile'] as DataMap;
 
     return ProfileEntityModel(
@@ -44,6 +51,7 @@ class ProfileEntityModel extends ProfileEntity {
       listReadingBook: listReadingBook,
       listFavoriteBook: listFavoriteBook,
       listDownloadBook: listDownloadBook,
+      purchasedBooks: purchasedBooks,
     );
   }
 }

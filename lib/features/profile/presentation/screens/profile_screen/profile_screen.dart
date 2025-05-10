@@ -9,9 +9,27 @@ import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_
 
 import '../../../../../core/misc/spacer.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    final email = context
+        .read<ProfileCubit>()
+        .state
+        .model
+        .networkModel
+        .profile
+        .userEmail;
+    context.read<ProfileCubit>().getUserProfileEvent(email);
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<StatusCubit, StatusState>(

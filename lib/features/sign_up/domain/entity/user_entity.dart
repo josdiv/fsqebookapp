@@ -126,3 +126,22 @@ class DownloadedBookEntity extends Equatable {
         downloadedBookImage,
       ];
 }
+
+class PurchasedBookEntity extends Equatable {
+  const PurchasedBookEntity({
+    required this.purchasedBookId,
+    required this.purchasedBookTitle,
+    required this.purchasedBookImage,
+  });
+
+  final String purchasedBookId;
+  final String purchasedBookTitle;
+  final String purchasedBookImage;
+
+  @override
+  List<Object?> get props => [
+        purchasedBookId,
+        purchasedBookTitle,
+        purchasedBookImage,
+      ];
+}

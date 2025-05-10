@@ -13,11 +13,13 @@ class ProfileEntity extends Equatable {
     required this.listFavoriteBook,
     required this.listReadingBook,
     required this.listDownloadBook,
+    required this.purchasedBooks,
   });
 
   final List<FavouriteBookEntity> listFavoriteBook;
   final List<ReadingBookEntity> listReadingBook;
   final List<DownloadedBookEntity> listDownloadBook;
+  final List<PurchasedBookEntity> purchasedBooks;
   final String userId;
   final String userName;
   final String userPhone;
@@ -36,6 +38,7 @@ class ProfileEntity extends Equatable {
           listReadingBook: const [],
           listDownloadBook: const [],
           listFavoriteBook: const [],
+          purchasedBooks: const [],
         );
 
   bool get hasReadingBooks => listReadingBook.isNotEmpty;
@@ -51,5 +54,6 @@ class ProfileEntity extends Equatable {
         listDownloadBook,
         listFavoriteBook,
         listReadingBook,
+        purchasedBooks,
       ];
 }

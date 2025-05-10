@@ -1,3 +1,4 @@
+
 import '../../../../../core/utils/typedefs/typedefs.dart';
 import '../../domain/entity/user_entity.dart';
 
@@ -104,6 +105,22 @@ class DownloadedBookEntityModel extends DownloadedBookEntity {
       downloadedBookId: map['downloadedBookId'].toString(),
       downloadedBookTitle: map['downloadedBookTitle'] as String,
       downloadedBookImage: map['downloadedBookImage'] as String,
+    );
+  }
+}
+
+class PurchasedBookEntityModel extends PurchasedBookEntity {
+  const PurchasedBookEntityModel({
+    required super.purchasedBookId,
+    required super.purchasedBookTitle,
+    required super.purchasedBookImage,
+  });
+
+  factory PurchasedBookEntityModel.fromMap(Map<String, dynamic> map) {
+    return PurchasedBookEntityModel(
+      purchasedBookId: map['purchasedBookId'].toString(),
+      purchasedBookTitle: map['purchasedBookTitle'] as String,
+      purchasedBookImage: map['purchasedBookImage'] as String,
     );
   }
 }
