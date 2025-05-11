@@ -6,6 +6,7 @@ import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../profile/presentation/cubits/profile_cubit.dart';
 import '../../../../../status/presentation/cubits/status_cubit.dart';
@@ -54,6 +55,7 @@ class RelatedBookWidget extends StatelessWidget {
                     .map(
                       (item) => GestureDetector(
                         onTap: () => toBookDetails(
+                          pushReplacement: true,
                           data: {
                             'id': item.relatedBookId,
                             'userId': isUserLoggedIn ? profile.userId : '',
@@ -205,6 +207,156 @@ class RelatedBookWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+
+
+
+class RelatedBookShimmer extends StatelessWidget {
+  const RelatedBookShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Header Row Shimmer
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 120,
+                height: 20,
+                color: Colors.white,
+              ),
+              Container(
+                width: 24,
+                height: 24,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        // Horizontal List Shimmer
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(3, (index) => _buildBookCardShimmer(context)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBookCardShimmer(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 2.5,
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image with Premium Badge
+            Container(
+              width: MediaQuery.of(context).size.width / 2.5,
+              height: 250,
+              margin: const EdgeInsets.only(right: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(5),
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
+              child: Stack(
+                children: [
+                  // Premium Badge
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(5),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 14,
+                            height: 14,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 4),
+                          Container(
+                            width: 50,
+                            height: 12,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Text Content
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0, top: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 16,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    width: 150,
+                    height: 12,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Container(
+                        width: 17,
+                        height: 17,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4),
+                      Container(
+                        width: 30,
+                        height: 14,
+                        color: Colors.white,
+                      ),
+                      const Spacer(),
+                      Container(
+                        width: 40,
+                        height: 14,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

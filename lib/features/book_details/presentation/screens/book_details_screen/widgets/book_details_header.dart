@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../status/presentation/cubits/status_cubit.dart';
@@ -132,6 +133,78 @@ class BookDetailsHeader extends StatelessWidget {
                 ),
               );
       },
+    );
+  }
+}
+
+
+class BookDetailsHeaderShimmer extends StatelessWidget {
+  const BookDetailsHeaderShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 180,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+              decoration: const BoxDecoration(
+                color: Color(0xFFFFEEEB),
+              ),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * .46,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(4, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: index == 3 ? 24 : 12,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: -30,
+            left: 20,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                height: 190.14,
+                width: 120,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

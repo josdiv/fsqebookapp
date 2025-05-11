@@ -5,6 +5,7 @@ import 'package:foursquare_ebbok_app/core/ui/widgets/default_button.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../login/presentation/screens/login_screen/login_screen.dart';
@@ -254,6 +255,59 @@ void showReportBookBottomSheet({
     },
   );
 }
+
+
+
+class BookDetailsIconShimmer extends StatelessWidget {
+  const BookDetailsIconShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(7, (index) {
+        if (index.isEven) {
+          // Icon + text
+          return Expanded(
+            child: Column(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    height: 25,
+                    width: 25,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    height: 10,
+                    width: 50,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          // Spacer
+          return Container(
+            height: 30,
+            width: 1,
+            color: const Color(0xFF4E4B66),
+          );
+        }
+      }),
+    );
+  }
+}
+
 
 /*DefaultButton(
                       onTap: () {

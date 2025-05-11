@@ -7,13 +7,24 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/b
 import '../../features/book_details/presentation/screens/book_details_screen/book_details_screen.dart';
 import 'common_loader.dart';
 
-void toBookDetails({required DataMap data, required BuildContext context}) =>
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BookDetailsScreen(data: data),
-      ),
-    );
+void toBookDetails({
+  required DataMap data,
+  required BuildContext context,
+  bool pushReplacement = false,
+}) =>
+    pushReplacement
+        ? Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookDetailsScreen(data: data),
+            ),
+          )
+        : Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookDetailsScreen(data: data),
+            ),
+          );
 
 void toBookDetailsV2({required DataMap data, required BuildContext context}) {
   context.read<BookDetailsCubit>().getBookDetailsEvent(data);

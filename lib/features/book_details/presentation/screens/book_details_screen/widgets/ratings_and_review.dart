@@ -7,6 +7,7 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/b
 import 'package:foursquare_ebbok_app/features/ratings/presentation/cubits/ratings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/ratings/presentation/screens/model/rating_screen_model.dart';
 import 'package:foursquare_ebbok_app/features/ratings/presentation/screens/rating_screen/rating_screen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RatingsAndReview extends StatelessWidget {
   const RatingsAndReview({super.key});
@@ -132,6 +133,52 @@ class RatingsAndReview extends StatelessWidget {
           },
         );
       },
+    );
+  }
+}
+
+class RatingsAndReviewShimmer extends StatelessWidget {
+  const RatingsAndReviewShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        shimmerBox(height: 24, width: 160),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            shimmerBox(height: 20, width: 30),
+            const SizedBox(width: 8),
+            Row(
+              children: List.generate(
+                5,
+                    (index) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  child: shimmerBox(height: 16, width: 16),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            shimmerBox(height: 16, width: 80),
+          ],
+        ),
+        const SizedBox(height: 10),
+        const Divider(),
+      ],
+    );
+  }
+
+  Widget shimmerBox({required double height, required double width}) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: height,
+        width: width,
+        color: Colors.white,
+      ),
     );
   }
 }

@@ -76,7 +76,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             // First check if already downloaded
             if (DownloadsRepository.isBookDownloaded(book.bookId)) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('"${book.bookTitle}" is already downloaded')),
+                SnackBar(
+                    content: Text('"${book.bookTitle}" is already downloaded')),
               );
               return;
             }
@@ -99,13 +100,13 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               // Save download record
               await DownloadsRepository.saveDownload(book, path);
 
-              if(context.mounted) {
+              if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Download successful!')),
                 );
               }
             } catch (e) {
-              if(context.mounted) {
+              if (context.mounted) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Download failed: $e')),
@@ -228,8 +229,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           );
         }
 
-        if (getBookDetailsModel.loaded && Loader.isShown) {
-          Loader.hide();
+        if (getBookDetailsModel.loaded) {
+          // Loader.hide();
           event.bookDetailsScreenEvent(
             model.copyWith(
               getBookDetailsModel: getBookDetailsModel.copyWith(
@@ -239,8 +240,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           );
         }
 
-        if (getBookDetailsModel.hasError && Loader.isShown) {
-          Loader.hide();
+        if (getBookDetailsModel.hasError) {
+          // Loader.hide();
           event.bookDetailsScreenEvent(
             model.copyWith(
               getBookDetailsModel: getBookDetailsModel.copyWith(
@@ -253,11 +254,12 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
       builder: (context, state) {
         final model = state.model;
         final getBookDetailsModel = model.getBookDetailsModel;
+        final loading = getBookDetailsModel.loading;
         // final event = context.read<BookDetailsCubit>();
 
-        if (getBookDetailsModel.loading) {
-          commonLoader(context);
-        }
+        // if (getBookDetailsModel.loading) {
+        //   commonLoader(context);
+        // }
         final isUserLoggedIn =
             context.read<StatusCubit>().state.model.isUserLoggedIn;
         final purchasedStatus = model.purchasedStatus;
@@ -285,21 +287,29 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 VSpace(40),
-                BookDetailsHeader(),
+                loading ? BookDetailsHeaderShimmer() : BookDetailsHeader(),
                 VSpace(20),
-                if (showIcons) BookDetailsIcon(),
+                if (showIcons)
+                  loading ? BookDetailsIconShimmer() : BookDetailsIcon(),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         VSpace(20),
-                        AboutThisBookWidget(),
+                        loading
+                            ? AboutThisBookShimmerWidget()
+                            : AboutThisBookWidget(),
                         VSpace(20),
-                        RatingsAndReview(),
-                        if (showIcons) WriteReviewWidget(),
+                        loading
+                            ? RatingsAndReviewShimmer()
+                            : RatingsAndReview(),
+                        if (showIcons)
+                          loading
+                              ? WriteReviewShimmerWidget()
+                              : WriteReviewWidget(),
                         VSpace(20),
-                        RelatedBookWidget(),
+                        loading ? RelatedBookShimmer() : RelatedBookWidget(),
                         // VSpace(20),
                         // BookDetailsBuyBookButton(),
                         VSpace(50),
