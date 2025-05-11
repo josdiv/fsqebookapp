@@ -15,6 +15,7 @@ class LatestGridWidget extends StatelessWidget {
     return BlocBuilder<LatestCubit, LatestState>(
       builder: (context, state) {
         final latestBooks = state.model.latestBooks;
+        final loading = state.model.loadOnce;
         final isUserLoggedIn =
             context.read<StatusCubit>().state.model.isUserLoggedIn;
         final profile =
@@ -28,8 +29,11 @@ class LatestGridWidget extends StatelessWidget {
             childAspectRatio: (MediaQuery.of(context).size.width / 2) /
                 400, // Adjust to your needs
           ),
-          itemCount: latestBooks.length,
+          itemCount: loading ? 6 : latestBooks.length,
           itemBuilder: (context, index) {
+            if (loading) {
+              return const LatestCardShimmer();
+            }
             return GestureDetector(
               onTap: () {
                 toBookDetails(
@@ -49,26 +53,6 @@ class LatestGridWidget extends StatelessWidget {
             );
           },
         );
-      },
-    );
-  }
-}
-
-class LatestGridShimmer extends StatelessWidget {
-  const LatestGridShimmer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 15,
-        mainAxisSpacing: 0,
-        childAspectRatio: (MediaQuery.of(context).size.width / 2) / 400,
-      ),
-      itemCount: 4, // Show 4 shimmer items (2x2 grid)
-      itemBuilder: (context, index) {
-        return const LatestCardShimmer();
       },
     );
   }

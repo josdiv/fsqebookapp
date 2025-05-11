@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/theme/app_colors.dart';
 
@@ -97,6 +98,30 @@ class CategoryCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CategoryCardShimmer extends StatelessWidget {
+  const CategoryCardShimmer({super.key, this.width});
+
+  final double? width;
+
+  @override
+  Widget build(BuildContext context) {
+    final double cardWidth = width ?? MediaQuery.of(context).size.width;
+
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        width: cardWidth,
+        height: 121,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     );
   }
 }

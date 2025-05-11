@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final homeData = state.model.model1.homeData;
-        final loading = state.model.model1.loading;
+        final loading = state.model.model1.loadOnce;
         final hasReadingBooks = context
             .read<ProfileCubit>()
             .state

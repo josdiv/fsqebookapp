@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
-import 'package:foursquare_ebbok_app/features/bible_study/presentation/screens/bible_study_screen/bible_study_screen.dart';
-import 'package:foursquare_ebbok_app/features/categories/domain/entity/category_entity.dart';
 import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/categories_cubit.dart';
 import 'package:foursquare_ebbok_app/features/categories/presentation/screens/sub_category_screen/sub_category_screen.dart';
 
@@ -62,6 +60,7 @@ class _CategoryGridWidgetState extends State<CategoryGridWidget> {
         final model = state.model;
         final model1 = model.model1;
         final event = context.read<CategoriesCubit>();
+        final loading = model1.newLoading;
 
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -70,16 +69,21 @@ class _CategoryGridWidgetState extends State<CategoryGridWidget> {
             mainAxisSpacing: 10,
             childAspectRatio: 1.5, // Adjust to your needs
           ),
-          itemCount: model1.categories.length,
+          itemCount: loading ? 6 : model1.categories.length,
           itemBuilder: (context, index) {
+            if (loading) {
+              return const CategoryCardShimmer();
+            }
+
+            final category = model1.categories[index];
             return GestureDetector(
               onTap: () => event.getSubCategoriesEvent(
-                id: model1.categories[index].categoryId,
-                categoryName: model1.categories[index].categoryName,
+                id: category.categoryId,
+                categoryName: category.categoryName,
               ),
               child: CategoryCard(
-                url: model1.categories[index].categoryImage,
-                name: model1.categories[index].categoryName,
+                url: category.categoryImage,
+                name: category.categoryName,
               ),
             );
           },

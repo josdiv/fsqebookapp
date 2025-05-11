@@ -56,6 +56,7 @@ class AuthorsGridWidget extends StatelessWidget {
         final model = state.model;
         final model1 = model.getAuthorsNetworkModel;
         final items = model1.authors;
+        final loading = model1.newLoading;
 
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -64,8 +65,11 @@ class AuthorsGridWidget extends StatelessWidget {
             mainAxisSpacing: 10,
             childAspectRatio: .8, // Adjust to your needs
           ),
-          itemCount: items.length,
+          itemCount: loading ? 9 : items.length,
           itemBuilder: (context, index) {
+            if(loading) {
+              return AuthorsCardShimmer();
+            }
             return GestureDetector(
               onTap: () => event.getSingleAuthorEvent(items[index].authorId),
               child: AuthorsCard(

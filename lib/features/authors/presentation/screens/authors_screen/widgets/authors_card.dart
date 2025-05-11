@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AuthorsCard extends StatelessWidget {
   const AuthorsCard({super.key, required this.url, required this.name});
@@ -41,6 +42,42 @@ class AuthorsCard extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         )
+      ],
+    );
+  }
+}
+
+class AuthorsCardShimmer extends StatelessWidget {
+  const AuthorsCardShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: ClipOval(
+            child: Container(
+              width: 100,
+              height: 100,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            height: 12,
+            width: 60,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+        ),
       ],
     );
   }
