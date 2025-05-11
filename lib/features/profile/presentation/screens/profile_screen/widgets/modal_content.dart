@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foursquare_ebbok_app/features/book_details/domain/entity/book.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../../book_details/domain/repository/download_repository.dart';
 import '../../../../../sign_up/domain/entity/user_entity.dart';
 
 class ModalContent extends StatefulWidget {
@@ -35,6 +37,8 @@ class _ModalContentState extends State<ModalContent>
     required List<T> books,
     required String Function(T) getTitle,
     required String Function(T) getImage,
+    required String Function(T) getId,
+    bool download = false,
   }) {
     if (books.isEmpty) {
       return Center(
@@ -60,29 +64,65 @@ class _ModalContentState extends State<ModalContent>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: CachedNetworkImage(
-                    imageUrl: getImage(book),
-                    height: 170,
-                    width: 110,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade100,
-                      child: Container(
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: CachedNetworkImage(
+                        imageUrl: getImage(book),
                         height: 170,
                         width: 110,
-                        color: Colors.grey,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Container(
+                            height: 170,
+                            width: 110,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          height: 170,
+                          width: 110,
+                          color: Colors.grey.shade300,
+                          child: const Icon(Icons.broken_image, size: 40),
+                        ),
                       ),
                     ),
-                    errorWidget: (context, url, error) => Container(
-                      height: 170,
-                      width: 110,
-                      color: Colors.grey.shade300,
-                      child: const Icon(Icons.broken_image, size: 40),
-                    ),
-                  ),
+                    if (download)
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            // Call your delete logic here
+                            DownloadsRepository.removeDownload(getId(book));
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 30,
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -102,16 +142,18 @@ class _ModalContentState extends State<ModalContent>
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         final profile = state.model.networkModel.profile;
         final favoriteBooks = profile.listFavoriteBook;
-        final downloadBooks = profile.listDownloadBook;
+        // final downloadBooks = profile.listDownloadBook;
         final continueBooks = profile.listReadingBook;
         final purchasedBooks = profile.purchasedBooks;
+
+        final downloads = DownloadsRepository.getDownloads();
+        // print(downloads.length);
 
         return Container(
           decoration: const BoxDecoration(
@@ -142,21 +184,26 @@ class _ModalContentState extends State<ModalContent>
                       books: purchasedBooks,
                       getTitle: (book) => book.purchasedBookTitle,
                       getImage: (book) => book.purchasedBookImage,
+                      getId: (book) => book.purchasedBookId,
                     ),
                     _buildBookList<FavouriteBookEntity>(
                       books: favoriteBooks,
                       getTitle: (book) => book.favoriteBookTitle,
                       getImage: (book) => book.favoriteBookImage,
+                      getId: (book) => book.favoriteBookId,
                     ),
-                    _buildBookList<DownloadedBookEntity>(
-                      books: downloadBooks,
-                      getTitle: (book) => book.downloadedBookTitle,
-                      getImage: (book) => book.downloadedBookImage,
+                    _buildBookList<Book>(
+                      books: downloads,
+                      getTitle: (book) => book.title,
+                      getImage: (book) => book.coverUrl,
+                      download: true,
+                      getId: (book) => book.id,
                     ),
                     _buildBookList<ReadingBookEntity>(
                       books: continueBooks,
                       getTitle: (book) => book.readingBookTitle,
                       getImage: (book) => book.readingBookImage,
+                      getId: (book) => book.readingBookId,
                     ),
                   ],
                 ),

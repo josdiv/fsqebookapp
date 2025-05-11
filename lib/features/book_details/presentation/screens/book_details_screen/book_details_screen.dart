@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -75,27 +77,30 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           (() async {
             // First check if already downloaded
             if (DownloadsRepository.isBookDownloaded(book.bookId)) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text('"${book.bookTitle}" is already downloaded')),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text('"${book.bookTitle}" is already downloaded')),
+                );
+              }
               return;
             }
 
-            double progress = 0;
-            showDownloadProgress(context, progress);
+            final progressController = StreamController<double>();
+
+            showDownloadProgress(context, progressController.stream);
 
             try {
               final path = await DownloadService.downloadFile(
                 url: url,
                 fileName: '${book.bookId}.$extension', // e.g., '123.pdf'
                 onProgress: (p) {
-                  progress = p;
-                  // Update dialog
-                  Navigator.pop(context);
-                  showDownloadProgress(context, progress);
+                  progressController.add(p);
                 },
               );
+
+              // Close the stream when done
+              progressController.close();
 
               // Save download record
               await DownloadsRepository.saveDownload(book, path);
@@ -106,8 +111,10 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 );
               }
             } catch (e) {
+              // Close the stream on error as well
+              progressController.close();
               if (context.mounted) {
-                Navigator.pop(context);
+                Navigator.pop(context); // Dismiss the progress dialog on error
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Download failed: $e')),
                 );

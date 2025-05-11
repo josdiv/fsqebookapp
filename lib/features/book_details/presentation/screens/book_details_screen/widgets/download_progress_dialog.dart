@@ -1,32 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
-void showDownloadProgress(BuildContext context, double progress) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => AlertDialog(
+class DownloadProgressDialog extends StatefulWidget {
+  final Stream<double> downloadProgressStream;
+
+  const DownloadProgressDialog({super.key, required this.downloadProgressStream});
+
+  @override
+  State<DownloadProgressDialog> createState() => _DownloadProgressDialogState();
+}
+
+class _DownloadProgressDialogState extends State<DownloadProgressDialog> {
+  double _progress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.downloadProgressStream.listen((progress) {
+      setState(() {
+        _progress = progress;
+      });
+      if (_progress >= 100) {
+        // Automatically close the dialog after a short delay
+        Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            Navigator.pop(context);
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           CircularPercentIndicator(
-            radius: 30.0,
-            lineWidth: 5.0,
-            percent: progress / 100,
-            center: Text('${progress.toStringAsFixed(0)}%'),
+            radius: 50.0, // Slightly larger for better visibility
+            lineWidth: 7.0,
+            percent: _progress / 100,
+            center: Text('${_progress.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 16)), // Slightly larger text
+            progressColor: Theme.of(context).colorScheme.primary, // Use theme color
           ),
           const SizedBox(height: 16),
-          Text(progress < 100 ? 'Downloading...' : 'Download Complete!'),
+          Text(
+            _progress < 100 ? 'Downloading...' : 'Download Complete!',
+            style: const TextStyle(fontWeight: FontWeight.bold), // Make the status text stand out
+          ),
         ],
       ),
-      actions: progress >= 100
-          ? [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('OK'),
-        )
-      ]
-          : null,
-    ),
+    );
+  }
+}
+
+void showDownloadProgress(BuildContext context, Stream<double> downloadProgressStream) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => DownloadProgressDialog(downloadProgressStream: downloadProgressStream),
   );
 }

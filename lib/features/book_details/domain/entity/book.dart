@@ -10,6 +10,16 @@ class Book extends Equatable {
     required this.downloadedAt,
   });
 
+  const Book.empty()
+      : this(
+          id: '',
+          title: '',
+          author: '',
+          coverUrl: '',
+          path: '',
+          downloadedAt: '',
+        );
+
   final String id;
   final String title;
   final String author;

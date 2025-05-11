@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/entity/book.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/entity/book_details_entity.dart';
 import 'package:hive/hive.dart';
@@ -5,12 +6,12 @@ import 'package:path_provider/path_provider.dart';
 
 class DownloadsRepository {
   static const _boxName = 'downloadedBooks';
-  static late Box<Map<String, dynamic>> _box;
+  static late Box<Map<dynamic, dynamic>> _box; // Changed to dynamic keys
 
   static Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path);
-    _box = await Hive.openBox<Map<String, dynamic>>(_boxName);
+    _box = await Hive.openBox(_boxName); // Remove explicit type
   }
 
   static bool isBookDownloaded(String bookId) {
@@ -29,7 +30,15 @@ class DownloadsRepository {
   }
 
   static List<Book> getDownloads() {
-    return _box.values.map((map) => Book.fromMap(map)).toList();
+    return _box.values.map((map) {
+      // Safe conversion with null checks
+      try {
+        return Book.fromMap(Map<String, dynamic>.from(map));
+      } catch (e) {
+        debugPrint('Error converting downloaded book: $e');
+        return Book.empty(); // Ensure your Book class has an empty constructor
+      }
+    }).toList();
   }
 
   static Future<void> removeDownload(String bookId) async {
