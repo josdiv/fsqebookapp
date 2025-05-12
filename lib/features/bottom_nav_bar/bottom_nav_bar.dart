@@ -106,16 +106,37 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       (icon) => BottomNavigationBarItem(
                         backgroundColor: Colors.white,
                         icon: GestureDetector(
-                          onTap: () => setState(
-                            () {
-                              _currentIndex = icons.indexOf(icon);
-                              if (icons.indexOf(icon) == 0) {
-                                context
-                                    .read<HomeCubit>()
-                                    .getDashboardDataEvent();
-                              }
-                            },
-                          ),
+                          onTap: () {
+                            setState(
+                              () {
+                                _currentIndex = icons.indexOf(icon);
+                                if (icons.indexOf(icon) == 0) {
+                                  context
+                                      .read<HomeCubit>()
+                                      .getDashboardDataEvent();
+
+                                  final model =
+                                      context.read<StatusCubit>().state.model;
+
+                                  if (model.isUserLoggedIn) {
+                                    final email = context
+                                        .read<ProfileCubit>()
+                                        .state
+                                        .model
+                                        .networkModel
+                                        .profile
+                                        .userEmail;
+
+                                    if (context.mounted) {
+                                      context
+                                          .read<ProfileCubit>()
+                                          .getUserProfileEvent(email);
+                                    }
+                                  }
+                                }
+                              },
+                            );
+                          },
                           child: Container(
                             padding: EdgeInsets.symmetric(
                               vertical: 8,

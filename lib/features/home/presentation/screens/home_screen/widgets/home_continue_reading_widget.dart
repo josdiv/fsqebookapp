@@ -21,8 +21,17 @@ class HomeContinueReadingWidget extends StatelessWidget {
           listener: (context, state) {
             final model = state.model;
             final readBook = model.readBookModel;
+            final event = context.read<BookDetailsCubit>();
 
             if(readBook.loaded) {
+              print("Loaded Read 2");
+              event.bookDetailsScreenEvent(
+                model.copyWith(
+                  readBookModel: readBook.copyWith(
+                    loaded: false,
+                  ),
+                ),
+              );
               openBook(context, readBook.entity.bookUrl, '');
             }
           },

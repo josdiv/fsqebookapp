@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
-import 'package:foursquare_ebbok_app/core/utils/open_book/open_book.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/about_this_book_widget.dart';
@@ -15,7 +14,6 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/ratings_and_review.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/related_book_widget.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/write_review_widget.dart';
-import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/pdf_viewer_screen/pdf_viewer_screen.dart';
 import 'package:foursquare_ebbok_app/features/buy_book/presentation/screens/buy_book_screen/buy_book_screen.dart';
 import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/login_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
@@ -195,29 +193,30 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           );
         }
 
-        if (readBookModel.loaded) {
-          // Loader.hide();
-          event.bookDetailsScreenEvent(
-            model.copyWith(
-              readBookModel: readBookModel.copyWith(
-                loaded: false,
-              ),
-            ),
-          );
-          openBook(
-            context,
-            readBookModel.entity.bookUrl,
-            getBookDetailsModel.entity.bookTitle,
-          );
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => PdfViewerScreen(
-          //       title: getBookDetailsModel.entity.bookTitle,
-          //     ),
-          //   ),
-          // );
-        }
+        // if (readBookModel.loaded) {
+        //   print("Loaded Read 1");
+        //   // Loader.hide();
+        //   event.bookDetailsScreenEvent(
+        //     model.copyWith(
+        //       readBookModel: readBookModel.copyWith(
+        //         loaded: false,
+        //       ),
+        //     ),
+        //   );
+        //   openBook(
+        //     context,
+        //     readBookModel.entity.bookUrl,
+        //     getBookDetailsModel.entity.bookTitle,
+        //   );
+        //   // Navigator.push(
+        //   //   context,
+        //   //   MaterialPageRoute(
+        //   //     builder: (context) => PdfViewerScreen(
+        //   //       title: getBookDetailsModel.entity.bookTitle,
+        //   //     ),
+        //   //   ),
+        //   // );
+        // }
 
         if (toggleFavouriteModel.hasError) {
           showSnackBar(context, toggleFavouriteModel.error);

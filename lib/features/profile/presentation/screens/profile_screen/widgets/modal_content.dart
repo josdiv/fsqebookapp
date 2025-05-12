@@ -7,6 +7,7 @@ import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/b
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../../../core/helper/navigate_to_book_details.dart';
 import '../../../../../book_details/domain/repository/download_repository.dart';
 import '../../../../../sign_up/domain/entity/user_entity.dart';
 
@@ -41,6 +42,7 @@ class _ModalContentState extends State<ModalContent>
     required String Function(T) getImage,
     required String Function(T) getId,
     bool download = false,
+    required int index,
   }) {
     if (books.isEmpty) {
       return Center(
@@ -59,11 +61,18 @@ class _ModalContentState extends State<ModalContent>
       listener: (context, state) {
         final model = state.model;
         final readBook = model.readBookModel;
+        final event = context.read<BookDetailsCubit>();
 
-        if(readBook.loaded) {
+        if (readBook.loaded) {
+          event.bookDetailsScreenEvent(
+            model.copyWith(
+              readBookModel: readBook.copyWith(
+                loaded: false,
+              ),
+            ),
+          );
           openBook(context, readBook.entity.bookUrl, '');
         }
-
       },
       builder: (context, state) {
         return SingleChildScrollView(
@@ -75,10 +84,18 @@ class _ModalContentState extends State<ModalContent>
               final profile =
                   context.read<ProfileCubit>().state.model.networkModel.profile;
               return GestureDetector(
-                onTap: () => context.read<BookDetailsCubit>().readBookEvent({
-                  'userId': profile.userId,
-                  'bookId': getId(book),
-                }),
+                onTap: () => (index == 0 || index == 1)
+                    ? toBookDetails(
+                        data: {
+                          'id': getId(book),
+                          'userId': profile.userId,
+                        },
+                        context: context,
+                      )
+                    : context.read<BookDetailsCubit>().readBookEvent({
+                        'userId': profile.userId,
+                        'bookId': getId(book),
+                      }),
                 child: SizedBox(
                   width: 110,
                   child: Column(
@@ -209,12 +226,14 @@ class _ModalContentState extends State<ModalContent>
                       getTitle: (book) => book.purchasedBookTitle,
                       getImage: (book) => book.purchasedBookImage,
                       getId: (book) => book.purchasedBookId,
+                      index: 0,
                     ),
                     _buildBookList<FavouriteBookEntity>(
                       books: favoriteBooks,
                       getTitle: (book) => book.favoriteBookTitle,
                       getImage: (book) => book.favoriteBookImage,
                       getId: (book) => book.favoriteBookId,
+                      index: 1,
                     ),
                     _buildBookList<Book>(
                       books: downloads,
@@ -222,12 +241,14 @@ class _ModalContentState extends State<ModalContent>
                       getImage: (book) => book.coverUrl,
                       download: true,
                       getId: (book) => book.id,
+                      index: 2,
                     ),
                     _buildBookList<ReadingBookEntity>(
                       books: continueBooks,
                       getTitle: (book) => book.readingBookTitle,
                       getImage: (book) => book.readingBookImage,
                       getId: (book) => book.readingBookId,
+                      index: 3,
                     ),
                   ],
                 ),
