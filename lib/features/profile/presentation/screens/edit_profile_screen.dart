@@ -125,6 +125,7 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
       builder: (context) {
         final event = context.read<ProfileCubit>();
         final model = event.state.model;
+        final profile = model.networkModel.profile;
         final screenModel = model.screenModel;
 
         return SizedBox(
@@ -140,6 +141,12 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
                     if (image != null) {
                       // Do something with the selected image (e.g., update UI or upload)
                       final uploadedImageUrl = await uploadImageToServer(image);
+                      event.editUserProfile({
+                        'name': profile.userName,
+                        'email': profile.userEmail,
+                        'phone': profile.userPhone,
+                        'userimage': uploadedImageUrl,
+                      });
                       event.profileScreenEvent(
                         model.copyWith(
                           screenModel: screenModel.copyWith(
@@ -162,6 +169,12 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
                     if (image != null) {
                       // Do something with the captured image
                       final uploadedImageUrl = await uploadImageToServer(image);
+                      event.editUserProfile({
+                        'name': profile.userName,
+                        'email': profile.userEmail,
+                        'phone': profile.userPhone,
+                        'userimage': uploadedImageUrl,
+                      });
                       event.profileScreenEvent(
                         model.copyWith(
                           screenModel: screenModel.copyWith(
