@@ -5,6 +5,8 @@ import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profil
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/theme/app_colors.dart';
+import '../../../../../../core/utils/open_book/open_book.dart';
+import '../../../../../book_details/presentation/cubits/book_details_cubit.dart';
 
 class HomeContinueReadingWidget extends StatelessWidget {
   const HomeContinueReadingWidget({super.key});
@@ -13,79 +15,96 @@ class HomeContinueReadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
-        final books = state.model.networkModel.profile.listReadingBook;
-        return Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Continue Reading',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.blueColor,
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward_outlined,
-                  color: AppColors.orangeColor,
-                )
-              ],
-            ),
-            VSpace(10),
-            SizedBox(
-              height: 230, // keep this if you want
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                // remove vertical padding
-                itemCount: books.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
-                itemBuilder: (context, index) {
-                  final book = books[index];
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 160, // reduce image height
-                        width: 120,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey.shade200,
-                          image: DecorationImage(
-                            image: NetworkImage(book.readingBookImage),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: 120,
-                        child: Text(
-                          book.readingBookTitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      )
-                    ],
-                  );
-                },
-              ),
-            )
+        final profile = state.model.networkModel.profile;
+        final books = profile.listReadingBook;
+        return BlocListener<BookDetailsCubit, BookDetailsState>(
+          listener: (context, state) {
+            final model = state.model;
+            final readBook = model.readBookModel;
 
-            // VSpace(20),
-          ],
+            if(readBook.loaded) {
+              openBook(context, readBook.entity.bookUrl, '');
+            }
+          },
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Continue Reading',
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.blueColor,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_outlined,
+                    color: AppColors.orangeColor,
+                  )
+                ],
+              ),
+              VSpace(10),
+              SizedBox(
+                height: 230, // keep this if you want
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  // remove vertical padding
+                  itemCount: books.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    final book = books[index];
+                    return GestureDetector(
+                      onTap: () =>
+                          context.read<BookDetailsCubit>().readBookEvent({
+                            'userId': profile.userId,
+                            'bookId': book.readingBookId,
+                          }),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 160, // reduce image height
+                            width: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.grey.shade200,
+                              image: DecorationImage(
+                                image: NetworkImage(book.readingBookImage),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            width: 120,
+                            child: Text(
+                              book.readingBookTitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+
+              // VSpace(20),
+            ],
+          ),
         );
       },
     );
   }
 }
-
 
 
 class ShimmerHomeContinueReadingWidget extends StatelessWidget {
@@ -127,7 +146,8 @@ class ShimmerHomeContinueReadingWidget extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: 5, // placeholder item count
+            itemCount: 5,
+            // placeholder item count
             separatorBuilder: (_, __) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
               return shimmerBookCard();

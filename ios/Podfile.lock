@@ -1,4 +1,5 @@
 PODS:
+  - AEXML (4.6.0)
   - animated_rating_stars (0.0.1):
     - Flutter
   - AppAuth (1.7.6):
@@ -15,6 +16,16 @@ PODS:
     - Flutter
   - device_info_plus (0.0.1):
     - Flutter
+  - epub_viewer (0.0.2):
+    - EpubViewerKit (~> 0.1.3)
+    - Flutter
+  - EpubViewerKit (0.1.3):
+    - AEXML (= 4.6.0)
+    - FontBlaster (= 5.1.1)
+    - MenuItemKit (= 4.0.1)
+    - RealmSwift (= 5.5.1)
+    - SSZipArchive (= 2.2.3)
+    - ZFDragableModalTransition (= 0.6)
   - Firebase/Auth (11.8.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 11.8.0)
@@ -63,6 +74,7 @@ PODS:
     - Flutter
   - fluttertoast (0.0.2):
     - Flutter
+  - FontBlaster (5.1.1)
   - google_sign_in_ios (0.0.1):
     - AppAuth (>= 1.7.4)
     - Flutter
@@ -123,6 +135,7 @@ PODS:
   - Mantle (2.2.0):
     - Mantle/extobjc (= 2.2.0)
   - Mantle/extobjc (2.2.0)
+  - MenuItemKit (4.0.1)
   - open_file_ios (0.0.1):
     - Flutter
   - OrderedSet (6.0.3)
@@ -130,6 +143,11 @@ PODS:
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.4.0)
+  - Realm (5.5.1):
+    - Realm/Headers (= 5.5.1)
+  - Realm/Headers (5.5.1)
+  - RealmSwift (5.5.1):
+    - Realm (= 5.5.1)
   - RecaptchaInterop (100.0.0)
   - SDWebImage (5.21.0):
     - SDWebImage/Core (= 5.21.0)
@@ -143,6 +161,7 @@ PODS:
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
+  - SSZipArchive (2.2.3)
   - syncfusion_flutter_pdfviewer (0.0.1):
     - Flutter
   - url_launcher_ios (0.0.1):
@@ -150,11 +169,13 @@ PODS:
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
     - FlutterMacOS
+  - ZFDragableModalTransition (0.6)
 
 DEPENDENCIES:
   - animated_rating_stars (from `.symlinks/plugins/animated_rating_stars/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - epub_viewer (from `.symlinks/plugins/epub_viewer/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -174,8 +195,10 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AEXML
     - AppAuth
     - AppCheckCore
+    - EpubViewerKit
     - Firebase
     - FirebaseAppCheckInterop
     - FirebaseAuth
@@ -183,17 +206,23 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
+    - FontBlaster
     - GoogleSignIn
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
     - libwebp
     - Mantle
+    - MenuItemKit
     - OrderedSet
     - PromisesObjC
+    - Realm
+    - RealmSwift
     - RecaptchaInterop
     - SDWebImage
     - SDWebImageWebPCoder
+    - SSZipArchive
+    - ZFDragableModalTransition
 
 EXTERNAL SOURCES:
   animated_rating_stars:
@@ -202,6 +231,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
+  epub_viewer:
+    :path: ".symlinks/plugins/epub_viewer/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -236,11 +267,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
+  AEXML: 2fbb73d8724797ed2cde888731e176fa4d44dd83
   animated_rating_stars: 127efa3d924c3d9ba9a73507bf6e6450639bb596
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
   connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
+  epub_viewer: 5d65f0bebb836561422f8bebdedccaf5d8ab206b
+  EpubViewerKit: 5f6c8ff9161bba18d6742c59b3c575c19f0623a9
   Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf
   firebase_auth: c028e89b64d87f04708ed01f0e7691d997b3fa0d
   firebase_core: 6cbed78b4f298ed103a9fd034e6dbc846320480f
@@ -255,6 +289,7 @@ SPEC CHECKSUMS:
   flutter_inappwebview_ios: b89ba3482b96fb25e00c967aae065701b66e9b99
   flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
   fluttertoast: 2c67e14dce98bbdb200df9e1acf610d7a6264ea1
+  FontBlaster: 8897ebdbb4b6ace3ab78c92b665d88c954f19e4a
   google_sign_in_ios: b48bb9af78576358a168361173155596c845f0b9
   GoogleSignIn: ce8c89bb9b37fb624b92e7514cc67335d1e277e4
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
@@ -263,18 +298,23 @@ SPEC CHECKSUMS:
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
+  MenuItemKit: 1459920e984d823e1bcc858b7a964f94e6bfa0f6
   open_file_ios: 5ff7526df64e4394b4fe207636b67a95e83078bb
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  Realm: c2ffe0667f9c98c9ba65f608ba85684d39826145
+  RealmSwift: 5a35c1c35c3e1925e6fcd092c881d5cc4a826bff
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   syncfusion_flutter_pdfviewer: 90dc48305d2e33d4aa20681d1e98ddeda891bc14
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
   webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
+  ZFDragableModalTransition: 0d294eaaba6edfcb9839595de765f9ca06a4b524
 
 PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 

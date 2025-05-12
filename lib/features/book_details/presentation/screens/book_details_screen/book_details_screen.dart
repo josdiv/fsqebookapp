@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
+import 'package:foursquare_ebbok_app/core/utils/open_book/open_book.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/about_this_book_widget.dart';
@@ -80,7 +81,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                      content: Text('"${book.bookTitle}" is already downloaded')),
+                      content:
+                          Text('"${book.bookTitle}" is already downloaded')),
                 );
               }
               return;
@@ -177,12 +179,12 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           );
         }
 
-        if (readBookModel.loading) {
-          commonLoader(context);
-        }
+        // if (readBookModel.loading) {
+        //   commonLoader(context);
+        // }
 
-        if (readBookModel.hasError && Loader.isShown) {
-          Loader.hide();
+        if (readBookModel.hasError) {
+          // Loader.hide();
           showSnackBar(context, readBookModel.error);
           event.bookDetailsScreenEvent(
             model.copyWith(
@@ -193,8 +195,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           );
         }
 
-        if (readBookModel.loaded && Loader.isShown) {
-          Loader.hide();
+        if (readBookModel.loaded) {
+          // Loader.hide();
           event.bookDetailsScreenEvent(
             model.copyWith(
               readBookModel: readBookModel.copyWith(
@@ -202,14 +204,19 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               ),
             ),
           );
-          Navigator.push(
+          openBook(
             context,
-            MaterialPageRoute(
-              builder: (context) => PdfViewerScreen(
-                title: getBookDetailsModel.entity.bookTitle,
-              ),
-            ),
+            readBookModel.entity.bookUrl,
+            getBookDetailsModel.entity.bookTitle,
           );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => PdfViewerScreen(
+          //       title: getBookDetailsModel.entity.bookTitle,
+          //     ),
+          //   ),
+          // );
         }
 
         if (toggleFavouriteModel.hasError) {
