@@ -17,6 +17,7 @@ Future<void> openBook(
   // Determine file type
   final isPdf = url.toLowerCase().endsWith('.pdf');
   final isEpub = url.toLowerCase().endsWith('.epub');
+  print("Open");
 
   if (!isPdf && !isEpub) {
     ScaffoldMessenger.of(context).showSnackBar(

@@ -193,7 +193,7 @@ class _ModalContentState extends State<ModalContent>
         final continueBooks = profile.listReadingBook;
         final purchasedBooks = profile.purchasedBooks;
 
-        final downloads = DownloadsRepository.getDownloads();
+        var downloads = DownloadsRepository.getDownloads();
         // print(downloads.length);
 
         return Container(
@@ -216,6 +216,13 @@ class _ModalContentState extends State<ModalContent>
                 labelColor: Colors.red,
                 unselectedLabelColor: Colors.grey,
                 tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
+                onTap: (index) {
+                  if(index == 2) {
+                    setState(() {
+                      downloads = DownloadsRepository.getDownloads();
+                    });
+                  }
+                },
               ),
               Expanded(
                 child: TabBarView(
