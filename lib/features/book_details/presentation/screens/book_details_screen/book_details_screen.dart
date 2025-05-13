@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
+import 'package:foursquare_ebbok_app/core/utils/open_book/open_book.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/screens/book_details_screen/widgets/about_this_book_widget.dart';
@@ -77,11 +78,14 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             // First check if already downloaded
             if (DownloadsRepository.isBookDownloaded(book.bookId)) {
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content:
-                          Text('"${book.bookTitle}" is already downloaded')),
-                );
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //       content:
+                //           Text('"${book.bookTitle}" is already downloaded')),
+                // );
+                final myBook = DownloadsRepository.getSingleBook(book.bookId);
+
+                openBook(context, myBook.path, allowStreaming: false, '');
               }
               return;
             }
@@ -109,6 +113,10 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Download successful!')),
                 );
+                Future.delayed(const Duration(seconds: 2), () {
+                  //Open Downloaded Book
+                  openBook(context, path, allowStreaming: false, '');
+                });
               }
             } catch (e) {
               // Close the stream on error as well

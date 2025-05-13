@@ -84,18 +84,30 @@ class _ModalContentState extends State<ModalContent>
               final profile =
                   context.read<ProfileCubit>().state.model.networkModel.profile;
               return GestureDetector(
-                onTap: () => (index == 0 || index == 1)
-                    ? toBookDetails(
-                        data: {
-                          'id': getId(book),
-                          'userId': profile.userId,
-                        },
-                        context: context,
-                      )
-                    : context.read<BookDetailsCubit>().readBookEvent({
-                        'userId': profile.userId,
-                        'bookId': getId(book),
-                      }),
+                onTap: (index == 0 || index == 1)
+                    ? () => toBookDetails(
+                          data: {
+                            'id': getId(book),
+                            'userId': profile.userId,
+                          },
+                          context: context,
+                        )
+                    : index == 3
+                        ? () => context.read<BookDetailsCubit>().readBookEvent({
+                              'userId': profile.userId,
+                              'bookId': getId(book),
+                            })
+                        : () {
+                            var myBook =
+                                DownloadsRepository.getSingleBook(getId(book));
+
+                            openBook(
+                              context,
+                              myBook.path,
+                              allowStreaming: false,
+                              '',
+                            );
+                          },
                 child: SizedBox(
                   width: 110,
                   child: Column(
@@ -217,7 +229,7 @@ class _ModalContentState extends State<ModalContent>
                 unselectedLabelColor: Colors.grey,
                 tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
                 onTap: (index) {
-                  if(index == 2) {
+                  if (index == 2) {
                     setState(() {
                       downloads = DownloadsRepository.getDownloads();
                     });

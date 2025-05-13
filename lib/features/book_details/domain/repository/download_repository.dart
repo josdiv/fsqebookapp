@@ -44,4 +44,8 @@ class DownloadsRepository {
   static Future<void> removeDownload(String bookId) async {
     await _box.delete(bookId);
   }
+
+  static Book getSingleBook(String bookId) {
+     return Book.fromMap(Map<String, dynamic>.from(_box.get(bookId)!));
+  }
 }
