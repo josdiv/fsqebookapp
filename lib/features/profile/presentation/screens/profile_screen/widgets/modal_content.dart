@@ -105,7 +105,7 @@ class _ModalContentState extends State<ModalContent>
                               context,
                               myBook.path,
                               allowStreaming: false,
-                              '',
+                              getTitle(book),
                             );
                           },
                 child: SizedBox(
@@ -233,6 +233,9 @@ class _ModalContentState extends State<ModalContent>
                     setState(() {
                       downloads = DownloadsRepository.getDownloads();
                     });
+                  }
+                  if(index == 1) {
+                    print("Favorite");
                   }
                 },
               ),

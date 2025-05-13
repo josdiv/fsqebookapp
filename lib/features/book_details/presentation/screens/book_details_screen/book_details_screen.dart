@@ -85,7 +85,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 // );
                 final myBook = DownloadsRepository.getSingleBook(book.bookId);
 
-                openBook(context, myBook.path, allowStreaming: false, '');
+                openBook(context, myBook.path, allowStreaming: false, book.bookTitle);
               }
               return;
             }
@@ -115,7 +115,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 );
                 Future.delayed(const Duration(seconds: 2), () {
                   //Open Downloaded Book
-                  openBook(context, path, allowStreaming: false, '');
+                  openBook(context, path, allowStreaming: false, book.bookTitle);
                 });
               }
             } catch (e) {

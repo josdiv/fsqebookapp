@@ -73,6 +73,7 @@ dependencies:
   hive: ^2.2.3
   shimmer: ^3.0.0
   epub_viewer: ^0.2.5
+  connectivity_plus: ^6.1.4
 
 dev_dependencies:
   flutter_test:
