@@ -231,11 +231,14 @@ class _ModalContentState extends State<ModalContent>
                 onTap: (index) {
                   if (index == 2) {
                     setState(() {
+                      print("downloads");
                       downloads = DownloadsRepository.getDownloads();
                     });
                   }
-                  if(index == 1) {
+                  if (index == 1) {
                     print("Favorite");
+                    final email = profile.userEmail;
+                    context.read<ProfileCubit>().getUserProfileEvent(email);
                   }
                 },
               ),
