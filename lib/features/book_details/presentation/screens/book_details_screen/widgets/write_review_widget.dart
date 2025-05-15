@@ -97,7 +97,7 @@ void showWriteReviewBottomSheet({
 }) {
   final formKey = GlobalKey<FormState>();
   final reviewController = TextEditingController();
-  int rating = 0;
+  int rating = 1;
 
   showModalBottomSheet(
     context: context,
@@ -158,9 +158,9 @@ void showWriteReviewBottomSheet({
                         VSpace(5),
                         Align(
                           child: AnimatedRatingStars(
-                            // key: ValueKey(ratings),
-                            // initialRating: ratings.toDouble(),
-                            minRating: 0.0,
+                            key: ValueKey(rating),
+                            initialRating: rating.toDouble(),
+                            minRating: 1.0,
                             maxRating: 5.0,
                             filledColor: AppColors.purpleColor,
                             emptyColor: Colors.grey,

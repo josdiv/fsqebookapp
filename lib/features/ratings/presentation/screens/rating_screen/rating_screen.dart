@@ -46,11 +46,11 @@ class RatingScreen extends StatelessWidget {
             ratingsValue: RatingsValue.all,
             screenModel: screenModel.selectAll(),
           ),
-          RatingBoxEntity(
-            value: '0',
-            ratingsValue: RatingsValue.zero,
-            screenModel: screenModel.selectZero(),
-          ),
+          // RatingBoxEntity(
+          //   value: '0',
+          //   ratingsValue: RatingsValue.zero,
+          //   screenModel: screenModel.selectZero(),
+          // ),
           RatingBoxEntity(
             value: '1',
             ratingsValue: RatingsValue.one,
