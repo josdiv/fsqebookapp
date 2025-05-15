@@ -75,6 +75,33 @@ class _ModalContentState extends State<ModalContent>
         }
       },
       builder: (context, state) {
+        void _confirmDelete(BuildContext context, VoidCallback onConfirm) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Delete Book?'),
+              content: Text(
+                  'Are you sure you want to remove this book from your downloads?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(), // Cancel
+                  child: Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close dialog
+                    onConfirm(); // Perform delete
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  child: Text('Delete'),
+                ),
+              ],
+            ),
+          );
+        }
+
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Wrap(
@@ -146,10 +173,12 @@ class _ModalContentState extends State<ModalContent>
                               right: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  // Call your delete logic here
-                                  DownloadsRepository.removeDownload(
-                                      getId(book));
-                                  setState(() {});
+                                  _confirmDelete(context, () {
+                                    // Call your delete logic here
+                                    DownloadsRepository.removeDownload(
+                                        getId(book));
+                                    setState(() {});
+                                  });
                                 },
                                 child: Container(
                                   height: 30,
