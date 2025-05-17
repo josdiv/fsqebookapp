@@ -5,25 +5,24 @@ import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:epub_viewer/epub_viewer.dart';
+import 'package:vocsy_epub_viewer/epub_viewer.dart';
+// import 'package:vocsy_epub_viewer/vocsy_epub_viewer.dart'; // Updated package
 
 Future<void> openBook(
-  BuildContext context,
-  String url,
-  String bookTitle, {
-  bool allowStreaming = true,
-  bool allowDownload = false,
-}) async {
+    BuildContext context,
+    String url,
+    String bookTitle, {
+      bool allowStreaming = true,
+      bool allowDownload = false,
+    }) async {
   // Determine file type
   final isPdf = url.toLowerCase().endsWith('.pdf');
   final isEpub = url.toLowerCase().endsWith('.epub');
 
-
   if (!isPdf && !isEpub) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-          content:
-              Text('Unsupported file type. Only PDF and EPUB are allowed.')),
+          content: Text('Unsupported file type. Only PDF and EPUB are allowed.')),
     );
     return;
   }
@@ -32,7 +31,6 @@ Future<void> openBook(
   final dir = await getApplicationDocumentsDirectory();
   final filePath = path.join(dir.path, fileName);
   final file = File(filePath);
-
   final fileExists = await file.exists();
 
   if (fileExists && !allowStreaming) {
@@ -65,14 +63,13 @@ Future<void> openBook(
 }
 
 Future<void> _downloadFile(
-  BuildContext context,
-  String url,
-  String savePath, {
-  bool showCancelButton = false,
-}) async {
+    BuildContext context,
+    String url,
+    String savePath, {
+      bool showCancelButton = false,
+    }) async {
   late StateSetter dialogSetState;
   double progress = 0;
-
   final cancelToken = Completer<void>();
 
   showDialog(
@@ -93,14 +90,14 @@ Future<void> _downloadFile(
           ),
           actions: showCancelButton
               ? [
-                  TextButton(
-                    onPressed: () {
-                      cancelToken.complete();
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancel'),
-                  )
-                ]
+            TextButton(
+              onPressed: () {
+                cancelToken.complete();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            )
+          ]
               : null,
         );
       },
@@ -110,7 +107,6 @@ Future<void> _downloadFile(
   try {
     final request = http.Request('GET', Uri.parse(url));
     final response = await http.Client().send(request);
-
     final file = File(savePath);
     final sink = file.openWrite();
     final total = response.contentLength ?? 0;
@@ -118,17 +114,14 @@ Future<void> _downloadFile(
 
     await for (final chunk in response.stream) {
       if (cancelToken.isCompleted) break;
-
       downloaded += chunk.length;
       sink.add(chunk);
-
       if (total > 0) {
         dialogSetState(() {
           progress = downloaded / total;
         });
       }
     }
-
     await sink.flush();
     await sink.close();
   } catch (e) {
@@ -141,12 +134,12 @@ Future<void> _downloadFile(
 }
 
 void _openFile(
-  BuildContext context,
-  String pathOrUrl,
-  bool isPdf,
-  String bookTitle, {
-  bool fromUrl = false,
-}) {
+    BuildContext context,
+    String pathOrUrl,
+    bool isPdf,
+    String bookTitle, {
+      bool fromUrl = false,
+    }) {
   if (isPdf) {
     Navigator.push(
       context,
@@ -160,15 +153,17 @@ void _openFile(
       ),
     );
   } else {
-    // EPUB requires local file
-    EpubViewer.setConfig(
+    // EPUB handling with vocsy_epub_viewer
+    VocsyEpub.setConfig(
       themeColor: Theme.of(context).primaryColor,
+      identifier: "iosBook",
+      scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
       allowSharing: true,
       enableTts: true,
+      nightMode: Theme.of(context).brightness == Brightness.dark,
     );
-    EpubViewer.open(
-      pathOrUrl,
-      // title: bookTitle,
-    );
+
+    // Open the EPUB file
+    VocsyEpub.open(pathOrUrl);
   }
 }

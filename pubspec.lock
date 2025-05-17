@@ -337,14 +337,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.1"
-  epub_viewer:
-    dependency: "direct main"
-    description:
-      name: epub_viewer
-      sha256: "89d8c85f5a8773952e9416a14d97ead283ab8bd0ef9c9709960d2f9909bc6838"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.5"
   equatable:
     dependency: "direct main"
     description:
@@ -502,14 +494,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.1"
-  flutter_epub_viewer:
-    dependency: "direct main"
-    description:
-      name: flutter_epub_viewer
-      sha256: "2e98e25a075bf512520bb28033c054b0dd2c97bfa3980314e0aab8a54941fb49"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.1"
   flutter_image_compress:
     dependency: "direct main"
     description:
@@ -1701,6 +1685,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.3.1"
+  vocsy_epub_viewer:
+    dependency: "direct main"
+    description:
+      name: vocsy_epub_viewer
+      sha256: "4fe32c3f3e2841448423e3c309d12793146bc96f25571153a1d618ddb352b90a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   watcher:
     dependency: transitive
     description:
