@@ -63,7 +63,7 @@ class SubCategoryDetailsGrid extends StatelessWidget {
 
         return categories.isEmpty
             ? Center(
-                child: Text("No data found"),
+                child: Image.asset("assets/images/no_content_3.png"),
               )
             : GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

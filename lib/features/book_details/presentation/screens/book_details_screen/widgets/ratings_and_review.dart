@@ -40,12 +40,7 @@ class RatingsAndReview extends StatelessWidget {
               ),
             ),
           );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const RatingScreen(),
-            ),
-          );
+
         }
       },
       builder: (context, state) {
@@ -60,9 +55,12 @@ class RatingsAndReview extends StatelessWidget {
             final ratingCount = entity.bookReviewCount;
 
             return InkWell(
-              onTap: () => context
-                  .read<RatingsCubit>()
-                  .getBookRatingsEvent(entity.bookId),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RatingScreen(bookId: entity.bookId,),
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
