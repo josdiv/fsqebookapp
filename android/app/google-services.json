@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "983165916935-t90cho59f8cab85e8e4c17ko6labuke5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.foursquareng.ebook",
+            "certificate_hash": "5d08618d553aefa25dd69a2a21a47febf09f3cfd"
+          }
+        },
+        {
           "client_id": "983165916935-vc00eshp9lh8cgqnnkhfbbnjaj7laqb0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

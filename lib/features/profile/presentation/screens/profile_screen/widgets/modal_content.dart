@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foursquare_ebbok_app/core/utils/book_viewer/book_viewer.dart';
 import 'package:foursquare_ebbok_app/core/utils/open_book/open_book.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/entity/book.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';

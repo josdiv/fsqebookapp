@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
+import 'package:foursquare_ebbok_app/core/utils/book_viewer/book_viewer.dart';
 import 'package:foursquare_ebbok_app/core/utils/open_book/open_book.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';

@@ -37,7 +37,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   ResultVoid requestAccountDeletion(DataMap data) async {
     try {
-      await _remoteDatasource.getAboutUs();
+      await _remoteDatasource.requestAccountDeletion(data);
       return const Right(null);
     } on APIException catch (e) {
       return Left(

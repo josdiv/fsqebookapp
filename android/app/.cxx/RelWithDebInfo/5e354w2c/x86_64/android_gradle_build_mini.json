@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/renndaartechnology/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/renndaartechnology/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/renndaartechnology/StudioProjects/foursquare_ebbok_app/android/app/.cxx/RelWithDebInfo/5e354w2c/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/renndaartechnology/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/renndaartechnology/StudioProjects/foursquare_ebbok_app/android/app/.cxx/RelWithDebInfo/5e354w2c/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

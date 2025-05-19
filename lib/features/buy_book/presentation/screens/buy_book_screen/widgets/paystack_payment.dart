@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,6 +16,7 @@ handlePaystackPayment(BuildContext context) {
   final paystackKey = dotenv.env['PAYSTACK_SECRET_TEST_KEY'];
 
   print(paystackKey);
+  final isIos = Platform.isIOS;
 
   PaystackFlutter().pay(
     context: context,
@@ -46,12 +49,14 @@ handlePaystackPayment(BuildContext context) {
     },
     // Additional metadata to be associated with the transaction
     onSuccess: (paystackCallback) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Transaction Successful'),
-          backgroundColor: Colors.blue,
-        ),
-      );
+      if(isIos) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Transaction Successful'),
+            backgroundColor: Colors.blue,
+          ),
+        );
+      }
 
       final data = {
         'bookId': book.bookId,
@@ -64,14 +69,16 @@ handlePaystackPayment(BuildContext context) {
     },
     // A callback function to be called when the payment is successful.
     onCancelled: (paystackCallback) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Transaction Failed/Not successful::::',
+      if(isIos) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Transaction Failed/Not successful::::',
+            ),
+            backgroundColor: Colors.red,
           ),
-          backgroundColor: Colors.red,
-        ),
-      );
+        );
+      }
     }, // A callback function to be called when the payment is canceled.
   );
 }

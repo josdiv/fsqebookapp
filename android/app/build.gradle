@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace 'com.foursquareng.ebook' // ✅ Corrected line
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -25,7 +25,7 @@ android {
     defaultConfig {
         applicationId "com.foursquareng.ebook"
         minSdk = 23
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -37,6 +37,17 @@ android {
             shrinkResources = false
         }
     }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0' // Ensure this is here
+
+    // Force the version of appcompat
+    configurations.all {
+        resolutionStrategy.force 'androidx.appcompat:appcompat:1.7.0' // Use the same version as above
+    }
+
+    // Add any other native Android dependencies your project might need here
 }
 
 flutter {

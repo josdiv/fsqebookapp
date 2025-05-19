@@ -1,4 +1,4 @@
-package com.example.foursquare_ebbok_app
+package com.foursquareng.ebook
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_epub_viewer/flutter_epub_viewer.dart';
 import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:vocsy_epub_viewer/epub_viewer.dart';
-// import 'package:vocsy_epub_viewer/vocsy_epub_viewer.dart'; // Updated package
+
 
 Future<void> openBook(
-    BuildContext context,
-    String url,
-    String bookTitle, {
-      bool allowStreaming = true,
-      bool allowDownload = false,
-    }) async {
+  BuildContext context,
+  String url,
+  String bookTitle, {
+  bool allowStreaming = true,
+  bool allowDownload = false,
+}) async {
   // Determine file type
   final isPdf = url.toLowerCase().endsWith('.pdf');
   final isEpub = url.toLowerCase().endsWith('.epub');
@@ -22,7 +22,8 @@ Future<void> openBook(
   if (!isPdf && !isEpub) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-          content: Text('Unsupported file type. Only PDF and EPUB are allowed.')),
+          content:
+              Text('Unsupported file type. Only PDF and EPUB are allowed.')),
     );
     return;
   }
@@ -34,7 +35,8 @@ Future<void> openBook(
   final fileExists = await file.exists();
 
   if (fileExists && !allowStreaming) {
-    return _openFile(context, filePath, isPdf, bookTitle);
+    return _openFile(context, filePath, isPdf, bookTitle,
+        fromUrl: false); // Explicitly set fromUrl
   }
 
   if (isPdf && allowStreaming) {
@@ -54,7 +56,8 @@ Future<void> openBook(
 
   // After download, open the file
   if (await file.exists()) {
-    _openFile(context, filePath, isPdf, bookTitle);
+    _openFile(context, filePath, isPdf, bookTitle,
+        fromUrl: false); // Explicitly set fromUrl
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('File download failed.')),
@@ -63,11 +66,11 @@ Future<void> openBook(
 }
 
 Future<void> _downloadFile(
-    BuildContext context,
-    String url,
-    String savePath, {
-      bool showCancelButton = false,
-    }) async {
+  BuildContext context,
+  String url,
+  String savePath, {
+  bool showCancelButton = false,
+}) async {
   late StateSetter dialogSetState;
   double progress = 0;
   final cancelToken = Completer<void>();
@@ -90,14 +93,14 @@ Future<void> _downloadFile(
           ),
           actions: showCancelButton
               ? [
-            TextButton(
-              onPressed: () {
-                cancelToken.complete();
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            )
-          ]
+                  TextButton(
+                    onPressed: () {
+                      cancelToken.complete();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  )
+                ]
               : null,
         );
       },
@@ -134,12 +137,13 @@ Future<void> _downloadFile(
 }
 
 void _openFile(
-    BuildContext context,
-    String pathOrUrl,
-    bool isPdf,
-    String bookTitle, {
-      bool fromUrl = false,
-    }) {
+  BuildContext context,
+  String pathOrUrl,
+  bool isPdf,
+  String bookTitle, {
+  bool fromUrl = false,
+}) {
+  final epubController = EpubController();
   if (isPdf) {
     Navigator.push(
       context,
@@ -153,17 +157,17 @@ void _openFile(
       ),
     );
   } else {
-    // EPUB handling with vocsy_epub_viewer
-    VocsyEpub.setConfig(
-      themeColor: Theme.of(context).primaryColor,
-      identifier: "iosBook",
-      scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
-      allowSharing: true,
-      enableTts: true,
-      nightMode: Theme.of(context).brightness == Brightness.dark,
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EpubViewer(
+          epubSource: fromUrl
+              ? EpubSource.fromUrl(pathOrUrl)
+              : EpubSource.fromFile(File(pathOrUrl)), // Use fromFile
+          // epubCfi: null,
+          epubController: epubController,
+        ),
+      ),
     );
-
-    // Open the EPUB file
-    VocsyEpub.open(pathOrUrl);
   }
 }
