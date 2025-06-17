@@ -162,9 +162,9 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     VSpace(20),
                     AuthForm(
-                      hintText: "Phone*",
+                      hintText: "Phone (Optional)",
                       keyboardType: TextInputType.phone,
-                      validator: screenModel.validatePhoneNumber,
+                      // validator: screenModel.validatePhoneNumber,
                       onChanged: (e) => event.signUpScreenEvent(
                         model.copyWith(
                           screenModel: screenModel.addPhone(e),

@@ -36,6 +36,8 @@ class SignUpRemoteDatasourceImpl implements SignUpRemoteDatasource {
             Duration(seconds: 15),
           );
 
+      print(response.body);
+
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw APIException(
           message: serverError,

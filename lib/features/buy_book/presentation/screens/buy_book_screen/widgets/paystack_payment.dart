@@ -4,23 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foursquare_ebbok_app/features/buy_book/presentation/cubits/buy_book_cubit.dart';
+import 'package:foursquare_ebbok_app/features/payment_keys/presentation/cubits/payment_keys_cubit.dart';
 import 'package:paystack_for_flutter/paystack_for_flutter.dart';
 
 import '../../../../../book_details/presentation/cubits/book_details_cubit.dart';
 import '../../../../../profile/presentation/cubits/profile_cubit.dart';
 
-handlePaystackPayment(BuildContext context) {
+handlePaystackPayment(BuildContext context, PaymentKeysState state) {
   final profile = context.read<ProfileCubit>().state.model.networkModel.profile;
   final book =
       context.read<BookDetailsCubit>().state.model.getBookDetailsModel.entity;
-  final paystackKey = dotenv.env['PAYSTACK_SECRET_TEST_KEY'];
+  // final paystackKey = dotenv.env['PAYSTACK_SECRET_TEST_KEY'];
+  final paystackKey = state is GetPaymentKeysSuccessState ? state.keys.paystackSecretKey : '';
 
   print(paystackKey);
   final isIos = Platform.isIOS;
 
   PaystackFlutter().pay(
     context: context,
-    secretKey: paystackKey!,
+    secretKey: paystackKey,
     // Your Paystack secret key gotten from your Paystack dashboard.
     amount: book.paystackPrice,
     // The amount to be charged in the smallest currency unit. If amount is 600, multiply by 100(600*100)

@@ -30,11 +30,10 @@ class ProfileRemoteDatasourceImpl implements ProfileRemoteDatasource {
       final phone = data['phone'] ?? '';
       final userimage = data['userimage'];
 
-      print("userImage: $userimage");
-
       final response = await _client
           .post(
-            Uri.parse("$kBaseUrl$kEditProfile&name=$name&email=$email&password="
+            Uri.parse(
+                "$kBaseUrl$kEditProfile&name=$name&email=$email&newpassword="
                 "$password&phone=$phone&userimage=$userimage"),
           )
           .timeout(

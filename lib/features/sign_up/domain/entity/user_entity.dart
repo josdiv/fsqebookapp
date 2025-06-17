@@ -36,7 +36,7 @@ class ProfileDetails extends Equatable {
   final String userId;
   final String name;
   final String email;
-  final String phone;
+  final String? phone;
   final String profileImage;
   final String registereDate;
 

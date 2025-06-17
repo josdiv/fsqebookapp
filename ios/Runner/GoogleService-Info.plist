@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>983165916935-boerb57flo7l98hkvu48jfb8rshpiebo.apps.googleusercontent.com</string>
+	<string>983165916935-l4f5nnqeu69225rt1sunb78vc144pksq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.983165916935-boerb57flo7l98hkvu48jfb8rshpiebo</string>
+	<string>com.googleusercontent.apps.983165916935-l4f5nnqeu69225rt1sunb78vc144pksq</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>983165916935-7hnq6fs88dcts8lu9u71njrimj4dhjul.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.foursquareng.ebook</string>
+	<string>com.foursquareng.store</string>
 	<key>PROJECT_ID</key>
 	<string>foursquare-ebook-store</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:983165916935:ios:9d9dfdad28fe1d78d117a2</string>
+	<string>1:983165916935:ios:35794a3843a5e274d117a2</string>
 </dict>
 </plist>

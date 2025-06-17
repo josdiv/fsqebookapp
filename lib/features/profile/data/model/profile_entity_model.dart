@@ -44,7 +44,7 @@ class ProfileEntityModel extends ProfileEntity {
     return ProfileEntityModel(
       userId: userProfile['userId'].toString(),
       userName: userProfile['userName'] as String,
-      userPhone: userProfile['userPhone'] as String,
+      userPhone: userProfile['userPhone'] as String?,
       userEmail: userProfile['userEmail'] as String,
       profileImage: userProfile['profileImage'] as String,
       createdAt: userProfile['createdAt'] as String,

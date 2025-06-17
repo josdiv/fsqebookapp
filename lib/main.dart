@@ -13,14 +13,15 @@ import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubi
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
 import 'package:foursquare_ebbok_app/features/login/presentation/cubits/login_cubit.dart';
 import 'package:foursquare_ebbok_app/features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'package:foursquare_ebbok_app/features/payment_keys/presentation/cubits/payment_keys_cubit.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/ratings/presentation/cubits/ratings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/presentation/cubits/sign_up_cubit.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 // import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/injection_container.dart';
 import 'features/book_details/domain/repository/download_repository.dart';
 import 'features/bottom_nav_bar/bottom_nav_bar.dart';
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initialization() async {
-    print('Pausing...');
+    // print('Pausing...');
     await Future.delayed(const Duration(seconds: 3));
 
     final prefs = await SharedPreferences.getInstance();
@@ -95,6 +96,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<ProfileCubit>(create: (context) => sl<ProfileCubit>()),
         BlocProvider<StatusCubit>(create: (context) => sl<StatusCubit>()),
         BlocProvider<BuyBookCubit>(create: (context) => sl<BuyBookCubit>()),
+        BlocProvider<PaymentKeysCubit>(create: (context) => sl<PaymentKeysCubit>()),
       ],
       child: MaterialApp(
         title: 'FourSquare Ebbok App',

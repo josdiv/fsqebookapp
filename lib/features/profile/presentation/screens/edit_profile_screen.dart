@@ -18,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 final ImagePicker _picker = ImagePicker();
 final nameController = TextEditingController();
 final phoneController = TextEditingController();
+final passwordController = TextEditingController();
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -40,7 +41,7 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
     final email = profile.userEmail;
 
     nameController.text = name;
-    phoneController.text = profile.userPhone;
+    phoneController.text = profile.userPhone ?? '';
 
     event.profileScreenEvent(
       model.copyWith(
@@ -297,7 +298,19 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
   Widget _buildForm() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: BlocBuilder<ProfileCubit, ProfileState>(
+      child: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+
+          if (state is EditProfileSuccess) {
+            print("loaded");
+            FocusScope.of(context).unfocus(); // Remove focus
+            _formKey.currentState!.reset(); // Reset the form
+
+            Future.delayed(Duration(milliseconds: 100), () {
+              passwordController.clear();
+            });
+          }
+        },
         builder: (context, state) {
           final model = state.model;
           final screenModel = model.screenModel;
@@ -332,7 +345,8 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
                 _buildTextField(
                   label: 'Password',
                   obscureText: true,
-                  validator: screenModel.validatePassword,
+                  controller: passwordController,
+                  validator: state is EditProfileSuccess ? null : screenModel.validatePassword,
                   onChanged: (e) => event.profileScreenEvent(
                     model.copyWith(
                       screenModel: screenModel.addPassword(e),

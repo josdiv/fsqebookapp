@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
@@ -8,6 +11,7 @@ import 'package:foursquare_ebbok_app/features/login/presentation/cubits/login_cu
 import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/widgets/google_sign_in_widget.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/sign_up/presentation/screens/sign_up_screen/sign_up_screen.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../../../core/helper/auth_form.dart';
 import '../../../../../core/helper/common_loader.dart';
@@ -18,6 +22,52 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    void showError(String message) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    }
+
+    Future<void> signInWithApple() async {
+      try {
+        final appleCredential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+        );
+
+        final oauthCredential = OAuthProvider("apple.com").credential(
+          idToken: appleCredential.identityToken,
+          accessToken: appleCredential.authorizationCode,
+        );
+
+        final userCredential = await auth.signInWithCredential(oauthCredential);
+
+        // Save user's name only on first login
+        if (appleCredential.givenName != null) {
+          final displayName =
+              "${appleCredential.givenName} ${appleCredential.familyName}";
+          await userCredential.user?.updateDisplayName(displayName);
+          print('Apple ID: ${appleCredential.userIdentifier}');
+          print('Name: $displayName');
+          print('Email: ${appleCredential.email}');
+
+          if (context.mounted) {
+            context.read<LoginCubit>().signInWithGoogleEvent({
+              'googleId': appleCredential.userIdentifier,
+              'googleName': displayName,
+              'googleEmail': appleCredential.email,
+            });
+          }
+        }
+      } catch (e) {
+        showError('Apple Sign-In failed: $e');
+        print(e);
+      }
+    }
+
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
         final model = state.model;
@@ -261,7 +311,13 @@ class LoginScreen extends StatelessWidget {
                     ),
                     VSpace(20),
                     // SvgPicture.asset('assets/icons/google1.png')
-                    GoogleSignInWidget(),
+                    Platform.isIOS
+                        ? SignInWithAppleButton(
+                            onPressed: signInWithApple,
+                            style: SignInWithAppleButtonStyle.black,
+                          )
+                        : GoogleSignInWidget(),
+
                     VSpace(50),
                     Align(
                       child: InkWell(

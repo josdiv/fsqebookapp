@@ -64,8 +64,7 @@ class SignUpScreenModel extends Equatable {
   bool get register =>
       name.isNotEmpty &&
       isValidEmail(email) &&
-      validatePassword(password) == null &&
-      validatePhoneNumber(phone) == null;
+      validatePassword(password) == null;
 
   DataMap get data => {
     'name': name,

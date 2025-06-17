@@ -44,6 +44,11 @@ import 'package:foursquare_ebbok_app/features/login/domain/repository/login_repo
 import 'package:foursquare_ebbok_app/features/login/domain/usecases/sign_in_with_google.dart';
 import 'package:foursquare_ebbok_app/features/login/domain/usecases/sign_in_with_password.dart';
 import 'package:foursquare_ebbok_app/features/login/presentation/cubits/login_cubit.dart';
+import 'package:foursquare_ebbok_app/features/payment_keys/data/datasource/payment_keys_remote_datasource.dart';
+import 'package:foursquare_ebbok_app/features/payment_keys/data/repository/payment_keys_repository_impl.dart';
+import 'package:foursquare_ebbok_app/features/payment_keys/domain/repository/payment_keys_repository.dart';
+import 'package:foursquare_ebbok_app/features/payment_keys/domain/usecases/get_payment_keys.dart';
+import 'package:foursquare_ebbok_app/features/payment_keys/presentation/cubits/payment_keys_cubit.dart';
 import 'package:foursquare_ebbok_app/features/profile/data/datasource/profile_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/profile/domain/repository/profile_repository.dart';
@@ -98,21 +103,36 @@ Future<void> init() async {
   await _profileInit();
   await _statusInit();
   await _buyBookInit();
+  await _paymentKeysInit();
 }
 
+Future<void> _paymentKeysInit() async {
+  sl
+    ..registerFactory(
+      () => PaymentKeysCubit(
+        getPaymentKeys: sl(),
+      ),
+    )
+    ..registerLazySingleton(() => GetPaymentKeys(sl()))
+    ..registerLazySingleton<PaymentKeysRepository>(
+        () => PaymentKeysRepositoryImpl(sl()))
+    ..registerLazySingleton<PaymentKeysRemoteDatasource>(
+      () => PaymentKeysRemoteDatasourceImpl(sl()),
+    );
+}
 
 Future<void> _buyBookInit() async {
   sl
     ..registerFactory(
-          () => BuyBookCubit(
+      () => BuyBookCubit(
         purchaseBook: sl(),
       ),
     )
     ..registerLazySingleton(() => PurchaseBook(sl()))
     ..registerLazySingleton<BuyBookRepository>(
-            () => BuyBookRepositoryImpl(sl()))
+        () => BuyBookRepositoryImpl(sl()))
     ..registerLazySingleton<BuyBookRemoteDatasource>(
-          () => BuyBookRemoteDatasourceImpl(sl()),
+      () => BuyBookRemoteDatasourceImpl(sl()),
     );
 }
 

@@ -54,7 +54,7 @@ class ProfileDetailsModel extends ProfileDetails {
       userId: (map['userId'] as int).toString(),
       name: map['name'] as String,
       email: map['email'] as String,
-      phone: map['phone'] as String,
+      phone: map['phone'] as String?,
       profileImage: map['profileImage'] as String,
       registereDate: map['registereDate'] as String,
     );

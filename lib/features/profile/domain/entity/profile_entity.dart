@@ -22,7 +22,7 @@ class ProfileEntity extends Equatable {
   final List<PurchasedBookEntity> purchasedBooks;
   final String userId;
   final String userName;
-  final String userPhone;
+  final String? userPhone;
   final String userEmail;
   final String profileImage;
   final String createdAt;
