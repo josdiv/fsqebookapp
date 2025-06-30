@@ -44,7 +44,7 @@ class ProfileEntity extends Equatable {
   bool get hasReadingBooks => listReadingBook.isNotEmpty;
 
   @override
-  List<Object?> get props => throw [
+  List<Object?> get props => [
         userId,
         userName,
         userPhone,

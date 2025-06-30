@@ -3,7 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/core/ui/widgets/default_button.dart';
+import 'package:foursquare_ebbok_app/features/login/presentation/screens/login_screen/login_screen.dart';
+import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/settings/presentation/cubits/settings_cubit.dart';
+
+import '../../../../status/presentation/cubits/status_cubit.dart';
+
+final TextEditingController _emailController = TextEditingController();
 
 class AccountDeletionScreen extends StatefulWidget {
   const AccountDeletionScreen({super.key});
@@ -13,8 +19,54 @@ class AccountDeletionScreen extends StatefulWidget {
 }
 
 class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
+  @override
+  void initState() {
+    final email =
+        context.read<ProfileCubit>().state.model.networkModel.profile.userEmail;
+    _emailController.text = email;
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+
+  Future<void> showDeleteAccountDialog(
+      BuildContext context, VoidCallback onConfirm) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Prevents dismissing by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Delete Account?',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: const Text(
+            'This action is permanent and will delete all your data. '
+            'Are you sure you want to continue?',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+                onConfirm(); // Proceed with deletion
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   final TextEditingController _reasonController = TextEditingController();
 
   void _submit() {
@@ -40,9 +92,16 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
         }
 
         if (state is RequestDeleteLoadedState) {
-          showSnackBar(context,
-              'Your Request to Delete Account has been sent successfully');
-          Navigator.pop(context);
+          showSnackBar(context, 'Your Account has been Deleted successfully');
+          Navigator.pop(context); // Close dialog
+          context.read<StatusCubit>().setUserLoginStatusEvent(false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+            ),
+            (Route<dynamic> route) => false,
+          );
         }
       },
       builder: (context, state) {
@@ -71,6 +130,7 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
                       labelText: 'Email Address',
                       border: OutlineInputBorder(),
                     ),
+                    readOnly: true,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       final email = value?.trim();
@@ -92,17 +152,17 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
                   TextFormField(
                     controller: _reasonController,
                     decoration: const InputDecoration(
-                      labelText: 'Reason for Deletion',
+                      labelText: 'Reason for Deletion (Optional)',
                       alignLabelWithHint: true,
                       border: OutlineInputBorder(),
                     ),
                     maxLines: 6,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please provide a reason';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.trim().isEmpty) {
+                    //     return 'Please provide a reason';
+                    //   }
+                    //   return null;
+                    // },
                   ),
 
                   const SizedBox(height: 32),
@@ -110,7 +170,7 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
                   // Submit button
                   DefaultButton(
                     text: 'Submit Request',
-                    onTap: _submit,
+                    onTap: () => showDeleteAccountDialog(context, _submit),
                     opacity: true,
                     loading: state is RequestDeleteLoadingState,
                   ),

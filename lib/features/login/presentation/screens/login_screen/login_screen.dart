@@ -30,6 +30,7 @@ class LoginScreen extends StatelessWidget {
     }
 
     Future<void> signInWithApple() async {
+      print("SIGN IN");
       try {
         final appleCredential = await SignInWithApple.getAppleIDCredential(
           scopes: [
@@ -37,6 +38,7 @@ class LoginScreen extends StatelessWidget {
             AppleIDAuthorizationScopes.fullName,
           ],
         );
+        print(appleCredential);
 
         final oauthCredential = OAuthProvider("apple.com").credential(
           idToken: appleCredential.identityToken,
@@ -62,11 +64,166 @@ class LoginScreen extends StatelessWidget {
             });
           }
         }
+        // Check if we have email (first login) or need to use existing
+        String? email = appleCredential.email;
+        if (email == null) {
+          // Subsequent login - try to get email from Firebase user
+          email = userCredential.user?.email;
+          if (email != null) {
+            print('Apple ID: ${appleCredential.userIdentifier}');
+            print('Name: ${userCredential.user?.displayName}');
+            print('Email: $email');
+            if (context.mounted) {
+              context.read<LoginCubit>().signInWithGoogleEvent({
+                'googleId': appleCredential.userIdentifier,
+                'googleName': userCredential.user?.displayName,
+                'googleEmail': email,
+              });
+            }
+          }
+          if (email == null) {
+            // If still null, prompt user to enter email manually
+            showError('Please provide your email to complete registration');
+            return;
+          }
+        }
       } catch (e) {
         showError('Apple Sign-In failed: $e');
         print(e);
       }
     }
+
+    // Future<void> signInWithApple() async {
+    //   print("SIGN IN WITH APPLE");
+    //   try {
+    //     final appleCredential = await SignInWithApple.getAppleIDCredential(
+    //       scopes: [
+    //         AppleIDAuthorizationScopes.email,
+    //         AppleIDAuthorizationScopes.fullName,
+    //       ],
+    //     );
+    //
+    //     // Debug print all credential information
+    //     print('Apple Credential: ${appleCredential.toString()}');
+    //
+    //     final oauthCredential = OAuthProvider("apple.com").credential(
+    //       idToken: appleCredential.identityToken,
+    //       accessToken: appleCredential.authorizationCode,
+    //     );
+    //
+    //     final userCredential = await auth.signInWithCredential(oauthCredential);
+    //
+    //     // Handle user info
+    //     if (appleCredential.givenName != null) {
+    //       final displayName =
+    //           "${appleCredential.givenName} ${appleCredential.familyName ?? ''}"
+    //               .trim();
+    //       await userCredential.user?.updateDisplayName(displayName);
+    //     }
+    //
+    //     // Check if we have email (first login) or need to use existing
+    //     String? email = appleCredential.email;
+    //     if (email == null) {
+    //       // Subsequent login - try to get email from Firebase user
+    //       email = userCredential.user?.email;
+    //       if (email == null) {
+    //         // If still null, prompt user to enter email manually
+    //         showError('Please provide your email to complete registration');
+    //         return;
+    //       }
+    //     }
+    //
+    //     print('Apple ID: ${appleCredential.userIdentifier}');
+    //     print('Email: $email');
+    //
+    //     // Proceed with your login logic using the email
+    //   } catch (e) {
+    //     showError('Apple Sign-In failed: $e');
+    //     print('Apple Sign-In Error: $e');
+    //   }
+    // }
+
+    // Future<void> signInWithApple() async {
+    //   print("SIGN IN");
+    //   try {
+    //     final appleCredential = await SignInWithApple.getAppleIDCredential(
+    //       scopes: [
+    //         AppleIDAuthorizationScopes.email,
+    //         AppleIDAuthorizationScopes.fullName,
+    //       ],
+    //     );
+    //     print(
+    //         "Apple Credential Email: ${appleCredential.email}"); // This will show null on subsequent logins
+    //
+    //     final oauthCredential = OAuthProvider("apple.com").credential(
+    //       idToken: appleCredential.identityToken,
+    //       accessToken: appleCredential.authorizationCode,
+    //     );
+    //
+    //     final userCredential = await auth.signInWithCredential(oauthCredential);
+    //
+    //     // Get the current user from Firebase Auth
+    //     final currentUser = userCredential.user;
+    //
+    //     // Check if it's the first time the user is signing in via Apple,
+    //     // or if the displayName/email is not yet set in Firebase/your database.
+    //     // appleCredential.givenName and appleCredential.email will only be non-null on first sign-in.
+    //     if (appleCredential.givenName != null ||
+    //         appleCredential.email != null) {
+    //       final displayName =
+    //           "${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}"
+    //               .trim();
+    //       final email = appleCredential.email;
+    //
+    //       // Update displayName in Firebase if it's not already set or is different
+    //       if (currentUser?.displayName == null ||
+    //           currentUser?.displayName != displayName) {
+    //         if (displayName.isNotEmpty) {
+    //           await currentUser?.updateDisplayName(displayName);
+    //         }
+    //       }
+    //
+    //       // You'll need to store the email in your database or a persistent local storage
+    //       // because Firebase's user.email will be set from the identityToken, but
+    //       // subsequent appleCredential.email can be null.
+    //       if (email != null && currentUser?.email != email) {
+    //         // Here, you would typically save the email to your backend database
+    //         // associated with the user's Firebase UID, or update the email in Firebase
+    //         // if you have the proper re-authentication flow in place.
+    //         // For simplicity, let's just print it here.
+    //         print('Saving Email to DB/Profile: $email');
+    //         // Example: await saveUserEmailToFirestore(currentUser.uid, email);
+    //       }
+    //
+    //       print('Apple ID: ${appleCredential.userIdentifier}');
+    //       print('Name: $displayName');
+    //       print(
+    //           'Email (from Apple Credential): ${email}'); // This might be null
+    //       print(
+    //           'Email (from Firebase User): ${currentUser?.email}'); // This should persist after first login if set by Firebase
+    //     } else {
+    //       // For subsequent logins, appleCredential.email and givenName will be null.
+    //       // You should retrieve the stored email/name from your database or Firebase user object.
+    //       print('Subsequent login. Retrieving name/email from stored data.');
+    //       print('Apple ID: ${appleCredential.userIdentifier}');
+    //       print(
+    //           'Name: ${currentUser?.displayName}'); // Get display name from Firebase user
+    //       print(
+    //           'Email: ${currentUser?.email}'); // Get email from Firebase user (if it was set during first login)
+    //     }
+    //
+    //     // if (context.mounted) {
+    //     //  context.read<LoginCubit>().signInWithGoogleEvent({
+    //     //    'googleId': appleCredential.userIdentifier, // Note: This is an Apple ID, not Google ID
+    //     //    'googleName': currentUser?.displayName,    // Use the name from the Firebase user
+    //     //    'googleEmail': currentUser?.email,       // Use the email from the Firebase user
+    //     //  });
+    //     // }
+    //   } catch (e) {
+    //     showError('Apple Sign-In failed: $e');
+    //     print(e);
+    //   }
+    // }
 
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
