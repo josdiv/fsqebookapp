@@ -44,6 +44,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# iOS build artifacts
+ios/Runner.app.dSYM.zip
+ios/Runner.ipa
+ios/*.dSYM.zip
+ios/*.ipa
+ios/build/
+ios/Pods/
+ios/Podfile.lock
 
 #ENV
 .env
