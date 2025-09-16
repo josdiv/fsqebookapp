@@ -166,3 +166,14 @@ class HomeWorkbookList extends Equatable {
         workbookRating,
       ];
 }
+
+class ByPassEntity extends Equatable {
+  const ByPassEntity({required this.areAllBooksFree});
+
+  final bool areAllBooksFree;
+
+  const ByPassEntity.initial() : this(areAllBooksFree: true);
+
+  @override
+  List<Object?> get props => [areAllBooksFree];
+}

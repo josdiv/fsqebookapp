@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/categories_cubit.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
 
@@ -61,6 +62,9 @@ class SubCategoryDetailsGrid extends StatelessWidget {
         final profile =
             context.read<ProfileCubit>().state.model.networkModel.profile;
 
+        final areAllBooksFree =
+            context.read<HomeCubit>().state.model.areAllBooksFree;
+
         return categories.isEmpty
             ? Center(
                 child: Image.asset("assets/images/no_content_3.png"),
@@ -89,7 +93,9 @@ class SubCategoryDetailsGrid extends StatelessWidget {
                       title: categories[index].bookTitle,
                       url: categories[index].bookImage,
                       rating: double.parse(categories[index].bookRating),
-                      price: categories[index].bookPrice,
+                      price: areAllBooksFree
+                          ? 'Free'
+                          : categories[index].bookPrice,
                     ),
                   );
                 },

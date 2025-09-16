@@ -8,4 +8,6 @@ abstract interface class HomeRepository {
   ResultFuture<List<SearchedEntity>> getSearchedBooks(String params);
 
   ResultVoid deleteAccount(DataMap data);
+
+  ResultFuture<ByPassEntity> byPassApplePlatform();
 }

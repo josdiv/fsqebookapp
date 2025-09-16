@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/cubits/latest_cubit.dart';
 
 import '../../../../profile/presentation/cubits/profile_cubit.dart';
@@ -20,6 +21,9 @@ class LatestGridWidget extends StatelessWidget {
             context.read<StatusCubit>().state.model.isUserLoggedIn;
         final profile =
             context.read<ProfileCubit>().state.model.networkModel.profile;
+
+        final areAllBooksFree =
+            context.read<HomeCubit>().state.model.areAllBooksFree;
 
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -48,7 +52,7 @@ class LatestGridWidget extends StatelessWidget {
                 title: latestBooks[index].bookTitle,
                 url: latestBooks[index].bookImage,
                 rating: (latestBooks[index].ratingCount).toDouble(),
-                price: latestBooks[index].bookPrice,
+                price: areAllBooksFree ? 'Free' : latestBooks[index].bookPrice,
               ),
             );
           },

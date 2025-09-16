@@ -29,6 +29,7 @@ import 'package:foursquare_ebbok_app/features/categories/presentation/cubits/cat
 import 'package:foursquare_ebbok_app/features/home/data/datasource/home_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/home/data/repository/home_repository_impl.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/repository/home_repository.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/usecases/by_pass_apple_platform.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/delete_account.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_dashboard_data.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_searched_books.dart';
@@ -235,11 +236,13 @@ Future<void> _homeInit() async {
         getDashboardData: sl(),
         getSearchedBooks: sl(),
         deleteAccount: sl(),
+        byPassApplePlatform: sl(),
       ),
     )
     ..registerLazySingleton(() => GetDashboardData(sl()))
     ..registerLazySingleton(() => GetSearchedBooks(sl()))
     ..registerLazySingleton(() => DeleteAccount(sl()))
+    ..registerLazySingleton(() => ByPassApplePlatform(sl()))
     ..registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl()))
     ..registerLazySingleton<HomeRemoteDatasource>(
       () => HomeRemoteDatasourceImpl(sl()),

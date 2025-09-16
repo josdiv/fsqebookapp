@@ -74,6 +74,9 @@ class BookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final areAllBooksFree =
+        context.read<HomeCubit>().state.model.areAllBooksFree;
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -84,8 +87,8 @@ class BookItem extends StatelessWidget {
               width: 50, height: 70, fit: BoxFit.cover),
         ),
         title: Text(book.bookTitle),
-        subtitle:
-            Text("Price: ${book.bookPrice} • Rating: ${book.bookRating}/5"),
+        subtitle: Text(
+            "Price: ${areAllBooksFree ? "Free" : book.bookPrice} • Rating: ${book.bookRating}/5"),
       ),
     );
   }

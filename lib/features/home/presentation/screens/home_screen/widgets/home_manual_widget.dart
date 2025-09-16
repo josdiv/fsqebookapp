@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -26,52 +27,59 @@ class HomeManualWidget extends StatelessWidget {
         context.read<StatusCubit>().state.model.isUserLoggedIn;
     final profile =
         context.read<ProfileCubit>().state.model.networkModel.profile;
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        final areAllBooksFree = state.model.areAllBooksFree;
+
+        return Column(
           children: [
-            Text(
-              manualBookTitle,
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-                color: AppColors.blueColor,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  manualBookTitle,
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blueColor,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_outlined,
+                  color: AppColors.orangeColor,
+                )
+              ],
+            ),
+            VSpace(10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: manualBookList
+                    .map(
+                      (item) => GestureDetector(
+                        onTap: () => toBookDetails(
+                          data: {
+                            'id': item.manualId,
+                            'userId': isUserLoggedIn ? profile.userId : '',
+                          },
+                          context: context,
+                        ),
+                        child: homeCardWidget(
+                          title: item.manualTitle,
+                          url: item.manualImage,
+                          bookPrice:
+                              areAllBooksFree ? 'Free' : item.manualBookPrice,
+                          rating: item.manualRating,
+                          context: context,
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
             ),
-            Icon(
-              Icons.arrow_forward_outlined,
-              color: AppColors.orangeColor,
-            )
           ],
-        ),
-        VSpace(10),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: manualBookList
-                .map(
-                  (item) => GestureDetector(
-                    onTap: () => toBookDetails(
-                      data: {
-                        'id': item.manualId,
-                        'userId': isUserLoggedIn ? profile.userId : '',
-                      },
-                      context: context,
-                    ),
-                    child: homeCardWidget(
-                      title: item.manualTitle,
-                      url: item.manualImage,
-                      bookPrice: item.manualBookPrice,
-                      rating: item.manualRating,
-                      context: context,
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -123,7 +131,7 @@ class HomeManualWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.orangeColor,
                       borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(5)),
+                          BorderRadius.only(bottomRight: Radius.circular(5)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -131,7 +139,9 @@ class HomeManualWidget extends StatelessWidget {
                         SvgPicture.asset('assets/icons/premium.svg'),
                         HSpace(4),
                         Text(
-                          bookPrice.toLowerCase() == 'free' ? 'Free' : 'Premium',
+                          bookPrice.toLowerCase() == 'free'
+                              ? 'Free'
+                              : 'Premium',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,

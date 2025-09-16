@@ -1,16 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_close_app/flutter_close_app.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:foursquare_ebbok_app/core/constants/constants.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
 import 'package:foursquare_ebbok_app/features/authors/presentation/screens/authors_screen/authors_screen.dart';
 import 'package:foursquare_ebbok_app/features/categories/presentation/screens/categories_screen/categories_screen.dart';
+import 'package:foursquare_ebbok_app/features/home/data/datasource/home_remote_datasource.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/home/presentation/screens/home_screen/home_screen.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/screens/latest_screen.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/screens/profile_screen/profile_screen.dart';
 import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_cubit.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/helper/common_loader.dart';
@@ -35,9 +40,40 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
   int _currentIndex = 0;
 
+  Future<void> getByPass() async {
+    final url = Uri.parse('$kBaseUrl$kByPass');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        final message = body['message'] as String;
+        final event = context.read<HomeCubit>();
+        final model = event.state.model;
+
+        event.homeScreenEvent(
+          model.copyWith(
+            areAllBooksFree: message.toLowerCase().trim() == 'free',
+          ),
+        );
+        print(message);
+      } else {
+        print('Server error: ${response.statusCode}');
+        return;
+      }
+    } catch (e) {
+      print('Exception occurred: $e');
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      getByPass();
+    });
     context.read<HomeCubit>().getDashboardDataEvent();
     context.read<StatusCubit>().getUserLoginStatusEvent();
     _currentIndex = widget.currentIndex;
@@ -114,6 +150,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                                   context
                                       .read<HomeCubit>()
                                       .getDashboardDataEvent();
+                                  Future.delayed(const Duration(seconds: 2),
+                                      () {
+                                    getByPass();
+                                  });
 
                                   final model =
                                       context.read<StatusCubit>().state.model;

@@ -7,6 +7,7 @@ class HomeModel extends Equatable {
     required this.model1,
     required this.model2,
     required this.model3,
+    required this.areAllBooksFree,
   });
 
   const HomeModel.initial()
@@ -14,26 +15,35 @@ class HomeModel extends Equatable {
           model1: const HomeScreenModel.initial(),
           model2: const SearchedBooksModel.initial(),
           model3: const DeleteAccountModel.initial(),
+          areAllBooksFree: false,
         );
 
   final HomeScreenModel model1;
   final SearchedBooksModel model2;
   final DeleteAccountModel model3;
+  final bool areAllBooksFree;
 
   HomeModel copyWith({
     HomeScreenModel? model1,
     SearchedBooksModel? model2,
     DeleteAccountModel? model3,
+    bool? areAllBooksFree,
   }) {
     return HomeModel(
       model1: model1 ?? this.model1,
       model2: model2 ?? this.model2,
       model3: model3 ?? this.model3,
+      areAllBooksFree: areAllBooksFree ?? this.areAllBooksFree,
     );
   }
 
   @override
-  List<Object?> get props => [model1, model2, model3];
+  List<Object?> get props => [
+        model1,
+        model2,
+        model3,
+        areAllBooksFree,
+      ];
 }
 
 class SearchedBooksModel extends Equatable {

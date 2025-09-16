@@ -18,9 +18,9 @@ class HomeEntityModel extends HomeEntity {
 
   factory HomeEntityModel.fromJson(Map<String, dynamic> json) {
     return HomeEntityModel(
-      featuredBookTitle: json["featuredBookTitle"],
+      featuredBookTitle: json["featuredBookTitle"] ?? '',
       featuredBookList: List.of(
-        json["featuredBookList"],
+        json["featuredBookList"] ?? [],
       )
           .map(
             (i) => HomeFeaturedBookListModel.fromJson(i as DataMap),
@@ -34,9 +34,9 @@ class HomeEntityModel extends HomeEntity {
             (i) => HomeTrendingBookListModel.fromJson(i as DataMap),
           )
           .toList(),
-      manualBookTitle: json["manualBookTitle"],
+      manualBookTitle: json["manualBookTitle"] ?? '',
       manualBookList: List.of(
-        json["manualBookList"],
+        json["manualBookList"] ?? [],
       )
           .map(
             (i) => HomeManualBookListModel.fromJson(i as DataMap),
@@ -150,6 +150,18 @@ class HomeWorkbookListModel extends HomeWorkbookList {
       workbookImage: json["workbookImage"],
       workbookPrice: json["workbookPrice"],
       workbookRating: (json["workbookRating"] as num).toDouble(),
+    );
+  }
+}
+
+class ByPassEntityModel extends ByPassEntity {
+  const ByPassEntityModel({required super.areAllBooksFree});
+
+  factory ByPassEntityModel.fromMap(Map<String, dynamic> map) {
+    final message = map['message'] as String;
+    final areAllBooksFree = message.toLowerCase() == 'free';
+    return ByPassEntityModel(
+      areAllBooksFree: areAllBooksFree,
     );
   }
 }

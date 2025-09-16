@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 
 import '../../../../../../core/misc/spacer.dart';
 import '../../../../../../core/theme/app_colors.dart';
@@ -26,52 +27,58 @@ class HomeWorkbookWidget extends StatelessWidget {
         context.read<StatusCubit>().state.model.isUserLoggedIn;
     final profile =
         context.read<ProfileCubit>().state.model.networkModel.profile;
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        final areAllBooksFree = state.model.areAllBooksFree;
+        return Column(
           children: [
-            Text(
-              workbookBookTitle,
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-                color: AppColors.blueColor,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  workbookBookTitle,
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blueColor,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_outlined,
+                  color: AppColors.orangeColor,
+                )
+              ],
+            ),
+            VSpace(10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: workbookBookList
+                    .map(
+                      (item) => GestureDetector(
+                        onTap: () => toBookDetails(
+                          data: {
+                            'id': item.workbookId,
+                            'userId': isUserLoggedIn ? profile.userId : '',
+                          },
+                          context: context,
+                        ),
+                        child: homeCardWidget(
+                          title: item.workbookTitle,
+                          url: item.workbookImage,
+                          bookPrice:
+                              areAllBooksFree ? 'Free' : item.workbookPrice,
+                          rating: item.workbookRating,
+                          context: context,
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
             ),
-            Icon(
-              Icons.arrow_forward_outlined,
-              color: AppColors.orangeColor,
-            )
           ],
-        ),
-        VSpace(10),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: workbookBookList
-                .map(
-                  (item) => GestureDetector(
-                onTap: () => toBookDetails(
-                  data: {
-                    'id': item.workbookId,
-                    'userId': isUserLoggedIn ? profile.userId : '',
-                  },
-                  context: context,
-                ),
-                child: homeCardWidget(
-                  title: item.workbookTitle,
-                  url: item.workbookImage,
-                  bookPrice: item.workbookPrice,
-                  rating: item.workbookRating,
-                  context: context,
-                ),
-              ),
-            )
-                .toList(),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -105,27 +112,25 @@ class HomeWorkbookWidget extends StatelessWidget {
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,
-                    placeholder: (context, url) =>
-                        Image.asset(
-                          'assets/images/book_placeholder.png',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                    errorWidget: (context, url, error) =>
-                        Image.asset(
-                          'assets/images/book_placeholder.png',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
+                    placeholder: (context, url) => Image.asset(
+                      'assets/images/book_placeholder.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/book_placeholder.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.orangeColor,
                       borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(5)),
+                          BorderRadius.only(bottomRight: Radius.circular(5)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

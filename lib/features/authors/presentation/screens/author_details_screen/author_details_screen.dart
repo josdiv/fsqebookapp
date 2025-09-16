@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
 import 'package:foursquare_ebbok_app/features/authors/presentation/cubits/authors_cubit.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:foursquare_ebbok_app/features/latest/presentation/screens/widgets/latest_card_widget.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -61,53 +62,61 @@ class AuthorBooksWidget extends StatelessWidget {
             context.read<ProfileCubit>().state.model.networkModel.profile;
         final authorBooks =
             state.model.getSingleAuthorNetworkModel.author.authorBooks;
+
+        final areAllBooksFree =
+            context.read<HomeCubit>().state.model.areAllBooksFree;
+
         return authorBooks.isEmpty
             ? Center(child: Text("No Author Books"))
             : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Author Books",
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-                color: AppColors.blueColor,
-              ),
-            ),
-            const VSpace(20),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7, // Adjust as needed
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: (MediaQuery.of(context).size.width / 2) / 400,
-                ),
-                itemCount: authorBooks.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      toBookDetails(
-                        data: {
-                          'id': authorBooks[index].bookId,
-                          'userId': isUserLoggedIn ? profile.userId : '',
-                        },
-                        context: context,
-                      );
-                    },
-                    child: LatestCardWidget(
-                      title: authorBooks[index].bookTitle,
-                      url: authorBooks[index].bookImage,
-                      rating: double.parse(authorBooks[index].bookRating),
-                      price: authorBooks[index].bookPrice,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Author Books",
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.blueColor,
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
-        );
+                  ),
+                  const VSpace(20),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height *
+                        0.7, // Adjust as needed
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 10,
+                        childAspectRatio:
+                            (MediaQuery.of(context).size.width / 2) / 400,
+                      ),
+                      itemCount: authorBooks.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            toBookDetails(
+                              data: {
+                                'id': authorBooks[index].bookId,
+                                'userId': isUserLoggedIn ? profile.userId : '',
+                              },
+                              context: context,
+                            );
+                          },
+                          child: LatestCardWidget(
+                            title: authorBooks[index].bookTitle,
+                            url: authorBooks[index].bookImage,
+                            rating: double.parse(authorBooks[index].bookRating),
+                            price: areAllBooksFree
+                                ? 'Free'
+                                : authorBooks[index].bookPrice,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
       },
     );
   }

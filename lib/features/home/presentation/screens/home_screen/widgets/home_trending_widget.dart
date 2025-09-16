@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foursquare_ebbok_app/core/helper/navigate_to_book_details.dart';
+import 'package:foursquare_ebbok_app/features/home/presentation/cubits/home_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/misc/spacer.dart';
@@ -28,54 +29,59 @@ class HomeTrendingWidget extends StatelessWidget {
     final profile =
         context.read<ProfileCubit>().state.model.networkModel.profile;
 
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        final areAllBooksFree = state.model.areAllBooksFree;
+
+        return Column(
           children: [
-            Text(
-              trendingBookTitle,
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-                color: AppColors.blueColor,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  trendingBookTitle,
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blueColor,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_outlined,
+                  color: AppColors.orangeColor,
+                )
+              ],
             ),
-            Icon(
-              Icons.arrow_forward_outlined,
-              color: AppColors.orangeColor,
-            )
-          ],
-        ),
-        VSpace(10),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: trendingBookList
-                .map(
-                  (item) =>
-                  GestureDetector(
-                    onTap: () =>
-                        toBookDetails(
+            VSpace(10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: trendingBookList
+                    .map(
+                      (item) => GestureDetector(
+                        onTap: () => toBookDetails(
                           data: {
                             'id': item.trendingId,
                             'userId': isUserLoggedIn ? profile.userId : '',
                           },
                           context: context,
                         ),
-                    child: homeCardWidget(
-                      title: item.trendingTitle,
-                      url: item.trendingImage,
-                      bookPrice: item.trendingBookPrice,
-                      rating: item.trendingRating,
-                      context: context,
-                    ),
-                  ),
-            )
-                .toList(),
-          ),
-        ),
-      ],
+                        child: homeCardWidget(
+                          title: item.trendingTitle,
+                          url: item.trendingImage,
+                          bookPrice:
+                              areAllBooksFree ? 'Free' : item.trendingBookPrice,
+                          rating: item.trendingRating,
+                          context: context,
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -87,17 +93,11 @@ class HomeTrendingWidget extends StatelessWidget {
     required BuildContext context,
   }) {
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width / 2.5,
+      width: MediaQuery.of(context).size.width / 2.5,
       child: Column(
         children: [
           Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width / 2.5,
+            width: MediaQuery.of(context).size.width / 2.5,
             height: 250,
             margin: EdgeInsets.only(right: 12),
             child: ClipRRect(
@@ -115,27 +115,25 @@ class HomeTrendingWidget extends StatelessWidget {
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,
-                    placeholder: (context, url) =>
-                        Image.asset(
-                          'assets/images/book_placeholder.png',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                    errorWidget: (context, url, error) =>
-                        Image.asset(
-                          'assets/images/book_placeholder.png',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
+                    placeholder: (context, url) => Image.asset(
+                      'assets/images/book_placeholder.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/book_placeholder.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.orangeColor,
                       borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(5)),
+                          BorderRadius.only(bottomRight: Radius.circular(5)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -251,7 +249,8 @@ class HomeTrendingShimmer extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(4, (index) => _buildBookCardShimmer(context)),
+            children:
+                List.generate(4, (index) => _buildBookCardShimmer(context)),
           ),
         ),
       ],
@@ -288,7 +287,8 @@ class HomeTrendingShimmer extends StatelessWidget {
                     top: 0,
                     left: 0,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: const BorderRadius.only(

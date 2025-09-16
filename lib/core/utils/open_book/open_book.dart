@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_epub_viewer/flutter_epub_viewer.dart';
 import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
+import '../../ui/screens/epub_reader_screen.dart';
 
 Future<void> openBook(
   BuildContext context,
@@ -143,7 +142,6 @@ void _openFile(
   String bookTitle, {
   bool fromUrl = false,
 }) {
-  final epubController = EpubController();
   if (isPdf) {
     Navigator.push(
       context,
@@ -160,12 +158,10 @@ void _openFile(
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EpubViewer(
-          epubSource: fromUrl
-              ? EpubSource.fromUrl(pathOrUrl)
-              : EpubSource.fromFile(File(pathOrUrl)), // Use fromFile
-          // epubCfi: null,
-          epubController: epubController,
+        builder: (context) => EpubReaderScreen(
+          filePath: pathOrUrl,
+          bookTitle: bookTitle,
+          fromUrl: fromUrl,
         ),
       ),
     );

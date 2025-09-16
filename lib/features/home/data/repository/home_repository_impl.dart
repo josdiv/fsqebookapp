@@ -47,4 +47,16 @@ class HomeRepositoryImpl implements HomeRepository {
       );
     }
   }
+
+  @override
+  ResultFuture<ByPassEntity> byPassApplePlatform() async {
+    try {
+      final result = await _remoteDatasource.byPassApplePlatform();
+      return Right(result);
+    } on APIException catch (e) {
+      return Left(
+        APIFailure.fromException(e),
+      );
+    }
+  }
 }

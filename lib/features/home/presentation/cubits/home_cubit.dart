@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/entity/home_entity.dart';
+import 'package:foursquare_ebbok_app/features/home/domain/usecases/by_pass_apple_platform.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/delete_account.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_dashboard_data.dart';
 import 'package:foursquare_ebbok_app/features/home/domain/usecases/get_searched_books.dart';
@@ -13,17 +15,33 @@ class HomeCubit extends Cubit<HomeState> {
     required GetDashboardData getDashboardData,
     required GetSearchedBooks getSearchedBooks,
     required DeleteAccount deleteAccount,
+    required ByPassApplePlatform byPassApplePlatform,
   })  : _getSearchedBooks = getSearchedBooks,
         _getDashboardData = getDashboardData,
         _deleteAccount = deleteAccount,
+        _byPassApplePlatform = byPassApplePlatform,
         super(HomeInitial());
 
   final GetDashboardData _getDashboardData;
   final GetSearchedBooks _getSearchedBooks;
   final DeleteAccount _deleteAccount;
+  final ByPassApplePlatform _byPassApplePlatform;
 
   Future<void> homeScreenEvent(HomeModel model) async {
     emit(HomeScreenState(model));
+  }
+
+  Future<void> byPassApplePlatformEvent() async {
+    emit(ByPassLoading());
+
+    final result = await _byPassApplePlatform();
+
+    result.fold(
+      (l) => emit(ByPassError(l.errorMessage)),
+      (r) => emit(
+        ByPassSuccess(r),
+      ),
+    );
   }
 
   Future<void> getDashboardDataEvent() async {

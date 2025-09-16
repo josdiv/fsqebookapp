@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:foursquare_ebbok_app/core/helper/common_loader.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
-import 'package:foursquare_ebbok_app/core/utils/book_viewer/book_viewer.dart';
 import 'package:foursquare_ebbok_app/core/utils/open_book/open_book.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
@@ -22,6 +21,7 @@ import 'package:foursquare_ebbok_app/features/status/presentation/cubits/status_
 
 import '../../../../../core/services/download_service.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../home/presentation/cubits/home_cubit.dart';
 import '../../../domain/repository/download_repository.dart';
 
 class BookDetailsScreen extends StatefulWidget {
@@ -86,7 +86,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 // );
                 final myBook = DownloadsRepository.getSingleBook(book.bookId);
 
-                openBook(context, myBook.path, allowStreaming: false, book.bookTitle);
+                openBook(
+                    context,
+                    myBook.path,
+                    allowStreaming: false,
+                    book.bookTitle);
               }
               return;
             }
@@ -116,7 +120,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 );
                 Future.delayed(const Duration(seconds: 2), () {
                   //Open Downloaded Book
-                  openBook(context, path, allowStreaming: false, book.bookTitle);
+                  openBook(
+                      context, path, allowStreaming: false, book.bookTitle);
                 });
               }
             } catch (e) {
@@ -286,7 +291,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             context.read<StatusCubit>().state.model.isUserLoggedIn;
         final purchasedStatus = model.purchasedStatus;
 
-        final showIcons = isUserLoggedIn && purchasedStatus;
+        final areAllBooksFree =
+            context.read<HomeCubit>().state.model.areAllBooksFree;
+
+        final showIcons =
+            (isUserLoggedIn && purchasedStatus) || areAllBooksFree;
 
         return Scaffold(
           backgroundColor: Color(0xFFF5F5F5),
@@ -364,6 +373,8 @@ class BookDetailsBuyBookButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isUserLoggedIn =
         context.read<StatusCubit>().state.model.isUserLoggedIn;
+    final areAllBooksFree =
+        context.read<HomeCubit>().state.model.areAllBooksFree;
 
     return InkWell(
       onTap: () => Navigator.push(
@@ -380,7 +391,7 @@ class BookDetailsBuyBookButton extends StatelessWidget {
             color: AppColors.redColor, borderRadius: BorderRadius.circular(20)),
         alignment: Alignment.center,
         child: Text(
-          "BUY BOOK",
+          areAllBooksFree ? "READ BOOK" : "BUY BOOK",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
