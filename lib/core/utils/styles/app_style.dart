@@ -130,13 +130,13 @@ class Shadows {
   static List<BoxShadow> m(Color color, [double? opacity = 0]) {
     return [
       BoxShadow(
-        color: color.withOpacity(opacity ?? .03),
+        color: color.withValues(alpha: opacity ?? .03),
         blurRadius: mRadius,
         spreadRadius: mRadius / 2,
         offset: const Offset(1, 0),
       ),
       BoxShadow(
-        color: color.withOpacity(opacity ?? .04),
+        color: color.withValues(alpha: opacity ?? .04),
         blurRadius: mRadius / 2,
         spreadRadius: mRadius / 4,
         offset: const Offset(1, 0),
@@ -145,19 +145,19 @@ class Shadows {
   }
 
   static List<BoxShadow> get universal => [
-    BoxShadow(
-      color: Colors.grey.withOpacity(.2),
-      spreadRadius: 0.9,
-      blurRadius: 8.5,
-    ),
-  ];
+        BoxShadow(
+          color: Colors.grey.withValues(alpha: .2),
+          spreadRadius: 0.9,
+          blurRadius: 8.5,
+        ),
+      ];
   static List<BoxShadow> get small => [
-    BoxShadow(
-        color: const Color(0xff333333).withOpacity(.15),
-        spreadRadius: 0,
-        blurRadius: 3,
-        offset: const Offset(0, 1)),
-  ];
+        BoxShadow(
+            color: const Color(0xff333333).withValues(alpha: .15),
+            spreadRadius: 0,
+            blurRadius: 3,
+            offset: const Offset(0, 1)),
+      ];
 }
 
 class Corners {

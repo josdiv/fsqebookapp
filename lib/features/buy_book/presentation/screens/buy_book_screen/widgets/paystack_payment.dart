@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foursquare_ebbok_app/features/buy_book/presentation/cubits/buy_book_cubit.dart';
 import 'package:foursquare_ebbok_app/features/payment_keys/presentation/cubits/payment_keys_cubit.dart';
 import 'package:paystack_for_flutter/paystack_for_flutter.dart';
@@ -15,9 +14,10 @@ handlePaystackPayment(BuildContext context, PaymentKeysState state) {
   final book =
       context.read<BookDetailsCubit>().state.model.getBookDetailsModel.entity;
   // final paystackKey = dotenv.env['PAYSTACK_SECRET_TEST_KEY'];
-  final paystackKey = state is GetPaymentKeysSuccessState ? state.keys.paystackSecretKey : '';
+  final paystackKey =
+      state is GetPaymentKeysSuccessState ? state.keys.paystackSecretKey : '';
 
-  print(paystackKey);
+  debugPrint(paystackKey);
   final isIos = Platform.isIOS;
 
   PaystackFlutter().pay(
@@ -51,7 +51,7 @@ handlePaystackPayment(BuildContext context, PaymentKeysState state) {
     },
     // Additional metadata to be associated with the transaction
     onSuccess: (paystackCallback) {
-      if(isIos) {
+      if (isIos) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Transaction Successful'),
@@ -71,7 +71,7 @@ handlePaystackPayment(BuildContext context, PaymentKeysState state) {
     },
     // A callback function to be called when the payment is successful.
     onCancelled: (paystackCallback) {
-      if(isIos) {
+      if (isIos) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(

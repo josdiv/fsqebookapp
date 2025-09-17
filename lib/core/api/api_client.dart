@@ -5,7 +5,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 class ApiClient {
   Dio getDio() {
     Dio dio = Dio();
-    dio.options.baseUrl = ApiConfig.BASE_URL;
+    dio.options.baseUrl = ApiConfig.baseUrl;
 
     dio.interceptors.add(
       PrettyDioLogger(

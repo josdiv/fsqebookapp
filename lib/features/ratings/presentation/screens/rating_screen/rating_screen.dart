@@ -288,7 +288,7 @@ class RatingsCardWidget extends StatelessWidget {
           Text(
             review,
             style: TextStyle(
-              color: Color(0xFF424242).withOpacity(0.6),
+              color: Color(0xFF424242).withValues(alpha: 0.6),
               fontSize: 16,
             ),
           ),

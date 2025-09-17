@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foursquare_ebbok_app/core/theme/app_colors.dart';
-import 'package:foursquare_ebbok_app/core/utils/book_viewer/book_viewer.dart';
 
 import '../../../features/book_details/domain/repository/download_repository.dart';
 import '../../utils/open_book/open_book.dart';

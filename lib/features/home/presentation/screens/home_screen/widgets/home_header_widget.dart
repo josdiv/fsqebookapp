@@ -38,7 +38,7 @@ class HomeHeaderWidget extends StatelessWidget {
               width: 50,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.purpleColor.withOpacity(.2),
+                color: AppColors.purpleColor.withValues(alpha: .2),
               ),
               child: GestureDetector(
                 onTap: () => Navigator.push(
@@ -69,7 +69,7 @@ class HomeHeaderWidget extends StatelessWidget {
               ),
               suffixIcon: Icon(Icons.search),
               filled: true,
-              fillColor: AppColors.purpleColor.withOpacity(.2),
+              fillColor: AppColors.purpleColor.withValues(alpha: .2),
               hintText: 'Search here...',
             ),
           ),

@@ -97,7 +97,7 @@ class EpubReaderScreen extends StatefulWidget {
 
       return null;
     } catch (e) {
-      print('Failed to extract cover image: $e');
+      debugPrint('Failed to extract cover image: $e');
       return null;
     }
   }
@@ -285,7 +285,7 @@ class _EpubReaderScreenState extends State<EpubReaderScreen> {
       }
     } catch (e) {
       // Cover image extraction failed, but don't stop the book loading
-      print('Failed to extract cover image: $e');
+      debugPrint('Failed to extract cover image: $e');
     }
   }
 
@@ -395,7 +395,7 @@ class _EpubReaderScreenState extends State<EpubReaderScreen> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 16,
                       offset: const Offset(0, 8),
                     ),
@@ -439,7 +439,7 @@ class _EpubReaderScreenState extends State<EpubReaderScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
-                color: AppColors.blueColor.withOpacity(0.1),
+                color: AppColors.blueColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Text(

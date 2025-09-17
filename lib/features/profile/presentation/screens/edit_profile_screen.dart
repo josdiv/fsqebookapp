@@ -109,11 +109,11 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
           final url = data['url'] as String;
           return url; // or parse JSON here if needed
         } else {
-          print("Upload failed with status: ${response.statusCode}");
+          debugPrint("Upload failed with status: ${response.statusCode}");
           return null;
         }
       } catch (e) {
-        print("Upload error: $e");
+        debugPrint("Upload error: $e");
         return null;
       }
     }
@@ -300,9 +300,8 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
-
           if (state is EditProfileSuccess) {
-            print("loaded");
+            debugPrint("loaded");
             FocusScope.of(context).unfocus(); // Remove focus
             _formKey.currentState!.reset(); // Reset the form
 
@@ -346,7 +345,9 @@ class ProfileEditScreenState extends State<ProfileEditScreen> {
                   label: 'Password',
                   obscureText: true,
                   controller: passwordController,
-                  validator: state is EditProfileSuccess ? null : screenModel.validatePassword,
+                  validator: state is EditProfileSuccess
+                      ? null
+                      : screenModel.validatePassword,
                   onChanged: (e) => event.profileScreenEvent(
                     model.copyWith(
                       screenModel: screenModel.addPassword(e),
@@ -428,7 +429,7 @@ Future<Uint8List> testComporessList(Uint8List list) async {
     quality: 96,
     // rotate: 135,
   );
-  print(list.length);
-  print(result.length);
+  debugPrint('List length: ${list.length}');
+  debugPrint('Result length: ${result.length}');
   return result;
 }

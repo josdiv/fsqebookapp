@@ -25,10 +25,17 @@ platform :ios do
   end
 
   lane :beta do
-    get_certificates
-    get_provisioning_profile
     increment_build_number()
-    build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
+    build_app(
+      workspace: "Runner.xcworkspace", 
+      scheme: "Runner",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.foursquareng.store" => "com.foursquareng.store AppStore"
+        }
+      }
+    )
     upload_to_testflight
   end
 end

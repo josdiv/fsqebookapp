@@ -212,7 +212,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 width: 44,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFFFF716A).withOpacity(.15)),
+                    color: Color(0xFFFF716A).withValues(alpha: .15)),
                 alignment: Alignment.center,
                 child: Icon(
                   iconData,

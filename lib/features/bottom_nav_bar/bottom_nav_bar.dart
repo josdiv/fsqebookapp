@@ -42,6 +42,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   Future<void> getByPass() async {
     final url = Uri.parse('$kBaseUrl$kByPass');
+    final event = context.read<HomeCubit>();
 
     try {
       final response = await http.get(url);
@@ -49,21 +50,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         final message = body['message'] as String;
-        final event = context.read<HomeCubit>();
-        final model = event.state.model;
+        if (context.mounted) {
+          final model = event.state.model;
 
-        event.homeScreenEvent(
-          model.copyWith(
-            areAllBooksFree: message.toLowerCase().trim() == 'free',
-          ),
-        );
-        print(message);
+          event.homeScreenEvent(
+            model.copyWith(
+              areAllBooksFree: message.toLowerCase().trim() == 'free',
+            ),
+          );
+        }
+        debugPrint(message);
       } else {
-        print('Server error: ${response.statusCode}');
+        debugPrint('Server error: ${response.statusCode}');
         return;
       }
     } catch (e) {
-      print('Exception occurred: $e');
+      debugPrint('Exception occurred: $e');
       return;
     }
   }

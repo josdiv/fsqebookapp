@@ -81,7 +81,7 @@ class AboutUsScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFF3F3D5b).withOpacity(.1)),
+        border: Border.all(color: Color(0xFF3F3D5b).withValues(alpha: .1)),
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
       ),
@@ -92,7 +92,7 @@ class AboutUsScreen extends StatelessWidget {
             width: 44,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFFFF716A).withOpacity(.15),
+              color: Color(0xFFFF716A).withValues(alpha: .15),
               image: iconData == null
                   ? DecorationImage(
                 image: AssetImage("assets/images/app-icon.jpg"),
@@ -131,7 +131,7 @@ class AboutUsScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: Color(0xFF65637B).withOpacity(0.15),
+                  color: Color(0xFF65637B).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
@@ -162,7 +162,7 @@ class AboutUsContentWidget extends StatelessWidget {
         return Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           decoration: BoxDecoration(
-            border: Border.all(color: Color(0xFF3F3D5b).withOpacity(.1)),
+            border: Border.all(color: Color(0xFF3F3D5b).withValues(alpha: .1)),
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
@@ -181,7 +181,7 @@ class AboutUsContentWidget extends StatelessWidget {
               Text(
                 state is AboutUsLoadedState ? state.aboutUs : "Could not fetch content",
                 style: TextStyle(
-                  color: Color(0xFF65637B).withOpacity(.9),
+                  color: Color(0xFF65637B).withValues(alpha: .9),
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),

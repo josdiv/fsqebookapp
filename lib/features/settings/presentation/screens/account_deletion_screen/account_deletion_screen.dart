@@ -74,7 +74,7 @@ class _AccountDeletionScreenState extends State<AccountDeletionScreen> {
       // Perform the delete account logic here
       final email = _emailController.text.trim();
       final reason = _reasonController.text.trim();
-      print('Email: $email\nReason: $reason');
+      debugPrint('Email: $email\nReason: $reason');
       context.read<SettingsCubit>().requestAccountDeletionEvent({
         'email': email,
         'reason': reason,

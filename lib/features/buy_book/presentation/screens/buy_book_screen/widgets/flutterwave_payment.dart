@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutterwave_standard_smart/core/flutterwave.dart';
 import 'package:flutterwave_standard_smart/models/requests/customer.dart';
 import 'package:flutterwave_standard_smart/models/requests/customizations.dart';

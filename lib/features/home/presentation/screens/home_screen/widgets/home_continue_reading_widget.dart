@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/misc/spacer.dart';
-import 'package:foursquare_ebbok_app/core/utils/book_viewer/book_viewer.dart';
 import 'package:foursquare_ebbok_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -24,8 +23,8 @@ class HomeContinueReadingWidget extends StatelessWidget {
             final readBook = model.readBookModel;
             final event = context.read<BookDetailsCubit>();
 
-            if(readBook.loaded) {
-              print("Loaded Read 2");
+            if (readBook.loaded) {
+              debugPrint("Loaded Read 2");
               event.bookDetailsScreenEvent(
                 model.copyWith(
                   readBookModel: readBook.copyWith(
@@ -69,9 +68,9 @@ class HomeContinueReadingWidget extends StatelessWidget {
                     return GestureDetector(
                       onTap: () =>
                           context.read<BookDetailsCubit>().readBookEvent({
-                            'userId': profile.userId,
-                            'bookId': book.readingBookId,
-                          }),
+                        'userId': profile.userId,
+                        'bookId': book.readingBookId,
+                      }),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -115,7 +114,6 @@ class HomeContinueReadingWidget extends StatelessWidget {
     );
   }
 }
-
 
 class ShimmerHomeContinueReadingWidget extends StatelessWidget {
   const ShimmerHomeContinueReadingWidget({super.key});

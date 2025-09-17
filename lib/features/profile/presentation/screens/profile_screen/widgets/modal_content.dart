@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foursquare_ebbok_app/core/utils/book_viewer/book_viewer.dart';
 import 'package:foursquare_ebbok_app/core/utils/open_book/open_book.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/entity/book.dart';
 import 'package:foursquare_ebbok_app/features/book_details/presentation/cubits/book_details_cubit.dart';
@@ -76,7 +75,7 @@ class _ModalContentState extends State<ModalContent>
         }
       },
       builder: (context, state) {
-        void _confirmDelete(BuildContext context, VoidCallback onConfirm) {
+        void confirmDelete(BuildContext context, VoidCallback onConfirm) {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -174,7 +173,7 @@ class _ModalContentState extends State<ModalContent>
                               right: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  _confirmDelete(context, () {
+                                  confirmDelete(context, () {
                                     // Call your delete logic here
                                     DownloadsRepository.removeDownload(
                                         getId(book));
@@ -236,7 +235,7 @@ class _ModalContentState extends State<ModalContent>
         final purchasedBooks = profile.purchasedBooks;
 
         var downloads = DownloadsRepository.getDownloads();
-        // print(downloads.length);
+        // debugPrint(downloads.length);
 
         return Container(
           decoration: const BoxDecoration(
@@ -261,12 +260,12 @@ class _ModalContentState extends State<ModalContent>
                 onTap: (index) {
                   if (index == 2) {
                     setState(() {
-                      print("downloads");
+                      debugPrint("downloads");
                       downloads = DownloadsRepository.getDownloads();
                     });
                   }
                   if (index == 1) {
-                    print("Favorite");
+                    debugPrint("Favorite");
                     final email = profile.userEmail;
                     context.read<ProfileCubit>().getUserProfileEvent(email);
                   }

@@ -32,9 +32,9 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
           final String name = account.displayName ?? '';
           final String email = account.email;
 
-          print('Google ID: $id');
-          print('Name: $name');
-          print('Email: $email');
+          debugPrint('Google ID: $id');
+          debugPrint('Name: $name');
+          debugPrint('Email: $email');
 
           if (context.mounted) {
             context.read<LoginCubit>().signInWithGoogleEvent({
@@ -46,13 +46,13 @@ class _GoogleSignInWidgetState extends State<GoogleSignInWidget> {
 
           // TODO: Send `id`, `name`, and `email` to your REST API
         } else {
-          print('User cancelled the sign-in');
+          debugPrint('User cancelled the sign-in');
           if (context.mounted) {
             showSnackBar(context, 'User cancelled the sign-in');
           }
         }
       } catch (e) {
-        print('Google Sign-In error: $e');
+        debugPrint('Google Sign-In error: $e');
         if (context.mounted) {
           showSnackBar(context, 'Google Sign-In error: $e');
         }

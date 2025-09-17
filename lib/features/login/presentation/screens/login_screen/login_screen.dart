@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
     }
 
     Future<void> signInWithApple() async {
-      print("SIGN IN");
+      debugPrint("SIGN IN");
       try {
         final appleCredential = await SignInWithApple.getAppleIDCredential(
           scopes: [
@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
             AppleIDAuthorizationScopes.fullName,
           ],
         );
-        print(appleCredential);
+        debugPrint('Apple credential: ${appleCredential.toString()}');
 
         final oauthCredential = OAuthProvider("apple.com").credential(
           idToken: appleCredential.identityToken,
@@ -52,9 +52,9 @@ class LoginScreen extends StatelessWidget {
           final displayName =
               "${appleCredential.givenName} ${appleCredential.familyName}";
           await userCredential.user?.updateDisplayName(displayName);
-          print('Apple ID: ${appleCredential.userIdentifier}');
-          print('Name: $displayName');
-          print('Email: ${appleCredential.email}');
+          debugPrint('Apple ID: ${appleCredential.userIdentifier}');
+          debugPrint('Name: $displayName');
+          debugPrint('Email: ${appleCredential.email}');
 
           if (context.mounted) {
             context.read<LoginCubit>().signInWithGoogleEvent({
@@ -70,9 +70,9 @@ class LoginScreen extends StatelessWidget {
           // Subsequent login - try to get email from Firebase user
           email = userCredential.user?.email;
           if (email != null) {
-            print('Apple ID: ${appleCredential.userIdentifier}');
-            print('Name: ${userCredential.user?.displayName}');
-            print('Email: $email');
+            debugPrint('Apple ID: ${appleCredential.userIdentifier}');
+            debugPrint('Name: ${userCredential.user?.displayName}');
+            debugPrint('Email: $email');
             if (context.mounted) {
               context.read<LoginCubit>().signInWithGoogleEvent({
                 'googleId': appleCredential.userIdentifier,
@@ -89,12 +89,12 @@ class LoginScreen extends StatelessWidget {
         }
       } catch (e) {
         showError('Apple Sign-In failed: $e');
-        print(e);
+        debugPrint('Apple Sign-In error: $e');
       }
     }
 
     // Future<void> signInWithApple() async {
-    //   print("SIGN IN WITH APPLE");
+    //   debugPrint("SIGN IN WITH APPLE");
     //   try {
     //     final appleCredential = await SignInWithApple.getAppleIDCredential(
     //       scopes: [
@@ -104,7 +104,7 @@ class LoginScreen extends StatelessWidget {
     //     );
     //
     //     // Debug print all credential information
-    //     print('Apple Credential: ${appleCredential.toString()}');
+    //     debugPrint('Apple Credential: ${appleCredential.toString()}');
     //
     //     final oauthCredential = OAuthProvider("apple.com").credential(
     //       idToken: appleCredential.identityToken,
@@ -133,18 +133,18 @@ class LoginScreen extends StatelessWidget {
     //       }
     //     }
     //
-    //     print('Apple ID: ${appleCredential.userIdentifier}');
-    //     print('Email: $email');
+    //     debugPrint('Apple ID: ${appleCredential.userIdentifier}');
+    //     debugPrint('Email: $email');
     //
     //     // Proceed with your login logic using the email
     //   } catch (e) {
     //     showError('Apple Sign-In failed: $e');
-    //     print('Apple Sign-In Error: $e');
+    //     debugPrint('Apple Sign-In Error: $e');
     //   }
     // }
 
     // Future<void> signInWithApple() async {
-    //   print("SIGN IN");
+    //   debugPrint("SIGN IN");
     //   try {
     //     final appleCredential = await SignInWithApple.getAppleIDCredential(
     //       scopes: [
@@ -152,7 +152,7 @@ class LoginScreen extends StatelessWidget {
     //         AppleIDAuthorizationScopes.fullName,
     //       ],
     //     );
-    //     print(
+    //     debugPrint(
     //         "Apple Credential Email: ${appleCredential.email}"); // This will show null on subsequent logins
     //
     //     final oauthCredential = OAuthProvider("apple.com").credential(
@@ -191,24 +191,24 @@ class LoginScreen extends StatelessWidget {
     //         // associated with the user's Firebase UID, or update the email in Firebase
     //         // if you have the proper re-authentication flow in place.
     //         // For simplicity, let's just print it here.
-    //         print('Saving Email to DB/Profile: $email');
+    //         debugPrint('Saving Email to DB/Profile: $email');
     //         // Example: await saveUserEmailToFirestore(currentUser.uid, email);
     //       }
     //
-    //       print('Apple ID: ${appleCredential.userIdentifier}');
-    //       print('Name: $displayName');
-    //       print(
+    //       debugPrint('Apple ID: ${appleCredential.userIdentifier}');
+    //       debugPrint('Name: $displayName');
+    //       debugPrint(
     //           'Email (from Apple Credential): ${email}'); // This might be null
-    //       print(
+    //       debugPrint(
     //           'Email (from Firebase User): ${currentUser?.email}'); // This should persist after first login if set by Firebase
     //     } else {
     //       // For subsequent logins, appleCredential.email and givenName will be null.
     //       // You should retrieve the stored email/name from your database or Firebase user object.
-    //       print('Subsequent login. Retrieving name/email from stored data.');
-    //       print('Apple ID: ${appleCredential.userIdentifier}');
-    //       print(
+    //       debugPrint('Subsequent login. Retrieving name/email from stored data.');
+    //       debugPrint('Apple ID: ${appleCredential.userIdentifier}');
+    //       debugPrint(
     //           'Name: ${currentUser?.displayName}'); // Get display name from Firebase user
-    //       print(
+    //       debugPrint(
     //           'Email: ${currentUser?.email}'); // Get email from Firebase user (if it was set during first login)
     //     }
     //
@@ -221,7 +221,7 @@ class LoginScreen extends StatelessWidget {
     //     // }
     //   } catch (e) {
     //     showError('Apple Sign-In failed: $e');
-    //     print(e);
+    //     debugPrint(e);
     //   }
     // }
 
@@ -232,7 +232,7 @@ class LoginScreen extends StatelessWidget {
         final event = context.read<LoginCubit>();
 
         if (networkModel.hasError) {
-          // print(networkModel.error);
+          // debugPrint(networkModel.error);
           showSnackBar(context, networkModel.error);
           event.signInScreenEvent(
             model.copyWith(

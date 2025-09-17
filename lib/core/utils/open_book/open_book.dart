@@ -34,33 +34,45 @@ Future<void> openBook(
   final fileExists = await file.exists();
 
   if (fileExists && !allowStreaming) {
-    return _openFile(context, filePath, isPdf, bookTitle,
-        fromUrl: false); // Explicitly set fromUrl
+    if (context.mounted) {
+      return _openFile(context, filePath, isPdf, bookTitle,
+          fromUrl: false); // Explicitly set fromUrl
+    }
+    return;
   }
 
   if (isPdf && allowStreaming) {
     // Stream PDF from the internet
-    return _openFile(context, url, isPdf, bookTitle, fromUrl: true);
+    if (context.mounted) {
+      return _openFile(context, url, isPdf, bookTitle, fromUrl: true);
+    }
+    return;
   }
 
   // EPUB always requires download or local access
   if (!fileExists) {
-    await _downloadFile(
-      context,
-      url,
-      filePath,
-      showCancelButton: allowDownload,
-    );
+    if (context.mounted) {
+      await _downloadFile(
+        context,
+        url,
+        filePath,
+        showCancelButton: allowDownload,
+      );
+    }
   }
 
   // After download, open the file
   if (await file.exists()) {
-    _openFile(context, filePath, isPdf, bookTitle,
-        fromUrl: false); // Explicitly set fromUrl
+    if (context.mounted) {
+      _openFile(context, filePath, isPdf, bookTitle,
+          fromUrl: false); // Explicitly set fromUrl
+    }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('File download failed.')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('File download failed.')),
+      );
+    }
   }
 }
 
@@ -95,7 +107,9 @@ Future<void> _downloadFile(
                   TextButton(
                     onPressed: () {
                       cancelToken.complete();
-                      Navigator.of(context).pop();
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
                     },
                     child: const Text('Cancel'),
                   )
@@ -127,9 +141,11 @@ Future<void> _downloadFile(
     await sink.flush();
     await sink.close();
   } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Download failed: $e')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Download failed: $e')),
+      );
+    }
   } finally {
     if (context.mounted) Navigator.of(context).pop();
   }

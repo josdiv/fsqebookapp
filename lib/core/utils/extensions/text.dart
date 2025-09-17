@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 extension TextStyleExtensions on TextStyle {
@@ -74,7 +72,7 @@ extension TextStyleExtensions on TextStyle {
 
   /// Shortcut for decoration
   TextStyle textDecoration(TextDecoration v,
-      {Color? color, TextDecorationStyle? style, double? thickness}) =>
+          {Color? color, TextDecorationStyle? style, double? thickness}) =>
       copyWith(
           decoration: v,
           decorationColor: color,

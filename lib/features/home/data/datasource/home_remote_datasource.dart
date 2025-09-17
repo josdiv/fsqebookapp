@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:foursquare_ebbok_app/core/constants/constants.dart';
 import 'package:foursquare_ebbok_app/core/failure/exceptions.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
@@ -49,7 +51,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
       }
 
       final body = jsonDecode(response.body) as DataMap;
-      print(body);
+      debugPrint('Response body: $body');
 
       final status = body['status'] as String;
 
@@ -176,7 +178,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
 
   @override
   Future<ByPassEntityModel> byPassApplePlatform() async {
-    print('Called');
+    debugPrint('Called');
     try {
       final response = await _client
           .post(
@@ -194,7 +196,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
       }
 
       final body = jsonDecode(response.body) as DataMap;
-      print(body);
+      debugPrint('Response body: $body');
 
       final status = body['success'] as String;
 

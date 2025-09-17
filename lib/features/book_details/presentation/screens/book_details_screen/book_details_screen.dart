@@ -120,8 +120,10 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 );
                 Future.delayed(const Duration(seconds: 2), () {
                   //Open Downloaded Book
-                  openBook(
-                      context, path, allowStreaming: false, book.bookTitle);
+                  if (context.mounted) {
+                    openBook(
+                        context, path, allowStreaming: false, book.bookTitle);
+                  }
                 });
               }
             } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foursquare_ebbok_app/core/utils/typedefs/typedefs.dart';
 import 'package:foursquare_ebbok_app/features/book_details/domain/usecases/download_book.dart';
@@ -39,7 +40,7 @@ class BookDetailsCubit extends Cubit<BookDetailsState> {
   }
 
   Future<void> getBookDetailsEvent(DataMap data) async {
-    print(data);
+    debugPrint('Book details data: $data');
     final model = state.model;
     final getBookDetailsModel = model.getBookDetailsModel;
 

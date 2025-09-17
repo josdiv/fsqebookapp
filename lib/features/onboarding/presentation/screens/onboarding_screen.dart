@@ -153,7 +153,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           decorator: DotsDecorator(
                             spacing:
                                 const EdgeInsets.symmetric(horizontal: 4.0),
-                            color: Color(0xFF504F6D).withOpacity(.4),
+                            color: Color(0xFF504F6D).withValues(alpha: .4),
                             activeColor: AppColors.orangeColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50.0),

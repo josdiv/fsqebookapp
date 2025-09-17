@@ -36,7 +36,7 @@ class TermsOfUseScreen extends StatelessWidget {
                         ? state.terms
                         : "Could not fetch content",
                     style: TextStyle(
-                      color: Color(0xFF65637B).withOpacity(.9),
+                      color: Color(0xFF65637B).withValues(alpha: .9),
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),

@@ -18,7 +18,7 @@ class BuyBookSummaryWidget extends StatelessWidget {
         return Container(
           padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
           decoration: BoxDecoration(
-            color: Colors.deepPurpleAccent.withOpacity(.4),
+            color: Colors.deepPurpleAccent.withValues(alpha: .4),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Row(

@@ -1,3 +1,3 @@
 class ApiConfig {
-  static const String BASE_URL = '';
+  static const String baseUrl = '';
 }
